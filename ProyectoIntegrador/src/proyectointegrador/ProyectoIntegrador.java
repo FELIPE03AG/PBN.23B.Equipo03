@@ -31,12 +31,13 @@ public class ProyectoIntegrador {
                 cursorActual = auxArchivo.getFilePointer();
                 String[] campos = lecturaLinea.split("\\s+");
                 for(int i=0; i<campos.length;i++){
-                    if(campos[0].equals(";")){
+                    if(campos[0].equals(";")){//Si la linea empieza con ; lo identifica como comentario
                         System.out.println("COMENTARIO");
                         i=campos.length;
                     }
-                }
-                if(campos[0].equals("")){
+                }//fin for, reccorre lineas
+                
+                if(campos[0].equals("")){//Cuando empieza con tabulador o un espacio, no hay etiqueta
                     System.out.println("ETIQUETA = null");
                     if(campos.length==3){
                         System.out.println("CODOP = "+campos[1]);
@@ -69,7 +70,7 @@ public class ProyectoIntegrador {
     }
     
     public static void main(String[] args) {
-        Leer();
+        Leer();//Llamo el metodo
     }
     
 }
