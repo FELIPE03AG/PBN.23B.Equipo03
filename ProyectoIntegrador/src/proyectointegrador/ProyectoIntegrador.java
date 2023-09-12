@@ -15,56 +15,88 @@ import java.io.RandomAccessFile;
 
 public class ProyectoIntegrador {
     
-    static Linea LinCod=null;
+    static Linea LinCod=null; //Va aguardar las variables
+    static int aux;
+    static boolean bandera;
     
+    //METODO PARA EVALUAR ETIQUETA
+    
+    //METODO PARA EVALUAR CODOP
+    
+    //METODO PARA LEER EL ASM
     static void Leer(){
         try{
             RandomAccessFile auxArchivo = new RandomAccessFile("P1ASM.asm","r");//r es para solo leer el archivo
             long cursorActual;//Para saber donde estamos en el asm
             cursorActual = auxArchivo.getFilePointer();//Puntero en el archivo
-            FileReader leerArchivo = new FileReader("P1ASM.asm");//leeo el archivo
-            String lecturaLinea;
+            FileReader leerArchivo = new FileReader("P1ASM.asm");//leo el archivo
+            String lecturaLinea; //Guarda cada linea
             
             //Aqui es donde empieza a leer por linea
             while(cursorActual!=auxArchivo.length()){//mientras el lector no llegue al final del archivo
-                lecturaLinea = auxArchivo.readLine();//leeo la linea
+                lecturaLinea = auxArchivo.readLine();//leo la linea
                 cursorActual = auxArchivo.getFilePointer();
-                String[] campos = lecturaLinea.split("\\s+");//Separa cada espacios o tabulación
+                String[] campos = lecturaLinea.split("\\s+");//Separa por bloques segun cada espacios o tabulación
+                LinCod = new Linea(null,null,null); //Inicializo valores
+                //For para guardar la primera cada bloque en el arreglo campos
                 
-                //For para guardar la primera linea en el arreglo campos
-                for(int i=0; i<campos.length;i++){
-                    if(campos[0].equals(";")){//Si la linea empieza con ; lo identifica como comentario
-                        System.out.println("COMENTARIO");
-                        i=campos.length;
-                    }
-                }//fin for, reccorre lineas
-                
-                if(campos[0].equals("")){//Cuando empieza con tabulador o un espacio, no hay etiqueta
-                    System.out.println("ETIQUETA = null");
+                aux=campos.length;
+                bandera=true;
+                switch (aux){
+                    //CASO: SOLO CODOP
+                    case 1: 
+                        LinCod.setCodop(campos[0]);
+                    break;
                     
-                    if(campos.length==3){
-                        System.out.println("CODOP = "+campos[1]);
-                        System.out.println("OPERANDO = "+campos[2]);
-                    }
-                    else if(campos.length==2){
-                        System.out.println("CODOP = "+campos[1]);
-                        System.out.println("OPERANDO = null");
-                    }
-                }
-                else{
-                    if(campos.length==3){
-                        System.out.println("ETIQUETA = "+ campos[0]);
-                        System.out.println("CODOP = "+campos[1]);
-                        System.out.println("OPERANDO = "+campos[2]);
-                    }
-                    else if(campos.length==2){
-                        System.out.println("ETIQUETA = "+ campos[0]);
-                        System.out.println("CODOP = "+campos[1]);
-                        System.out.println("OPERANDO = null");
-                    }
-                }
+                    //CASO: ETIQUETA, CODOP || CODOP, OPERANDO || CODOP
+                    case 2:
+                        //CASO: CODOP
+                        if(campos[0].equals("")){//Cuando empieza con tabulador o un espacio, no hay etiqueta
+                            LinCod.setCodop(campos[1]);//Falta caso end
+                        }
+                        else{
+                            //CASO ETIQUETA, CODOP
+                            LinCod.setEtiqueta(campos[0]);
+                            LinCod.setCodop(campos[1]);
+                            //CASO CODOP, OPERANDO
+                        }
+                        
+                    break;
+                    
+                    case 3:
+                        //CASO: CODOP, OPERANDO
+                        if(campos[0].equals("")){//Cuando empieza con tabulador o un espacio, no hay etiqueta
+                            LinCod.setCodop(campos[1]);
+                            LinCod.setOperando(campos[2]);
+                        }
+                        else{
+                            LinCod.setEtiqueta(campos[0]);
+                            LinCod.setCodop(campos[1]);
+                            LinCod.setOperando(campos[2]);
+                        }
+                    break;
+                    
+                    default: 
+                        //IDENTIFICACION CASO: COMENTARIO
+                        if(campos[0].equals(";")){//Si la linea empieza con ; lo identifica como comentario
+                            System.out.println("COMENTARIO");
+                            bandera=false;
+                        }
+                        else{
+                            System.out.println("ERROR");
+                        }
+                }//Fin casos posibles
+                
+                if(bandera){
+                    System.out.println("ETIQUETA = "+LinCod.getEtiqueta());
+                    System.out.println("CODOP = "+LinCod.getCodop());
+                    System.out.println("OPERANDO = "+LinCod.getOperando());
+                    LinCod.setEtiqueta("null");
+                    LinCod.setCodop("null");
+                    LinCod.setOperando("null");
+                }//Fin no es un comentario
+                
                 System.out.println("");
-                //Validar el end
             }//Fin del while
             leerArchivo.close();
         }catch(IOException ex){
