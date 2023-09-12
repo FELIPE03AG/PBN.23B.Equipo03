@@ -20,7 +20,7 @@ public class ProyectoIntegrador {
     static void Leer(){
         try{
             RandomAccessFile auxArchivo = new RandomAccessFile("P1ASM.asm","r");//r es para solo leer el archivo
-            long cursorActual;//Para saber donde estamos
+            long cursorActual;//Para saber donde estamos en el asm
             cursorActual = auxArchivo.getFilePointer();//Puntero en el archivo
             FileReader leerArchivo = new FileReader("P1ASM.asm");//leeo el archivo
             String lecturaLinea;
@@ -29,7 +29,9 @@ public class ProyectoIntegrador {
             while(cursorActual!=auxArchivo.length()){//mientras el lector no llegue al final del archivo
                 lecturaLinea = auxArchivo.readLine();//leeo la linea
                 cursorActual = auxArchivo.getFilePointer();
-                String[] campos = lecturaLinea.split("\\s+");
+                String[] campos = lecturaLinea.split("\\s+");//Separa cada espacios o tabulación
+                
+                //For para guardar la primera linea en el arreglo campos
                 for(int i=0; i<campos.length;i++){
                     if(campos[0].equals(";")){//Si la linea empieza con ; lo identifica como comentario
                         System.out.println("COMENTARIO");
@@ -39,6 +41,7 @@ public class ProyectoIntegrador {
                 
                 if(campos[0].equals("")){//Cuando empieza con tabulador o un espacio, no hay etiqueta
                     System.out.println("ETIQUETA = null");
+                    
                     if(campos.length==3){
                         System.out.println("CODOP = "+campos[1]);
                         System.out.println("OPERANDO = "+campos[2]);
