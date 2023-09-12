@@ -46,6 +46,10 @@ public class ProyectoIntegrador {
                     //CASO: SOLO CODOP
                     case 1: 
                         LinCod.setCodop(campos[0]);
+                        if(LinCod.getCodop().equals("END")){
+                            cursorActual=auxArchivo.length();
+                                
+                        }
                     break;
                     
                     //CASO: ETIQUETA, CODOP || CODOP, OPERANDO || CODOP
@@ -53,6 +57,10 @@ public class ProyectoIntegrador {
                         //CASO: CODOP
                         if(campos[0].equals("")){//Cuando empieza con tabulador o un espacio, no hay etiqueta
                             LinCod.setCodop(campos[1]);//Falta caso end
+                            if(LinCod.getCodop().equals("END")){
+                            cursorActual=auxArchivo.length();
+                                
+                        }
                         }
                         else{
                             //CASO ETIQUETA, CODOP
