@@ -42,10 +42,26 @@ public class ProyectoIntegrador {
     
     //METODO PARA EVALUAR CODOP
     static boolean validarCodop(String codop){
-        boolean banCodop=true;
-       //Falta hacer función, esta es solo la estructura
+        boolean banCodop=false;
+                if(codop.length()<=5){
+            for(int i = 0; i < codop.length(); i++){
+                char c = codop.charAt(i);
+                if(Character.isLetter(c) && i == 0){
+                    banCodop =true;
+                }
+                else if(Character.isLetter(c) ||  c=='.' ){
+                    banCodop =true;
+                }
+                else{
+                    banCodop=false;
+                    i=codop.length();
+                }
+            }
+        } 
+        
+       
         return banCodop;
-    }
+    }//FINAL DE METODO PARA EVALUAR CODOP
     
     //METODO PARA LEER EL ASM
     static void Leer(){
