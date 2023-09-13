@@ -20,7 +20,22 @@ public class ProyectoIntegrador {
     static boolean bandera;
     
     //METODO PARA EVALUAR ETIQUETA
-    
+    static boolean validarEtiq(String x){
+        
+        if(x == null){
+            return true;
+        }else{
+            for(int i = 0; i <= x.length() - 1; i++){
+                char c = x.charAt(i);
+                if(Character.isLetter(c) && i == 0){
+                    return true;
+                }else if(Character.isLetterOrDigit(c) || c == '_'){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
     //METODO PARA EVALUAR CODOP
     
     //METODO PARA LEER EL ASM
@@ -96,7 +111,11 @@ public class ProyectoIntegrador {
                 }//Fin casos posibles
                 
                 if(bandera){
-                    System.out.println("ETIQUETA = "+LinCod.getEtiqueta());
+                    if(validarEtiq(LinCod.getEtiqueta()) == true){
+                        System.out.println("ETIQUETA = "+LinCod.getEtiqueta());
+                    }else{
+                        System.out.println("Error");
+                    }
                     System.out.println("CODOP = "+LinCod.getCodop());
                     System.out.println("OPERANDO = "+LinCod.getOperando());
                     LinCod.setEtiqueta("null");
