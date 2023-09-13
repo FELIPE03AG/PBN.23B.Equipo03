@@ -20,23 +20,32 @@ public class ProyectoIntegrador {
     static boolean bandera;
     
     //METODO PARA EVALUAR ETIQUETA
-    static boolean validarEtiq(String x){
-        
-        if(x == null){
-            return true;
-        }else{
-            for(int i = 0; i <= x.length() - 1; i++){
-                char c = x.charAt(i);
+    static boolean validarEtiq(String etiqueta){
+        boolean banEtiq=false;
+        if(etiqueta.length()<=8){
+            for(int i = 0; i < etiqueta.length(); i++){
+                char c = etiqueta.charAt(i);
                 if(Character.isLetter(c) && i == 0){
-                    return true;
-                }else if(Character.isLetterOrDigit(c) || c == '_'){
-                    return true;
-                }else{
-                    return false;
+                    banEtiq =true;
+                }
+                else if(Character.isLetterOrDigit(c) || c == '_' || (c==':' && i==etiqueta.length()-1)){
+                    banEtiq =true;
+                }
+                else{
+                    banEtiq=false;
+                    i=etiqueta.length();
                 }
             }
-        }
+        }   
+        return banEtiq;
+    }//Fin validar etiqueta
+    
     //METODO PARA EVALUAR CODOP
+    static boolean validarCodop(String codop){
+        boolean banCodop=true;
+       //Falta hacer función, esta es solo la estructura
+        return banCodop;
+    }
     
     //METODO PARA LEER EL ASM
     static void Leer(){
@@ -53,35 +62,50 @@ public class ProyectoIntegrador {
                 cursorActual = auxArchivo.getFilePointer();
                 String[] campos = lecturaLinea.split("\\s+");//Separa por bloques segun cada espacios o tabulación
                 LinCod = new Linea(null,null,null); //Inicializo valores
-                //For para guardar la primera cada bloque en el arreglo campos
                 
                 aux=campos.length;
                 bandera=true;
+                //VALIDADACIÓN DE CASOS
                 switch (aux){
                     //CASO: SOLO CODOP
                     case 1: 
-                        LinCod.setCodop(campos[0]);
-                        if(LinCod.getCodop().equals("END")){
-                            cursorActual=auxArchivo.length();
-                                
+                        if(validarCodop(campos[0])){
+                            LinCod.setCodop(campos[0]);
+                            //CASO END
+                            if(LinCod.getCodop().equals("END")){
+                                cursorActual=auxArchivo.length();    
+                            }
                         }
+                        else{
+                            System.out.println("ERROR");
+                        }
+                        
                     break;
                     
                     //CASO: ETIQUETA, CODOP || CODOP, OPERANDO || CODOP
                     case 2:
                         //CASO: CODOP
                         if(campos[0].equals("")){//Cuando empieza con tabulador o un espacio, no hay etiqueta
-                            LinCod.setCodop(campos[1]);//Falta caso end
-                            if(LinCod.getCodop().equals("END")){
-                            cursorActual=auxArchivo.length();
-                                
-                        }
+                            if(validarCodop(campos[1])){
+                                LinCod.setCodop(campos[1]);
+                                //CASO END
+                                if(LinCod.getCodop().equals("END")){
+                                    cursorActual=auxArchivo.length();
+                                }
+                            }
+                            else{
+                                System.out.println("ERROR");
+                            }
                         }
                         else{
                             //CASO ETIQUETA, CODOP
-                            LinCod.setEtiqueta(campos[0]);
-                            LinCod.setCodop(campos[1]);
-                            //CASO CODOP, OPERANDO
+                            if(validarEtiq(campos[0])&&validarCodop(campos[1])){
+                                LinCod.setEtiqueta(campos[0]);
+                                LinCod.setCodop(campos[1]);
+                            }
+                            else{
+                                System.out.println("ERROR");
+                            }
                         }
                         
                     break;
@@ -89,13 +113,24 @@ public class ProyectoIntegrador {
                     case 3:
                         //CASO: CODOP, OPERANDO
                         if(campos[0].equals("")){//Cuando empieza con tabulador o un espacio, no hay etiqueta
-                            LinCod.setCodop(campos[1]);
-                            LinCod.setOperando(campos[2]);
+                            if(validarCodop(campos[1])){
+                                LinCod.setCodop(campos[1]);
+                                LinCod.setOperando(campos[2]);
+                            }
+                            else{
+                                System.out.println("ERROR");
+                            }
                         }
                         else{
-                            LinCod.setEtiqueta(campos[0]);
-                            LinCod.setCodop(campos[1]);
-                            LinCod.setOperando(campos[2]);
+                            //CASO: ETIQUETA, CODOP, OPERANDO
+                            if(validarEtiq(campos[0])&&validarCodop(campos[1])){
+                                LinCod.setEtiqueta(campos[0]);
+                                LinCod.setCodop(campos[1]);
+                                LinCod.setOperando(campos[2]);
+                            }
+                            else{
+                                System.out.println("ERROR");
+                            }
                         }
                     break;
                     
@@ -111,11 +146,7 @@ public class ProyectoIntegrador {
                 }//Fin casos posibles
                 
                 if(bandera){
-                    if(validarEtiq(LinCod.getEtiqueta()) == true){
-                        System.out.println("ETIQUETA = "+LinCod.getEtiqueta());
-                    }else{
-                        System.out.println("Error");
-                    }
+                    System.out.println("ETIQUETA = "+LinCod.getEtiqueta());
                     System.out.println("CODOP = "+LinCod.getCodop());
                     System.out.println("OPERANDO = "+LinCod.getOperando());
                     LinCod.setEtiqueta("null");
