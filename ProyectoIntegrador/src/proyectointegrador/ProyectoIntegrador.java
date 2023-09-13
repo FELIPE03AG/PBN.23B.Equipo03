@@ -67,21 +67,6 @@ public class ProyectoIntegrador {
                 bandera=true;
                 //VALIDADACIÓN DE CASOS
                 switch (aux){
-                    //CASO: SOLO CODOP
-                    case 1: 
-                        if(validarCodop(campos[0])){
-                            LinCod.setCodop(campos[0]);
-                            //CASO END
-                            if(LinCod.getCodop().equals("END")){
-                                cursorActual=auxArchivo.length();    
-                            }
-                        }
-                        else{
-                            System.out.println("ERROR");
-                        }
-                        
-                    break;
-                    
                     //CASO: ETIQUETA, CODOP || CODOP, OPERANDO || CODOP
                     case 2:
                         //CASO: CODOP
