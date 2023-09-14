@@ -17,7 +17,7 @@ public class ProyectoIntegrador {
     
     static Linea LinCod=null; //Va aguardar las variables
     static int aux;
-    static boolean bandera;//Variable que indica si la linea es un comentario
+    static boolean bandera = false;//Variable que indica si la linea es un comentario
     
     //METODO PARA EVALUAR ETIQUETA
     static boolean validarEtiq(String etiqueta){
@@ -58,6 +58,7 @@ public class ProyectoIntegrador {
                     banCodop=false;
                     i=codop.length();
                 }//Fin else
+                
             }//Fin for para recorrer el CODOP
         }//Fin no mas de 5 caracteres 
         return banCodop;
@@ -66,14 +67,15 @@ public class ProyectoIntegrador {
     //METODO IDENTIFICAR Y EVALUAR COMENTARIO
     static boolean Comentario(String x){
         boolean Coment=false;
-        for(int i = 0; i < x.length(); i++){
-            char c = x.charAt(i);//Para evaluar caracter por caracter
-            if(i==0 && c==';'){
-                Coment=true;
-            }//Fin debe empezar con punto y coma
-        }//Fin for
+        char c = x.charAt(0);//Para evaluar caracter por caracter
+        if(c==';'){
+            bandera=true;
+        }//Fin debe empezar con punto y coma
+        if (x.length() > 81){
+            Coment = true;
+        } 
         return Coment;
-    }//Din validacion comentario
+    }//Fin validacion comentario
     
     //METODO PARA LEER EL ASM
     static void Leer(){
@@ -87,13 +89,12 @@ public class ProyectoIntegrador {
             //Aqui es donde empieza a leer por linea
             while(cursorActual!=auxArchivo.length()){//mientras el lector no llegue al final del archivo
                 lecturaLinea = auxArchivo.readLine();//leo la linea
-                cursorActual = auxArchivo.getFilePointer();
-                if(!(Comentario(lecturaLinea))){
+                bandera=false;
+                Comentario(lecturaLinea);
+                if(!(bandera)){
                     String[] campos = lecturaLinea.split("\\s+");//Separa por bloques segun cada espacios o tabulación
                     LinCod = new Linea(null,null,null); //Inicializo valores
 
-                    //aux=campos.length;
-                    bandera=true;//Indicando que si es una linea de codigo y no de comentario
                     aux=0;
                     if(campos[0].equals("")){
                         aux++;
@@ -110,9 +111,22 @@ public class ProyectoIntegrador {
                                 if(aux==campos.length-1){//Si hay siguiente bloque debe ser el operando
                                    LinCod.setOperando(campos[aux]); 
                                 }
+                                else if(LinCod.getCodop().equals("END")){
+                                    cursorActual=auxArchivo.length();
+                                }
+                                System.out.println("ETIQUETA = "+LinCod.getEtiqueta());
+                                System.out.println("CODOP = "+LinCod.getCodop());
+                                System.out.println("OPERANDO = "+LinCod.getOperando());
+                                LinCod.setEtiqueta("null");
+                                LinCod.setCodop("null");
+                                LinCod.setOperando("null");
                             }
                             else{
-                                System.out.println("ERROR");
+                                if (Comentario (lecturaLinea)){
+                                    System.out.println("Comentario con exceso de caracteres");
+                                } else {
+                                    System.out.println("COMENTARIO");
+                                }
                             }//Fin error con codigo de operacion
                         }//Fin if para recorrer bloques del codigo
                     }//Fin no mas de 3 codigos
@@ -125,15 +139,11 @@ public class ProyectoIntegrador {
                     bandera=false;
                 }
 
-                if(bandera){
-                    System.out.println("ETIQUETA = "+LinCod.getEtiqueta());
-                    System.out.println("CODOP = "+LinCod.getCodop());
-                    System.out.println("OPERANDO = "+LinCod.getOperando());
-                    LinCod.setEtiqueta("null");
-                    LinCod.setCodop("null");
-                    LinCod.setOperando("null");
-                }//Fin no es un comentario, mostrar componentes
                 
+
+                
+                
+                     
                 System.out.println("");
             }//Fin del while
             leerArchivo.close();
@@ -141,6 +151,7 @@ public class ProyectoIntegrador {
             ex.printStackTrace();
         }
     }
+    
     
     public static void main(String[] args) {
         Leer();//Llamo el metodo
