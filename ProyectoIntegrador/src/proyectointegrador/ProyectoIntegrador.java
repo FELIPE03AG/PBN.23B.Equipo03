@@ -120,13 +120,9 @@ public class ProyectoIntegrador {
                                 LinCod.setEtiqueta("null");
                                 LinCod.setCodop("null");
                                 LinCod.setOperando("null");
-                            }
+                            }//Fin CODOP correcto
                             else{
-                                if (Comentario (lecturaLinea)){
-                                    System.out.println("Comentario con exceso de caracteres");
-                                } else {
-                                    System.out.println("COMENTARIO");
-                                }
+                                System.out.println("ERROR");
                             }//Fin error con codigo de operacion
                         }//Fin if para recorrer bloques del codigo
                     }//Fin no mas de 3 codigos
@@ -135,15 +131,13 @@ public class ProyectoIntegrador {
                     }
                 }//Fin if: no es un comentario
                 else{
-                    System.out.println("COMENTARIO");
-                    bandera=false;
-                }
-
-                
-
-                
-                
-                     
+                    if (Comentario (lecturaLinea)){
+                        System.out.println("COMENTARIO CON EXCESO DE CARACTERES");
+                    }//Fin comentario incorrecto
+                    else {
+                        System.out.println("COMENTARIO");
+                    }//Fin comentario correcto
+                }//Fin else no es linea de codigo, es un comentario 
                 System.out.println("");
             }//Fin del while
             leerArchivo.close();
@@ -151,7 +145,6 @@ public class ProyectoIntegrador {
             ex.printStackTrace();
         }
     }
-    
     
     public static void main(String[] args) {
         Leer();//Llamo el metodo
