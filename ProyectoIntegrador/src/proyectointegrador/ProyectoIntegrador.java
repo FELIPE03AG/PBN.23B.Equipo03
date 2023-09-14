@@ -17,51 +17,63 @@ public class ProyectoIntegrador {
     
     static Linea LinCod=null; //Va aguardar las variables
     static int aux;
-    static boolean bandera;
+    static boolean bandera;//Variable que indica si la linea es un comentario
     
     //METODO PARA EVALUAR ETIQUETA
     static boolean validarEtiq(String etiqueta){
         boolean banEtiq=false;
         if(etiqueta.length()<=8){
             for(int i = 0; i < etiqueta.length(); i++){
-                char c = etiqueta.charAt(i);
-                if(Character.isLetter(c) && i == 0){
+                char c = etiqueta.charAt(i);//Para revisar caracter por caracter
+                if(Character.isLetter(c) && i == 0){ 
                     banEtiq =true;
-                }
-                else if(Character.isLetterOrDigit(c) || c == '_' || (c==':' && i==etiqueta.length()-1)){
+                }//Fin if primer caracter debe ser una letra
+                else if(Character.isLetterOrDigit(c) || c == '_' || (c==':' && i==etiqueta.length()-1) && i!=0){
                     banEtiq =true;
-                }
+                }//Fin if validacion letras numeros, guion bajo o dos puntos al final
                 else{
                     banEtiq=false;
                     i=etiqueta.length();
-                }
-            }
-        }   
+                }//fin no es una etiqueta
+            }//Fin for
+        }//Fin largo menor a 8   
         return banEtiq;
     }//Fin validar etiqueta
     
     //METODO PARA EVALUAR CODOP
     static boolean validarCodop(String codop){
         boolean banCodop=false;
-                if(codop.length()<=5){
+        int punto=0;//Auxiliar para validar que solo ponga un punto
+        if(codop.length()<=5){
             for(int i = 0; i < codop.length(); i++){
                 char c = codop.charAt(i);
-                if(Character.isLetter(c) && i == 0){
+                if(Character.isLetter(c)){
                     banCodop =true;
-                }
-                else if(Character.isLetter(c) ||  c=='.' ){
+                }//Fin if solo letras
+                else if(c=='.'&&punto==0&&i!=0){
                     banCodop =true;
-                }
+                    punto++;
+                }//Fin si no: puede ser un solo punto
                 else{
                     banCodop=false;
                     i=codop.length();
-                }
-            }
-        } 
-        
-       
+                }//Fin else
+            }//Fin for para recorrer el CODOP
+        }//Fin no mas de 5 caracteres 
         return banCodop;
     }//FINAL DE METODO PARA EVALUAR CODOP
+    
+    //METODO IDENTIFICAR Y EVALUAR COMENTARIO
+    static boolean Comentario(String x){
+        boolean Coment=false;
+        for(int i = 0; i < x.length(); i++){
+            char c = x.charAt(i);//Para evaluar caracter por caracter
+            if(i==0 && c==';'){
+                Coment=true;
+            }//Fin debe empezar con punto y coma
+        }//Fin for
+        return Coment;
+    }//Din validacion comentario
     
     //METODO PARA LEER EL ASM
     static void Leer(){
@@ -76,76 +88,43 @@ public class ProyectoIntegrador {
             while(cursorActual!=auxArchivo.length()){//mientras el lector no llegue al final del archivo
                 lecturaLinea = auxArchivo.readLine();//leo la linea
                 cursorActual = auxArchivo.getFilePointer();
-                String[] campos = lecturaLinea.split("\\s+");//Separa por bloques segun cada espacios o tabulación
-                LinCod = new Linea(null,null,null); //Inicializo valores
-                
-                aux=campos.length;
-                bandera=true;
-                //VALIDADACIÓN DE CASOS
-                switch (aux){
-                    //CASO: ETIQUETA, CODOP || CODOP, OPERANDO || CODOP
-                    case 2:
-                        //CASO: CODOP
-                        if(campos[0].equals("")){//Cuando empieza con tabulador o un espacio, no hay etiqueta
-                            if(validarCodop(campos[1])){
-                                LinCod.setCodop(campos[1]);
-                                //CASO END
-                                if(LinCod.getCodop().equals("END")){
-                                    cursorActual=auxArchivo.length();
+                if(!(Comentario(lecturaLinea))){
+                    String[] campos = lecturaLinea.split("\\s+");//Separa por bloques segun cada espacios o tabulación
+                    LinCod = new Linea(null,null,null); //Inicializo valores
+
+                    //aux=campos.length;
+                    bandera=true;//Indicando que si es una linea de codigo y no de comentario
+                    aux=0;
+                    if(campos[0].equals("")){
+                        aux++;
+                    }//Fin si empieza con espacio
+                    if(campos.length<=aux+3){//If para validacion de solo 3 bloques no mas
+                        if(aux<campos.length){
+                            if(validarEtiq(campos[aux])&&aux<campos.length-1 && validarCodop(campos[aux+1])){
+                                LinCod.setEtiqueta(campos[aux]);
+                                aux++;//Para movernos al siguiente bloque
+                            }//Busco una etiqueta
+                            if(validarCodop(campos[aux])){
+                                LinCod.setCodop(campos[aux]);
+                                aux++;//Para movernos al siguiente bloque
+                                if(aux==campos.length-1){//Si hay siguiente bloque debe ser el operando
+                                   LinCod.setOperando(campos[aux]); 
                                 }
                             }
                             else{
                                 System.out.println("ERROR");
-                            }
-                        }
-                        else{
-                            //CASO ETIQUETA, CODOP
-                            if(validarEtiq(campos[0])&&validarCodop(campos[1])){
-                                LinCod.setEtiqueta(campos[0]);
-                                LinCod.setCodop(campos[1]);
-                            }
-                            else{
-                                System.out.println("ERROR");
-                            }
-                        }
-                        
-                    break;
-                    
-                    case 3:
-                        //CASO: CODOP, OPERANDO
-                        if(campos[0].equals("")){//Cuando empieza con tabulador o un espacio, no hay etiqueta
-                            if(validarCodop(campos[1])){
-                                LinCod.setCodop(campos[1]);
-                                LinCod.setOperando(campos[2]);
-                            }
-                            else{
-                                System.out.println("ERROR");
-                            }
-                        }
-                        else{
-                            //CASO: ETIQUETA, CODOP, OPERANDO
-                            if(validarEtiq(campos[0])&&validarCodop(campos[1])){
-                                LinCod.setEtiqueta(campos[0]);
-                                LinCod.setCodop(campos[1]);
-                                LinCod.setOperando(campos[2]);
-                            }
-                            else{
-                                System.out.println("ERROR");
-                            }
-                        }
-                    break;
-                    
-                    default: 
-                        //IDENTIFICACION CASO: COMENTARIO
-                        if(campos[0].equals(";")){//Si la linea empieza con ; lo identifica como comentario
-                            System.out.println("COMENTARIO");
-                            bandera=false;
-                        }
-                        else{
-                            System.out.println("ERROR");
-                        }
-                }//Fin casos posibles
-                
+                            }//Fin error con codigo de operacion
+                        }//Fin if para recorrer bloques del codigo
+                    }//Fin no mas de 3 codigos
+                    else{
+                        System.out.println("ERROR");
+                    }
+                }//Fin if: no es un comentario
+                else{
+                    System.out.println("COMENTARIO");
+                    bandera=false;
+                }
+
                 if(bandera){
                     System.out.println("ETIQUETA = "+LinCod.getEtiqueta());
                     System.out.println("CODOP = "+LinCod.getCodop());
@@ -153,7 +132,7 @@ public class ProyectoIntegrador {
                     LinCod.setEtiqueta("null");
                     LinCod.setCodop("null");
                     LinCod.setOperando("null");
-                }//Fin no es un comentario
+                }//Fin no es un comentario, mostrar componentes
                 
                 System.out.println("");
             }//Fin del while
