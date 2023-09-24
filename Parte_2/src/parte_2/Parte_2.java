@@ -90,13 +90,14 @@ public class Parte_2 {
             //Aqui es donde empieza a leer por linea
             while(cursorActual!=auxArchivo.length()){//mientras el lector no llegue al final del archivo
                 lecturaLinea = auxArchivo.readLine();//leo la linea
+                cursorActual = auxArchivo.getFilePointer();
                 bandera=false;
                 if(!(lecturaLinea.equals(""))){
                     Comentario(lecturaLinea);
                 }
                 if(!(bandera)){
                     String[] campos = lecturaLinea.split("\\s+");//Separa por bloques segun cada espacios o tabulación
-                    NewLinCod = new Linea(" "," "," ",null,"null"); //Inicializo valores
+                    NewLinCod = new Linea(" "," "," ",null," "); //Inicializo valores
 
                     aux=0;
                     if(campos[0].equals("")){
@@ -154,37 +155,93 @@ public class Parte_2 {
         }
     }
     
-    //METODO PARA IDENTIFICAR ADDR
+    //METODO PARA IDENTIFICAR ADDR SEGUN SU OPERANDO
     static void ADDR (Linea Evaluar){
+        //HACE FALTA BUSCAR QUE EL CODOP EXISTA
         boolean fin =false;
         do{
             if(Evaluar.getOperando().equals(" ")){
-                switch (Evaluar.getCodop()){
-                    case "END":
-                        Evaluar.setADDR("DIRECT");
-                    break;
-                    
-                    case "ABX":
-                    case "ABY":
-                        Evaluar.setADDR("IDX");
-                    break;
-                    default:
-                        Evaluar.setADDR("INH");
-                    break;
+                if (Evaluar.getCodop().equals("END")){
+                    Evaluar.setADDR("DIRECT");
+                }
+                else{
+                    Evaluar.setADDR("INH");
                 }
             }
             else if(Evaluar.getCodop().equals("ORG") && Evaluar.getOperando().startsWith("$")){
                 Evaluar.setADDR("DIRECT");
             }
-            switch(Evaluar.getOperando().charAt(0)){
-                case '#':
-                    Evaluar.setADDR("IMM");
-                break;
-                case '[':
-                break;
-                
+            else if(Evaluar.getCodop().equals("SEX")){
+                Evaluar.setADDR("INH");
             }
-            ImprimirLinCod(Evaluar);
+            else if(Evaluar.getOperando().contains(",") && !(Evaluar.getOperando().contains("[") || Evaluar.getOperando().contains("]"))){
+                String partes[]=Evaluar.getOperando().split(",");
+                if(partes[0].matches(".*\\d.*")){
+                    int valor=Integer.parseInt(partes[0]);
+                    if(partes[1].equals("X") || partes[1].equals("Y") ||
+                                partes[1].equals("SP") || partes[1].equals("PC")){
+                        if(valor>-17 && valor<15){
+                            Evaluar.setADDR("IDX(5b)");
+                        }
+                        else if((valor>-257 && valor<-16)||(valor>15 && valor<256)){
+                            Evaluar.setADDR("IDX1");
+                        }
+                        else if(valor>255 && valor<65536){
+                            Evaluar.setADDR("IDX2");
+                        }
+                    }
+                    if((partes[1].startsWith("+") || partes[1].startsWith("-") || partes[1].endsWith("+") ||
+                            partes[1].endsWith("-"))&& (partes[1].contains("X") ||
+                            partes[1].contains("Y") || partes[1].contains("SP") || partes[1].contains("PC")) ){
+                        if(valor>0 && valor<9){
+                            Evaluar.setADDR("IDX(pre-inc)");
+                        }
+                    }
+                }
+                else if(partes[0].equals("A")||partes[0].equals("B")||partes[0].equals("D")){
+                    if(partes[1].equals("X") || partes[1].equals("Y") ||
+                                partes[1].equals("SP") || partes[1].equals("PC")){
+                        Evaluar.setADDR("IDX(acc)");
+                    }
+                }
+            }
+            else{
+                switch(Evaluar.getOperando().charAt(0)){
+                    case '#':
+                        Evaluar.setADDR("IMM");
+                    break;
+                    case '$':
+                        
+                    break;
+                    case '@':
+                   
+                    break;
+                    case '%':
+                    break;
+                    case '[':
+                        String partes[]=Evaluar.getOperando().split(",");
+                        if(partes[0].equals("[D")){
+                            
+                            if(partes[1].equals("X]") || partes[1].equals("Y]") ||
+                                partes[1].equals("SP]") || partes[1].equals("PC]")){
+                                   Evaluar.setADDR("[D,IDX]");
+                            }
+                        }
+                        else{
+                            String valor = partes[0].substring(1);
+                            if(valor.matches(".*\\d.*")){
+                                int numero = Integer.parseInt(valor);
+                                
+                                if(numero<=65535 && (partes[1].equals("X]") || partes[1].equals("Y]") ||
+                                                     partes[1].equals("SP]") || partes[1].equals("PC]"))){
+                                    Evaluar.setADDR("[IDX2]");
+                                }
+                            }
+                        }
+                    break;
+                
+                }
+            }
             if(Evaluar==FinLinCod){
                 fin=true;
             }
@@ -194,13 +251,7 @@ public class Parte_2 {
         }while(!fin);
     }
     
-    static void ImprimirLinCod (Linea LinCod){
-        System.out.println("ETIQUETA = "+LinCod.getEtiqueta());
-        System.out.println("CODOP = "+LinCod.getCodop());
-        System.out.println("OPERANDO = "+LinCod.getOperando());
-        System.out.println("ADDR = "+LinCod.getADDR());
-        System.out.println("");
-    }
+
     public static void main(String[] args) {
         Leer();//Llamo el metodo
         ADDR(PrimerLinCod);
