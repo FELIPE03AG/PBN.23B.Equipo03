@@ -6,11 +6,28 @@ import javax.swing.table.DefaultTableModel;
 
 public class Tabla extends javax.swing.JFrame {
     DefaultTableModel diseño=new DefaultTableModel();
+    
+    //METODO PARA LLENAR LA TABLA
+    void Llenado(){
+        boolean fin=false;
+        Linea auxiliar=Parte_2.PrimerLinCod;
+        do{
+            diseño.addRow(new Object[]{auxiliar.getEtiqueta(),auxiliar.getCodop(),auxiliar.getOperando(),auxiliar.getADDR(),
+                                        "","",""});
+            if(auxiliar!=Parte_2.FinLinCod){
+                auxiliar=auxiliar.getSiguiente();
+            }
+            else{
+                fin=true;
+            }
+        }while(!fin);
+    }
     public Tabla() {
         initComponents();
         String[] titulo = new String[]{"ETQ","CODOP","OPR","ADDR","SIZE","CALCULADOS","POR CALCULAR"};
         diseño.setColumnIdentifiers(titulo);
         TablaCod.setModel(diseño);
+        Llenado();
     }
 
     @SuppressWarnings("unchecked")
@@ -23,6 +40,9 @@ public class Tabla extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        TablaCod.setBackground(new java.awt.Color(204, 255, 255));
+        TablaCod.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        TablaCod.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         TablaCod.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -34,6 +54,8 @@ public class Tabla extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        TablaCod.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        TablaCod.setSelectionBackground(new java.awt.Color(0, 204, 204));
         jScrollPane1.setViewportView(TablaCod);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

@@ -96,7 +96,7 @@ public class Parte_2 {
                 }
                 if(!(bandera)){
                     String[] campos = lecturaLinea.split("\\s+");//Separa por bloques segun cada espacios o tabulación
-                    NewLinCod = new Linea("null","null","null",null,"null"); //Inicializo valores
+                    NewLinCod = new Linea(" "," "," ",null,"null"); //Inicializo valores
 
                     aux=0;
                     if(campos[0].equals("")){
@@ -158,7 +158,7 @@ public class Parte_2 {
     static void ADDR (Linea Evaluar){
         boolean fin =false;
         do{
-            if(Evaluar.getOperando().equals("null")){
+            if(Evaluar.getOperando().equals(" ")){
                 switch (Evaluar.getCodop()){
                     case "END":
                         Evaluar.setADDR("DIRECT");
@@ -202,9 +202,9 @@ public class Parte_2 {
         System.out.println("");
     }
     public static void main(String[] args) {
-        new Tabla().setVisible(true);
         Leer();//Llamo el metodo
         ADDR(PrimerLinCod);
+        new Tabla().setVisible(true);
     }
     
 }
