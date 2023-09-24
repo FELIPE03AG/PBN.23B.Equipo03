@@ -202,6 +202,7 @@ public class Parte_2 {
         System.out.println("");
     }
     public static void main(String[] args) {
+        new Tabla().setVisible(true);
         Leer();//Llamo el metodo
         ADDR(PrimerLinCod);
     }
