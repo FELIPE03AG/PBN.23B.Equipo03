@@ -271,7 +271,7 @@ INC	oprx0_xysp		IDX		a		1	2
 INC	oprx9,xysp		IDX1		a		2	3
 INC	oprx16,xysp		IDX2		a		3	4
 INC	[D,xysp]		[D,IDX]		a		1	2
-INC	[oprx16,xysp		[IDX2]		62 xb ee ff	3	4
+INC	[oprx16,xysp		[IDX2]		62xbeeff	3	4
 INCA	-			INH		a		0	1
 INCB	-			INH		a		0	1
 INS	-			IDX		a		0	2
@@ -308,14 +308,14 @@ LBRA	rel16			REL		a		2	4
 LBRN	rel16			REL		a		2	4
 LBVC	rel16			REL		a		2	4
 LBVS	rel16			REL		a		2	4
-LDAA	#opr8i			IMM		86 ii		1	2
-LDAA	opr8a			DIR		96 dd		1	2
-LDAA	opr16a			EXT		B6 hh ll	2	3
-LDAA	oprx0_xysp		IDX		A6 xb		1	2
-LDAA	oprx9,xysp		IDX1		A6 xb ff	2	3
-LDAA	oprx16,xysp		IDX2		A6 xb ee ff	3	4
-LDAA	[D,xysp]		[D,IDX]		A6 xb		1	2
-LDAA	[oprx16,xysp]		[IDX2]		A6 xb ee ff	3	4
+LDAA	#opr8i			IMM		86ii		1	2
+LDAA	opr8a			DIR		96dd		1	2
+LDAA	opr16a			EXT		B6hhll		2	3
+LDAA	oprx0_xysp		IDX		A6xb		1	2
+LDAA	oprx9,xysp		IDX1		A6xbff		2	3
+LDAA	oprx16,xysp		IDX2		A6xbeeff	3	4
+LDAA	[D,xysp]		[D,IDX]		A6xb		1	2
+LDAA	[oprx16,xysp]		[IDX2]		A6xbeeff	3	4
 LDAB	#opr8i			IMM		a		1	2
 LDAB	opr8a			DIR		a		1	2
 LDAB	opr16a			EXT		a		2	3
