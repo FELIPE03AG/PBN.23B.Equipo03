@@ -65,6 +65,63 @@ public class Parte_2 {
         return banCodop;
     }//FINAL DE METODO PARA EVALUAR CODOP
     
+    //METODO DE APOYO PARA PASAR DE OCTAL A DECIMAL...(OPCIONAL)
+    public static int octalADecimal(int octal) {
+    int decimal = 0;
+    int potencia = 0;
+    // Ciclo infinito que se rompe cuando octal es 0
+    while (true) {
+        if (octal == 0) {//HASTA QUE OCTAL = 0 SE PARA EL BUCLE
+            break;
+        } else {
+            int temp = octal % 10;
+            decimal += temp * Math.pow(8, potencia);
+            octal = octal / 10;
+            potencia++;
+            //PROCESO DE CONVERSION...
+        }
+    }
+    return decimal; //regresa el valor para trabajarlo
+}//FIN METODO PARA PASAR OCTAL A DECIMAL...
+   
+    //funcion para validar tipo hexadecimal
+    static boolean ValidarHexadecimal(String Hexa){
+        boolean Valido=false;  //variable para aceptar o denegar
+        if(Hexa.matches("[0-9A-F]+")){ // funcion que valida que tenga caracteres permitidos
+            if(Hexa.length()<=4){ //si tiene el num mayor permitido (FFFF), o menos. Entonces acepta...
+                Valido=true;
+            }
+        }
+        return Valido;
+    }
+    
+    //Metodo para evaluar Octal
+    static boolean validarOctal(String Oct){
+      boolean banOctal = false;
+        int Octal;
+        if(Oct.matches("[1-7]+")){ // valida que tenga numeros solo del 0 al 7
+            Octal = Integer.parseInt(Oct); //convierte de String s entero
+            if(octalADecimal(Octal)<=65535){ //revisa que sea menor o igual a 16 bits que es lo permitido
+                banOctal=true;
+            }
+        }
+      //proceso...
+      return banOctal;
+    }//Fin evaluar octal
+    
+    //Metodo para evaluar Binario
+    static boolean ValidarBinario(String nBin){
+        boolean Valido=false;  // variable que sirve para validar o denegar 
+        if(nBin.matches("[0-1]+")){ //revisa que solo tenga valores permitidos (0 y 1).
+            if(nBin.length()<=16){ //revisa que cumpla con la cantidad de bits permitidos.
+                Valido=true; //valida verdadero
+            }
+        }
+        return Valido;//regresa el valor
+        
+    }//Fin metodo para evaluar binario...
+    
+    
     //METODO IDENTIFICAR Y EVALUAR COMENTARIO
     static boolean Comentario(String x){
         boolean Coment=false;
