@@ -172,7 +172,21 @@ public class Parte_2 {
     return decimal; //regresa el valor para trabajarlo
     }//FIN METODO PARA PASAR OCTAL A DECIMAL...
     
-    
+    public static int binarioADecimal(String binario) {
+        int decimal = 0;
+        int longitud = binario.length();
+
+        for (int i = 0; i < longitud; i++) {
+            char digito = binario.charAt(i);
+            int valorDigito = Character.getNumericValue(digito);
+            
+            // Multiplicar el valor actual por 2 elevado a la posición
+            int exponente = longitud - 1 - i;
+            decimal += valorDigito * Math.pow(2, exponente);
+        }
+
+        return decimal;
+    }
     
      //METODO PARA VALIDAR UN HEXADECIMAL
     static boolean ValidarHexadecimal(String Hexa){
