@@ -246,23 +246,110 @@ public class Parte_2 {
                 }
             break;
             case '%':
-                
+                if(ValidarBinario(Operando.substring(1))){
+                    Decimal = binarioADecimal(Operando.substring(1));
+                }
+                else{
+                    Decimal=-1;
+                }
+            break;
+            default:
+                if(Operando.matches("[0-9]+")&&Integer.parseInt(Operando)<65535){
+                    Decimal = Integer.parseInt(Operando);
+                }
+                else{
+                    Decimal=-1;
+                }
             break;
         }
         return Decimal;
-    }
+    }//Fin metodo convertir a decimal
     
     //METODO PARA EVALUAR UN ADDR INMMEDIATO
-    boolean IMM(String operando){
+    static boolean IMM(String operando){
         boolean imm=false;
         if(operando.startsWith("#")){
             imm=true;
         }
         return imm;
-    }
+    }//Fin metodo para imm
     
-    //METODO PARA EVALUJAR UN ADDR DIR
-        
+    //METODO PARA EVALUAR UN ADDR DIR
+    static boolean DIR(String operando){
+        boolean dir=false;
+        if(ConvertirADecimal(operando)<=255 && ConvertirADecimal(operando)!=-1){
+            dir=true;
+        }
+        return dir;
+    }//Fin metodo para dir
+    
+    //METODO PARA EVALUAR UN ADDR EXT
+    static boolean EXT(String operando){
+        boolean ext=false;
+        if(ConvertirADecimal(operando)>255){
+            ext=true;
+        }
+        return ext;
+    }//Fin metodo para dir
+    
+    //METODO PARA EVALUAR UN ADDR IDX || IDX1 || IDX2 
+    static String IDX(String Operando){
+        String idx="0";
+        String partes[]=Operando.split(",");
+        if(partes[0].matches(".*\\d.*")){
+            int valor=Integer.parseInt(partes[0]);
+            if(partes[1].equals("X") || partes[1].equals("Y") ||
+               partes[1].equals("SP") || partes[1].equals("PC")){
+                    if(valor>-17 && valor<15){
+                        idx="IDX(5b)";
+                    }
+                    else if((valor>-257 && valor<-16)||(valor>15 && valor<256)){
+                        idx="IDX1";
+                    }
+                    else if(valor>255 && valor<65536){
+                        idx="IDX2";
+                    }
+            }
+            else if((partes[1].startsWith("+") || partes[1].startsWith("-") || partes[1].endsWith("+") ||
+                     partes[1].endsWith("-"))&& (partes[1].contains("X") ||
+                     partes[1].contains("Y") || partes[1].contains("SP") || partes[1].contains("PC")) ){
+                        if(valor>0 && valor<9){
+                            idx="IDX(pre-inc)";
+                        }
+                    }
+        }
+        else if(partes[0].equals("A")||partes[0].equals("B")||partes[0].equals("D")){
+            if(partes[1].equals("X") || partes[1].equals("Y") ||
+                partes[1].equals("SP") || partes[1].equals("PC")){
+                    idx="IDX(acc)";
+            }
+        }
+        return idx;
+    }//Fin metodo para IDX
+    
+    //METODO PARA ADDR CON CORCHETES
+    static String IdxCorchetes(String Operando){
+        String idx="0";
+        String partes[]=Operando.split(",");
+            if(partes[0].equals("[D")){               
+                if(partes[1].equals("X]") || partes[1].equals("Y]") ||
+                   partes[1].equals("SP]") || partes[1].equals("PC]")){
+                        idx="[D,IDX]";
+                }
+            }
+            else{
+                String valor = partes[0].substring(1);
+                if(valor.matches(".*\\d.*")){
+                    int numero = Integer.parseInt(valor);                   
+                    if(numero<=65535 && (partes[1].equals("X]") || partes[1].equals("Y]") ||
+                                         partes[1].equals("SP]") || partes[1].equals("PC]"))){
+                        idx="[IDX2]";
+                    }
+                }
+            }
+        return idx;
+    }
+
     public static void main(String[] args) {
         Leer();//Llamo el metodo
         new Tabla().setVisible(true);
