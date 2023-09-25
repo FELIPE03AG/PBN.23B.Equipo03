@@ -65,7 +65,7 @@ public class Parte_2 {
         return banCodop;
     }//FINAL DE METODO PARA EVALUAR CODOP
     
-    //METODO DE APOYO PARA PASAR DE OCTAL A DECIMAL...(OPCIONAL)
+    //METODO DE APOYO PARA PASAR DE OCTAL A DECIMAL...
     public static int octalADecimal(int octal) {
     int decimal = 0;
     int potencia = 0;
