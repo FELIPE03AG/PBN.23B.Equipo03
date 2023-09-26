@@ -106,15 +106,22 @@ public class Parte_2 {
                             }
                         }//Busco una etiqueta
                         if(validarCodop(campos[1])){
-                            NewLinCod.setCodop(campos[1]);
+                            NewLinCod.setCodop(campos[1].toUpperCase());
                             if(campos.length==3){//Si hay siguiente bloque debe ser el operando
                                 NewLinCod.setOperando(campos[2]); 
                             }
                             else if(campos.length==4 && campos[2].contains(",")){
                                 NewLinCod.setOperando(campos[2].concat(campos[3]));
                             }
-                            else if(NewLinCod.getCodop().equals("END")&&campos.length==2){
-                                cursorActual=auxArchivo.length();
+                            else if(NewLinCod.getCodop().equals("END")){
+                                if(NewLinCod.getEtiqueta().equals(" ") && NewLinCod.getOperando().equals(" ")){
+                                    cursorActual=auxArchivo.length();
+                                }
+                                else{
+                                    System.out.println("EL END NO DEBE DE LLEVAR ETIQUETA NI OPERANDO");
+                                    NewLinCod.setEtiqueta(" ");
+                                    NewLinCod.setOperando(" ");
+                                }
                             }
                             if(PrimerLinCod==null){
                                 PrimerLinCod=NewLinCod;
@@ -145,6 +152,12 @@ public class Parte_2 {
                     }//Fin comentario correcto
                 }//Fin else no es linea de codigo, es un comentario 
             }//Fin del while
+            
+            if(cursorActual==auxArchivo.length() && (!NewLinCod.getCodop().equals("END"))){
+                System.out.println("END NO LOCALIZADO");
+                PrimerLinCod=null;
+                FinLinCod=null;
+                            }
             leerArchivo.close();
         }catch(IOException ex){
             ex.printStackTrace();
@@ -265,6 +278,24 @@ public class Parte_2 {
         return Decimal;
     }//Fin metodo convertir a decimal
     
+    //METODO PARA EVALUAR UN ADDR IMM
+    static boolean IMM(String operando, String FormaOpr){
+        boolean imm=false;
+        int AUX=0;
+        if(operando.charAt(0)=='#'){
+            AUX=ConvertirADecimal(operando.substring(1));
+            if(AUX!=-1){
+                if(FormaOpr.equals("#opr8i") && AUX<256 && AUX>=0){
+                    imm=true;
+                }
+                else if(FormaOpr.equals("#opr16i") && AUX<=65535 && AUX>255){
+                    imm=true;
+                } 
+            }
+        }//Fin es imm
+        return imm;
+    }
+    
     //METODO PARA EVALUAR UN ADDR DIR
     static boolean DIR(String operando){
         boolean dir=false;
@@ -283,49 +314,82 @@ public class Parte_2 {
         return ext;
     }//Fin metodo para dir
     
-    //METODO PARA EVALUAR UN ADDR IDX || IDX1 || IDX2 
-    static String IDX(String Operando){
+    //METODO PARA EVALUAR UN ADDR IDX  
+    static String IDX(String Operando, String TipoOdr){
         String idx="0";
+        if (Operando.matches("^[^,]*,[^,]*$")){
+            if(TipoOdr.equals("oprx0_xysp")){
+                String partes[]=Operando.split(",");
+                if(partes[0].matches(".*\\d.*")){
+                    int valor=Integer.parseInt(partes[0]);
+                    if(partes[1].equals("X") || partes[1].equals("Y") ||
+                       partes[1].equals("SP") || partes[1].equals("PC")){
+                            if(valor>-17 && valor<=15){
+                                idx="IDX(5b)";
+                            }
+                            else{
+                                idx="-1";
+                            }
+                    }
+                    else if((partes[1].startsWith("+") || partes[1].startsWith("-") || partes[1].endsWith("+") ||
+                             partes[1].endsWith("-"))&& (partes[1].contains("X") ||
+                             partes[1].contains("Y") || partes[1].contains("SP") || partes[1].contains("PC")) ){
+                                if(valor>0 && valor<9){
+                                    idx="IDX(pre-inc)";
+                                }
+                                else{
+                                    idx="-1";
+                                }
+                    }
+                    else{
+                        idx="-1";
+                    }
+                }
+                else if(partes[0].equals("A")||partes[0].equals("B")||partes[0].equals("D")){
+                    if(partes[1].equals("X") || partes[1].equals("Y") ||
+                        partes[1].equals("SP") || partes[1].equals("PC")){
+                            idx="IDX(acc)";
+                    }
+                }
+                else{
+                    idx="-1";
+                }
+            }
+        }
+            return idx;
+    }//Fin metodo para IDX
+    
+    //METODO PARA ADDR IDX1
+    static boolean IDX1(String Operando){
+        boolean idx1=false;
         String partes[]=Operando.split(",");
         if(partes[0].matches(".*\\d.*")){
             int valor=Integer.parseInt(partes[0]);
             if(partes[1].equals("X") || partes[1].equals("Y") ||
                partes[1].equals("SP") || partes[1].equals("PC")){
-                    if(valor>-17 && valor<15){
-                        idx="IDX(5b)";
+                    if((valor>-257 && valor<-16)||(valor>15 && valor<256)){
+                        idx1=true;
                     }
-                    else if((valor>-257 && valor<-16)||(valor>15 && valor<256)){
-                        idx="IDX1";
-                    }
-                    else if(valor>255 && valor<65536){
-                        idx="IDX2";
-                    }
-                    else{
-                        idx="-1";
-                    }
-            }
-            else if((partes[1].startsWith("+") || partes[1].startsWith("-") || partes[1].endsWith("+") ||
-                     partes[1].endsWith("-"))&& (partes[1].contains("X") ||
-                     partes[1].contains("Y") || partes[1].contains("SP") || partes[1].contains("PC")) ){
-                        if(valor>0 && valor<9){
-                            idx="IDX(pre-inc)";
-                        }
-            }
-            else{
-                idx="-1";
             }
         }
-        else if(partes[0].equals("A")||partes[0].equals("B")||partes[0].equals("D")){
+        return idx1;
+    }//Fin modo dir IDX1
+            
+    //METODO PARA ADDR IDX2
+    static boolean IDX2(String Operando){
+        boolean idx2=false;
+        String partes[]=Operando.split(",");
+        if(partes[0].matches(".*\\d.*")){
+            int valor=Integer.parseInt(partes[0]);
             if(partes[1].equals("X") || partes[1].equals("Y") ||
-                partes[1].equals("SP") || partes[1].equals("PC")){
-                    idx="IDX(acc)";
+               partes[1].equals("SP") || partes[1].equals("PC")){
+                    if(valor>255 && valor<65536){
+                        idx2=true;
+                    }
             }
         }
-        else{
-            idx="-1";
-        }
-        return idx;
-    }//Fin metodo para IDX
+        return idx2;
+    }
     
     //METODO PARA ADDR CON CORCHETES
     static String IdxCorchetes(String Operando){
@@ -357,20 +421,16 @@ public class Parte_2 {
     }
     
     //METODO PARA IDENTIFICAR ADDR
-    static String ADDR(String operando){
+    static String ADDR(String operando, String FormaOpr){
         String Addr="0";
+        int AUX=0;
         if(operando.equals(" ")){
             Addr="INH";
         }//Fin es inh
         
-        else if(operando.charAt(0)=='#'){
-            if(ConvertirADecimal(operando.substring(1))!=-1){
+        else if(IMM(operando,FormaOpr)){
                 Addr="IMM";
-            }
-            else{
-                Addr="ERROR";
-            }
-        }//Fin es imm
+        }
         
         else if(ConvertirADecimal(operando)!=-1){
             if(DIR(operando)){
@@ -382,8 +442,14 @@ public class Parte_2 {
         }
         
         else if(operando.contains(",")&&(!operando.contains("["))){
-            if(!(IDX(operando).equals("-1"))){
-                Addr = IDX(operando);
+            if(!(IDX(operando,FormaOpr).equals("-1"))){
+                Addr = IDX(operando,FormaOpr);
+            }
+            else if(IDX1(operando)){
+                Addr = "IDX1";
+            }
+            else if(IDX2(operando)){
+                Addr = "IDX2";
             }
             else{
                 Addr = "ERROR";
@@ -404,10 +470,14 @@ public class Parte_2 {
         return Addr;
         
     }
+    
     public static void main(String[] args) {
         Leer();//Llamo el metodo
-        Salvacion.GuardarADDR(PrimerLinCod);
-        new Tabla().setVisible(true);
+        if(PrimerLinCod!=null){
+            Salvacion.GuardarADDR(PrimerLinCod);
+            new Tabla().setVisible(true);
+        }
+        
     }
     
 }

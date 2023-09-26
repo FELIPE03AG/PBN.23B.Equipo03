@@ -25,4 +25,5 @@ Uno:	EORA	255, X
 	IBNE	A, Uno
 ; comentario número 2 ¡Bajo!
 ;comentario número 3 -Nivel-
-     	END	
+	END
+	

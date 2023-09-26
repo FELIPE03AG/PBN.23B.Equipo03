@@ -76,11 +76,11 @@ ASR	[oprx16,xysp]		[IDX2]		67xbeeff	3	4
 ASRA	-			INH		47		0	1
 ASRB	-			INH		57		0	1
 BCC	rel8			REL		24rr		1	2
-BCLR	opr8a, msk8		DIR		4Dddmm		2	3
-BCLR	opr16a, msk8		EXT		1Dhhllmm	3	4
-BCLR	oprx0_xysp, msk8	IDX		0Dxbmm		2	3
-BCLR	oprx9,xysp, msk8	IDX1		0Dxbffmm	3	4
-BCLR	oprx16,xysp, msk8	IDX2		0Dxbeeffmm	4	5
+BCLR	opr8a,msk8		DIR		4Dddmm		2	3
+BCLR	opr16a,msk8		EXT		1Dhhllmm	3	4
+BCLR	oprx0_xysp,msk8		IDX		0Dxbmm		2	3
+BCLR	oprx9,xysp,msk8		IDX1		0Dxbffmm	3	4
+BCLR	oprx16,xysp,msk8	IDX2		0Dxbeeffmm	4	5
 BCS	rel8			REL		25rr		1	2
 BEQ	rel8			REL		27rr		1	2
 BGE	rel8			REL		2Crr		1	2
@@ -112,31 +112,31 @@ BMI	rel8			REL		2Brr		1	2
 BNE	rel8			REL		26rr		1	2
 BPL	rel8			REL		2Arr		1	2
 BRA	rel8			REL		20rr		1	2
-BRCLR	opr8a, msk8, rel8	DIR		4Fddmmrr	3	4
-BRCLR	opr16a, msk8, rel8	EXT		1Fhhllmmrr	4	5
-BRCLR	oprx0_xysp, msk8, rel8	IDX		0Fxbmmrr	3	4
-BRCLR	oprx9,xysp, msk8, rel8	IDX1		0Fxbffmmrr	4	5
-BRCLR	oprx16,xysp, msk8, rel8	IDX2		0Fxbeeffmmrr	5	6
+BRCLR	opr8a,msk8,rel8		DIR		4Fddmmrr	3	4
+BRCLR	opr16a,msk8,rel8	EXT		1Fhhllmmrr	4	5
+BRCLR	oprx0_xysp,msk8,rel8	IDX		0Fxbmmrr	3	4
+BRCLR	oprx9,xysp,msk8,rel8	IDX1		0Fxbffmmrr	4	5
+BRCLR	oprx16,xysp,msk8,rel8	IDX2		0Fxbeeffmmrr	5	6
 BRN	rel8			REL		21rr		1	2
-BRSET	opr8, msk8, rel8	DIR		4Eddmmrr	3	4
-BRSET	opr16a, msk8, rel8	EXT		1Ehhllmmrr	4	5
-BRSET	oprx0_xysp, msk8, rel8	IDX		0Exbmmrr	3	4
-BRSET	oprx9,xysp, msk8, rel8	IDX1		0Exbffmmrr	4	5
-BRSET	oprx16,xysp, msk8, rel8	IDX2		0Exbeeffmmrr	5	6
-BSET	opr8, msk8		DIR		4Cddmm		2	3
-BSET	opr16a, msk8		EXT		1Chhllmm	3	4
-BSET	oprx0_xysp, msk8	IDX		0Cxbmm		2	3
-BSET	oprx9,xysp, msk8	IDX1		0Cxbffmm	3	4
-BSET	oprx16,xysp, msk8	IDX2		0Cxbeeffmm	4	5
+BRSET	opr8,msk8,rel8		DIR		4Eddmmrr	3	4
+BRSET	opr16a,msk8,rel8	EXT		1Ehhllmmrr	4	5
+BRSET	oprx0_xysp,msk8,rel8	IDX		0Exbmmrr	3	4
+BRSET	oprx9,xysp,msk8,rel8	IDX1		0Exbffmmrr	4	5
+BRSET	oprx16,xysp,msk8,rel8	IDX2		0Exbeeffmmrr	5	6
+BSET	opr8,msk8		DIR		4Cddmm		2	3
+BSET	opr16a,msk8		EXT		1Chhllmm	3	4
+BSET	oprx0_xysp,msk8		IDX		0Cxbmm		2	3
+BSET	oprx9,xysp,msk8		IDX1		0Cxbffmm	3	4
+BSET	oprx16,xysp,msk8	IDX2		0Cxbeeffmm	4	5
 BSR 	rel8			REL		07rr		1	2
 BVC	rel8			REL		28rr		1	2
 BVS	rel8			REL		29rr		1	2
-CALL	opr16a, page		EXT		4Ahhllpg	3	4
-CALL	oprx0_xysp, page	IDX		4Bxbpg		2	3
-CALL	oprx9,xysp, page	IDX1		4Bxbffpg	3	4
-CALL	oprx16,xysp, page	IDX2		4Bxbeeffpg	4	5
+CALL	opr16a,page		EXT		4Ahhllpg	3	4
+CALL	oprx0_xysp,page		IDX		4Bxbpg		2	3
+CALL	oprx9,xysp,page		IDX1		4Bxbffpg	3	4
+CALL	oprx16,xysp,page	IDX2		4Bxbeeffpg	4	5
 CALL	[D,xysp]		[D,IDX]		4Bxb		1	2
-CALL	[oprx16, xysp]		[IDX2]		4Bxbeeff	3	4
+CALL	[oprx16,xysp]		[IDX2]		4Bxbeeff	3	4
 CBA	-			INH		1817		0	2
 CLC	-			IMM		10FE		0	2
 CLI	-			IMM		10EF		0	2
@@ -206,8 +206,8 @@ CPY	oprx16,xysp		IDX2		ADxbeeff	3	4
 CPY	[D,xysp]		[D,IDX]		ADxb		1	2
 CPY	[oprx16,xysp]		[IDX2]		ADxbeeff	3	4
 DAA	-			INH		1807		0	2
-DBEQ	abdxys, rel9		REL(9-bit)	04lbrr		2	3
-DBNE	abdxys, rel9		REL(9-bit)	04lbrr		2	3
+DBEQ	abdxys,rel9		REL(9-bit)	04lbrr		2	3
+DBNE	abdxys,rel9		REL(9-bit)	04lbrr		2	3
 DEC	opr16a			EXT		73hhll		2	3
 DEC	oprx0_xysp		IDX		63xb		1	2
 DEC	oprx9,xysp		IDX1		63xbff		2	3
@@ -260,11 +260,11 @@ EORB	oprx9,xysp		IDX1		E8xbff		2	3
 EORB	oprx16,xysp		IDX2		E8xbeeff	3	4
 EORB	[D,xysp]		[D,IDX]		E8xb		1	2
 EORB	[oprx16,xysp]		[IDX2]		E8xbeeff	3	4
-ETBL	oprx_xysp		IDX		183Fxb		1	3
-EXG	abcdxys, abcdxys	INH		B7eb		1	2
+ETBL	oprx0_xysp		IDX		183Fxb		1	3
+EXG	abcdxys,abcdxys		INH		B7eb		1	2
 FDIV	-			INH		1811		0	2
-IBEQ	abdxys, rel9		REL(9-bit)	04lbrr		2	3
-IBNE	abdxys, rel9		REL(9-bit)	04lbrr		2	3
+IBEQ	abdxys,rel9		REL(9-bit)	04lbrr		2	3
+IBNE	abdxys,rel9		REL(9-bit)	04lbrr		2	3
 IDIV	-			INH		1810		0	2
 IDIVS	-			INH		1815		0	2
 INC	opr16a			EXT		72hhll		2	3
@@ -405,18 +405,18 @@ MINM	oprx9,xysp		IDX1		181Dxbff	2	4
 MINM	oprx16,xysp		IDX2		181Dxbeeff	3	5
 MINM	[D,xysp]		[D,IDX]		181Dxb		1	3
 MINM	[oprx16,xysp		[IDX2]		181Dxbeeff	3	5
-MOVB	#opr8, opr16a		IMM-EXT		180Biihhll	3	5
-MOVB	#opr8i, oprx0_xysp	IMM-IDX		1808xbii	2	4
-MOVB	opr16a, opr16a		EXT-EXT		180Chhllhhll	4	6
-MOVB	opr16a, oprx0_xysp	EXT-IDX		1809xbhhll	3	5
-MOVB	oprx0_xysp, opr16a	IDX-EXT		180Dxbhhll	3	5
-MOVB	oprx0_xysp, oprx0_xysp	IDX-IDX		180Axbxb	2	4
-MOVW	#oprx16, opr16a		IMM-EXT		1803jjkkhhll	4	6
-MOVW	#opr16i, oprx0_xysp	IMM-IDX		1800xbjjkk	3	5
-MOVW	opr16a, opr16a		EXT-EXT		1804hhllhhll	4	6
-MOVW	opr16a, oprx0_xysp	EXT-IDX		1801xbhhll	3	5
-MOVW	oprx0_xysp, opr16a	IDX-EXT		1805xbhhll	3	5
-MOVW	oprx0_xysp, oprx0_xysp	IDX-IDX		1802xbxb	2	4
+MOVB	#opr8,opr16a		IMM-EXT		180Biihhll	3	5
+MOVB	#opr8i,oprx0_xysp	IMM-IDX		1808xbii	2	4
+MOVB	opr16a,opr16a		EXT-EXT		180Chhllhhll	4	6
+MOVB	opr16a,oprx0_xysp	EXT-IDX		1809xbhhll	3	5
+MOVB	oprx0_xysp,opr16a	IDX-EXT		180Dxbhhll	3	5
+MOVB	oprx0_xysp,oprx0_xysp	IDX-IDX		180Axbxb	2	4
+MOVW	#oprx16,opr16a		IMM-EXT		1803jjkkhhll	4	6
+MOVW	#opr16i,oprx0_xysp	IMM-IDX		1800xbjjkk	3	5
+MOVW	opr16a,opr16a		EXT-EXT		1804hhllhhll	4	6
+MOVW	opr16a,oprx0_xysp	EXT-IDX		1801xbhhll	3	5
+MOVW	oprx0_xysp,opr16a	IDX-EXT		1805xbhhll	3	5
+MOVW	oprx0_xysp,oprx0_xysp	IDX-IDX		1802xbxb	2	4
 MUL	-			INH		12		0	1
 NEG	opr16a			EXT		70hhll		2	3
 NEG	oprx0_xysp		IDX		60xb		1	2
