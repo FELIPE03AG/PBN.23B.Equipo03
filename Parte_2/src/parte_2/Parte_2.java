@@ -99,7 +99,12 @@ public class Parte_2 {
                     if(campos.length<=4 && campos.length>1){//If para validacion de solo 4 bloques no mas
                         if(!(campos[0].equals(""))){
                             if(validarEtiq(campos[0])){
-                                NewLinCod.setEtiqueta(campos[0]);
+                                if(BuscarEtiqueta(campos[0])==false){
+                                    NewLinCod.setEtiqueta(campos[0]);
+                                }
+                                else{
+                                    NewLinCod.setEtiqueta("Etiq. repetida");
+                                }
                             }
                             else{
                                 NewLinCod.setEtiqueta("Formato Etiqueta");
@@ -469,7 +474,35 @@ public class Parte_2 {
         }
         return Addr;
         
-    }
+    }//Fin identificacion ADDR 
+    
+    //METODO PARA BUSCAR ETIQUETA
+    static boolean BuscarEtiqueta(String Etiqueta){
+        boolean existe=false, fin=false;
+        Linea Auxiliar = PrimerLinCod;
+        while(existe==false && fin ==false){
+            if(!(Etiqueta.endsWith(":") && Auxiliar.getEtiqueta().endsWith(":"))) {
+               if(Auxiliar.getEtiqueta().substring(0, Auxiliar.getEtiqueta().length()-1).equals(Etiqueta)){
+                   existe=true;
+               }
+               else if(Auxiliar.getEtiqueta().equals(Etiqueta.substring(0, Etiqueta.length()-1))){
+                   existe=true;
+               }
+            }
+            if(Auxiliar.getEtiqueta().equals(Etiqueta)){
+                    existe=true;
+            }
+            else{
+                if(Auxiliar!=FinLinCod){
+                    Auxiliar=Auxiliar.getSiguiente();
+                }
+                else{
+                    fin=true;
+                }
+            }
+        }
+        return existe;
+    }//Fin encontrar etiqueta
     
     public static void main(String[] args) {
         Leer();//Llamo el metodo
