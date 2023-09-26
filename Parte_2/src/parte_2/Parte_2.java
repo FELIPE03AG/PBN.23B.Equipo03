@@ -111,7 +111,7 @@ public class Parte_2 {
                             }
                         }//Busco una etiqueta
                         if(validarCodop(campos[1])){
-                            NewLinCod.setCodop(campos[1].toUpperCase());
+                            NewLinCod.setCodop(campos[1]);
                             if(campos.length==3){//Si hay siguiente bloque debe ser el operando
                                 NewLinCod.setOperando(campos[2]); 
                             }
@@ -208,6 +208,7 @@ public class Parte_2 {
     
      //METODO PARA VALIDAR UN HEXADECIMAL
     static boolean ValidarHexadecimal(String Hexa){
+        Hexa=Hexa.toUpperCase();
         boolean Valido=false;  //variable para aceptar o denegar
         if(Hexa.matches("[0-9A-F]+")){ // funcion que valida que tenga caracteres permitidos
             if(Hexa.length()<=4){ //si tiene el num mayor permitido (FFFF), o menos. Entonces acepta...
@@ -429,7 +430,7 @@ public class Parte_2 {
     static String ADDR(String operando, String FormaOpr){
         String Addr="0";
         int AUX=0;
-        if(operando.equals(" ")){
+        if(operando.equals(" ") && FormaOpr.equals("-")){
             Addr="INH";
         }//Fin es inh
         

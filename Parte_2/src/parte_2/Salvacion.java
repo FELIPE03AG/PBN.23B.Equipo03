@@ -85,11 +85,46 @@ public class Salvacion {
                         }
                     }
                     else if(primer.AddrMode.equals("REL")){
-                        //FALTA VALIDAR REL
-                        LinCod.setADDR("REL");
+                        if(primer.Operando.equals("rel8")){
+                            if(LinCod.getOperando().startsWith("$")){
+                                if(Parte_2.ValidarHexadecimal(LinCod.getOperando().substring(1))){
+                                    LinCod.setADDR("REL (8b)");
+                                }
+                            }
+                            else if(Parte_2.BuscarEtiqueta(LinCod.getOperando())){
+                                LinCod.setADDR("REL (8b)");
+                            }
+                        }
+                        
+                        if(primer.Operando.equals("rel16")){
+                            if(LinCod.getOperando().startsWith("$")){
+                                if(Parte_2.ValidarHexadecimal(LinCod.getOperando().substring(1))){
+                                    LinCod.setADDR("REL (16b)");
+                                }
+                            }
+                            else if(Parte_2.BuscarEtiqueta(LinCod.getOperando())){
+                                LinCod.setADDR("REL (16b)");
+                            }
+                        }
                     }
                     else if(primer.AddrMode.equals("REL(9-bit)")){
-                        LinCod.setADDR("REL(9b)");
+                        if(LinCod.getOperando().contains(",")){
+                            String auxiliar[]=LinCod.getOperando().split(",");
+                            if(auxiliar.length==2){
+                            auxiliar[0]=auxiliar[0].toUpperCase();
+                            if(auxiliar[0].equals("A") || auxiliar[0].equals("B") || auxiliar[0].equals("D") ||
+                                auxiliar[0].equals("X") || auxiliar[0].equals("Y") || auxiliar[0].equals("SP")){
+                                    if(auxiliar[1].startsWith("$")){
+                                        if(Parte_2.ValidarHexadecimal(auxiliar[1].substring(1))){
+                                            LinCod.setADDR("REL (9b)");
+                                        }
+                                    }
+                                    else if(Parte_2.BuscarEtiqueta(auxiliar[1])){
+                                        LinCod.setADDR("REL (9b)");
+                                    }
+                                }
+                            }
+                        }
                     }
                     else{
                         System.out.println("ADDR NO RECONOCIDO");
