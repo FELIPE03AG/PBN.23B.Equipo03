@@ -222,7 +222,7 @@ public class Parte_2 {
     static boolean ValidarOctal(String Oct){
       boolean banOctal = false;
         int Octal;
-        if(Oct.matches("[1-7]+")){ // valida que tenga numeros solo del 0 al 7
+        if(Oct.matches("[0-7]+")){ // valida que tenga numeros solo del 0 al 7
             Octal = Integer.parseInt(Oct); //convierte de String s entero
             if(octalADecimal(Octal)<=65535){ //revisa que sea menor o igual a 16 bits que es lo permitido
                 banOctal=true;
@@ -321,10 +321,10 @@ public class Parte_2 {
     }//Fin metodo para dir
     
     //METODO PARA EVALUAR UN ADDR IDX  
-    static String IDX(String Operando, String TipoOdr){
+    static String IDX(String Operando, String TipoOpr){
         String idx="0";
         if (Operando.matches("^[^,]*,[^,]*$")){
-            if(TipoOdr.equals("oprx0_xysp")){
+            if(TipoOpr.equals("oprx0_xysp")){
                 String partes[]=Operando.split(",");
                 if(partes[0].matches(".*\\d.*")){
                     int valor=Integer.parseInt(partes[0]);
