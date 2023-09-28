@@ -86,6 +86,9 @@
                   <Color blue="cc" green="cc" red="0" type="rgb"/>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="TablaCod = new javax.swing.JTable(){&#xa;     public boolean isCellEditable(int row, int column) {&#xa;        // Devuelve false para hacer que todas las celdas sean de solo lectura&#xa;        return false;&#xa;}&#xa;};"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

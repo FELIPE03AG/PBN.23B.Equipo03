@@ -13,7 +13,7 @@ public class Tabla extends javax.swing.JFrame {
         Linea auxiliar=Parte_2.PrimerLinCod;
         do{
             diseño.addRow(new Object[]{auxiliar.getEtiqueta(),auxiliar.getCodop(),auxiliar.getOperando(),auxiliar.getADDR(),
-                                        "","",""});
+                                        auxiliar.getSize(),auxiliar.getPorCalcular()});
             if(auxiliar!=Parte_2.FinLinCod){
                 auxiliar=auxiliar.getSiguiente();
             }
@@ -40,6 +40,12 @@ public class Tabla extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        TablaCod = new javax.swing.JTable(){
+            public boolean isCellEditable(int row, int column) {
+                // Devuelve false para hacer que todas las celdas sean de solo lectura
+                return false;
+            }
+        };
         TablaCod.setBackground(new java.awt.Color(204, 255, 255));
         TablaCod.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         TablaCod.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N

@@ -63,7 +63,8 @@ public class Salvacion {
                 if(primer==Ultimo){
                     if(primer.Operando.equals("-")){
                         if(LinCod.getOperando().equals(" ")){
-                            LinCod.setADDR(primer.AddrMode);
+                            LinCod.setPorCalcular(primer.byteCalcular+ " bytes");
+                            LinCod.setSize(primer.byteTotal+" bytes");
                         }
                         else{
                             LinCod.setADDR( "OPR fuera de rango");
@@ -72,6 +73,8 @@ public class Salvacion {
                     else if(primer.AddrMode.equals("IDX")){
                         if(!(Parte_2.IDX(LinCod.getOperando()).equals("-1"))){
                             LinCod.setADDR(Parte_2.IDX(LinCod.getOperando()));
+                            LinCod.setPorCalcular(primer.byteCalcular+ " bytes");
+                            LinCod.setSize(primer.byteTotal+" bytes");
                         }
                         else{
                             LinCod.setADDR( "OPR fuera de rango");
@@ -80,6 +83,8 @@ public class Salvacion {
                     else if(primer.AddrMode.equals("IMM")){
                         if(Parte_2.IMM(LinCod.getOperando(), primer.Operando)){
                             LinCod.setADDR("IMM");
+                            LinCod.setPorCalcular(primer.byteCalcular+ " bytes");
+                            LinCod.setSize(primer.byteTotal+" bytes");
                         }
                         else{
                             LinCod.setADDR( "OPR fuera de rango");
@@ -90,10 +95,14 @@ public class Salvacion {
                             if(LinCod.getOperando().startsWith("$")){
                                 if(Parte_2.ValidarHexadecimal(LinCod.getOperando().substring(1))){
                                     LinCod.setADDR("REL (8b)");
+                                    LinCod.setPorCalcular(primer.byteCalcular+ " bytes");
+                                    LinCod.setSize(primer.byteTotal+" bytes");
                                 }
                             }
                             else if(Parte_2.BuscarEtiqueta(LinCod.getOperando())){
                                 LinCod.setADDR("REL (8b)");
+                                LinCod.setPorCalcular(primer.byteCalcular+ " bytes");
+                                LinCod.setSize(primer.byteTotal+" bytes");
                             }
                         }
                         
@@ -101,10 +110,14 @@ public class Salvacion {
                             if(LinCod.getOperando().startsWith("$")){
                                 if(Parte_2.ValidarHexadecimal(LinCod.getOperando().substring(1))){
                                     LinCod.setADDR("REL (16b)");
+                                    LinCod.setPorCalcular(primer.byteCalcular+ " bytes");
+                                    LinCod.setSize(primer.byteTotal+" bytes");
                                 }
                             }
                             else if(Parte_2.BuscarEtiqueta(LinCod.getOperando())){
                                 LinCod.setADDR("REL (16b)");
+                                LinCod.setPorCalcular(primer.byteCalcular+ " bytes");
+                                LinCod.setSize(primer.byteTotal+" bytes");
                             }
                         }
                     }
@@ -118,10 +131,14 @@ public class Salvacion {
                                     if(auxiliar[1].startsWith("$")){
                                         if(Parte_2.ValidarHexadecimal(auxiliar[1].substring(1))){
                                             LinCod.setADDR("REL (9b)");
+                                            LinCod.setPorCalcular(primer.byteCalcular+ " bytes");
+                                            LinCod.setSize(primer.byteTotal+" bytes");
                                         }
                                     }
                                     else if(Parte_2.BuscarEtiqueta(auxiliar[1])){
                                         LinCod.setADDR("REL (9b)");
+                                        LinCod.setPorCalcular(primer.byteCalcular+ " bytes");
+                                        LinCod.setSize(primer.byteTotal+" bytes");
                                     }
                                 }
                             }
@@ -143,6 +160,8 @@ public class Salvacion {
                         if(LinCod.getOperando().equals(" ")){
                             if(AUX.Operando.equals("-")){
                                 LinCod.setADDR("INH");
+                                LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
+                                LinCod.setSize(AUX.byteTotal+" bytes");
                                 salir=true;
                             }
                             else{
@@ -153,6 +172,8 @@ public class Salvacion {
                             if(AUX.Operando.equals("#opr8i")||AUX.Operando.equals("#opr16i")){
                                 if(Parte_2.IMM(LinCod.getOperando(),AUX.Operando)){
                                     LinCod.setADDR("IMM"); 
+                                    LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
+                                    LinCod.setSize(AUX.byteTotal+" bytes");
                                     salir=true;
                                 }
                                 else{
@@ -167,6 +188,8 @@ public class Salvacion {
                             if(AUX.Operando.equals("[D,xysp]")){
                                 if(Parte_2.IdxD(LinCod.getOperando())){
                                     LinCod.setADDR("[D,IDX]");
+                                    LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
+                                    LinCod.setSize(AUX.byteTotal+" bytes");
                                     salir=true;
                                 }
                                 else{
@@ -181,6 +204,8 @@ public class Salvacion {
                             if(AUX.Operando.equals("[oprx16,xysp]")){
                                 if(Parte_2.Idx2C(LinCod.getOperando())){
                                     LinCod.setADDR("[IDX2]");
+                                    LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
+                                    LinCod.setSize(AUX.byteTotal+" bytes");
                                     salir=true;
                                 }
                                 else{
@@ -195,6 +220,8 @@ public class Salvacion {
                             if(AUX.Operando.equals("oprx0_xysp")){
                                 if(!(Parte_2.IDX(LinCod.getOperando()).equals("0"))){
                                     LinCod.setADDR(Parte_2.IDX(LinCod.getOperando()));
+                                    LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
+                                    LinCod.setSize(AUX.byteTotal+" bytes");
                                     salir=true;
                                 }
                                 else{
@@ -204,6 +231,8 @@ public class Salvacion {
                             else if(AUX.Operando.equals("oprx9,xysp")){
                                 if(Parte_2.IDX1(LinCod.getOperando())){
                                     LinCod.setADDR("IDX1");
+                                    LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
+                                    LinCod.setSize(AUX.byteTotal+" bytes");
                                     salir=true;
                                 }
                                 else{
@@ -213,6 +242,8 @@ public class Salvacion {
                             else if(AUX.Operando.equals("oprx16,xysp")){
                                 if(Parte_2.IDX2(LinCod.getOperando())){
                                     LinCod.setADDR("IDX2");
+                                    LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
+                                    LinCod.setSize(AUX.byteTotal+" bytes");
                                     salir=true;
                                 }
                                 else{
@@ -227,6 +258,8 @@ public class Salvacion {
                             if(AUX.Operando.equals("opr8a")&&Parte_2.ConvertirADecimal(LinCod.getOperando())<256){
                                 if(Parte_2.DIR(LinCod.getOperando())){
                                     LinCod.setADDR("DIR");
+                                    LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
+                                    LinCod.setSize(AUX.byteTotal+" bytes");
                                     salir=true;
                                 }
                                 else{
@@ -236,6 +269,8 @@ public class Salvacion {
                             else if(AUX.Operando.equals("opr16a")){
                                 if(Parte_2.EXT(LinCod.getOperando())){
                                     LinCod.setADDR("EXT");
+                                    LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
+                                    LinCod.setSize(AUX.byteTotal+" bytes");
                                     salir=true;
                                 }
                                 else{
@@ -249,6 +284,8 @@ public class Salvacion {
                         else if(Parte_2.BuscarEtiqueta(LinCod.getOperando())){
                             if(AUX.Operando.equals("opr16a")){
                                 LinCod.setADDR("EXT");
+                                LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
+                                LinCod.setSize(AUX.byteTotal+" bytes");
                                 salir=true;
                             }
                             else{

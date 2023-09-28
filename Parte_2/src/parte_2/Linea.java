@@ -8,6 +8,9 @@ public class Linea {
     private String operando;
     private Linea siguiente;
     private String ADDR;
+    private String size;
+    private String porCalcular;
+    
 
     public Linea(String etiqueta, String codop, String operando, Linea siguiente, String ADDR) {
         this.etiqueta = etiqueta;
@@ -15,6 +18,8 @@ public class Linea {
         this.operando = operando;
         this.siguiente = siguiente;
         this.ADDR = ADDR;
+        this.size = " ";
+        this.porCalcular = " ";
     }
 
     public String getEtiqueta() {
@@ -37,6 +42,15 @@ public class Linea {
         return ADDR;
     }
 
+    public String getSize() {
+        return size;
+    }
+
+    public String getPorCalcular() {
+        return porCalcular;
+    }
+    
+
     public void setEtiqueta(String etiqueta) {
         this.etiqueta = etiqueta;
     }
@@ -56,4 +70,13 @@ public class Linea {
     public void setADDR(String ADDR) {
         this.ADDR = ADDR;
     }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public void setPorCalcular(String porCalcular) {
+        this.porCalcular = porCalcular;
+    }
+    
 }
