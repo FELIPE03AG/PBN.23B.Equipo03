@@ -134,9 +134,9 @@ public class Parte_2 {
                         else{
                             System.out.println("ERROR "+campos[1]+"No es un CODOP");
                         }//Fin error con codigo de operacion
-                    }//Fin no mas de 4 bloques
+                    }//Fin no mas de 3 bloques
                     else{
-                        if(campos.length>4){
+                        if(campos.length>3){
                             System.out.println("ERROR mas de 3 bloques en la linea");
                         }
                     }
