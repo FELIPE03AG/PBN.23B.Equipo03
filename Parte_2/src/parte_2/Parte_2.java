@@ -288,150 +288,150 @@ public class Parte_2 {
     
     //METODO PARA EVALUAR UN ADDR IMM
     static boolean IMM(String operando, String FormaOpr){
-        boolean imm=false;
-        int AUX=0;
-        if(operando.charAt(0)=='#'){
-            AUX=ConvertirADecimal(operando.substring(1));
-            if(AUX!=-1){
-                if(FormaOpr.equals("#opr8i") && AUX<256 && AUX>=0){
-                    imm=true;
+        boolean imm=false;                                //Esta variable es para ver si el operando en cuestion si es un IMM
+        int AUX=0;                                        //Variable auxiliar para guardar el valor del operando
+        if(operando.charAt(0)=='#'){                      //Si el operando tiene el # significa que es un inmediato
+            AUX=ConvertirADecimal(operando.substring(1)); //Se convierte a decimal el operando
+            if(AUX!=-1){                                  //Este if es para seguir con el proceso en todo caso de que este escrito correctamente el operando                                  
+                if(FormaOpr.equals("#opr8i") && AUX<256 && AUX>=0){ //Verifica que el operando sea de tipo #opr8i a traves del valor del operando
+                    imm=true;                                       //Manda un verdadero validando como correcto
                 }
-                else if(FormaOpr.equals("#opr16i")){
-                    if(operando.startsWith("$") && ValidarHexadecimal(operando) && operando.length()==5){
-                        imm=true;
+                else if(FormaOpr.equals("#opr16i")){      //En el caso de que el operando no sea de tipo #opr8i verifica que sea #opr16i
+                    if(operando.startsWith("$") && ValidarHexadecimal(operando) && operando.length()==5){ //Verifica si el operndo esta en hexadecimal y cumple con el largo adecuado
+                        imm=true;                                  //Manda un verdadero validando como correcto
                     }
-                    else if(AUX<=65535 && AUX>255){
-                        imm=true;
-                    }
+                    else if(AUX<=65535 && AUX>255){       //verifica que el operando se encuentre entre los valores asignados
+                        imm=true;                                  //Manda un verdadero validando como correcto
+                    } 
                 } 
             }
         }//Fin es imm
-        return imm;
+        return imm;                          //retorna el valor que se le haya asignado a la variable, viendo si es verdadera o falsa
     }
     
     //METODO PARA EVALUAR UN ADDR DIR
     static boolean DIR(String operando){
-        boolean dir=false;
-            if(ConvertirADecimal(operando)<=255 && ConvertirADecimal(operando)!=-1){
-                dir=true;
+        boolean dir=false;                                       //Esta variable sirve para que se retorne si es verdad que es un DIR
+            if(ConvertirADecimal(operando)<=255 && ConvertirADecimal(operando)!=-1){ //Convierte a decimal y verifica que este correcto el operando
+                dir=true;             //Manda un verdero validando como correcto
             }
-        return dir;
+        return dir;                   //retorna el valor que se le haya asignado a la variable, viendo si es verdadera o falsa
     }//Fin metodo para dir
     
     //METODO PARA EVALUAR UN ADDR EXT
-    static boolean EXT(String operando){
-        boolean ext=false;
-            if(ConvertirADecimal(operando)>255){
-                ext=true;
+    static boolean EXT(String operando){ 
+        boolean ext=false;               //Esta variable retorna si es que es verdadero que es un EXT
+            if(ConvertirADecimal(operando)>255 && ConvertirADecimal(operando)<=65535){  //Convierte a decimal y verifica que el opernado se encuentre entre los limites 
+                ext=true;             //Manda un verdadero validando como correcto
             }
-        return ext;
+        return ext;               //Retorna el valor que se le haya asignado a la variable
     }//Fin metodo para dir
     
     //METODO PARA EVALUAR UN ADDR IDX  
     static String IDX(String Operando){
-        String idx="0";
-        if (Operando.matches("^[^,]*,[^,]*$")){
-                String partes[]=Operando.split(",");
-                if(partes[0].matches(".*\\d.*")){
-                    int valor=Integer.parseInt(partes[0]);
+        String idx="0";                               //Esta variable sirve para guardar el tipo idx en custion
+        if (Operando.matches("^[^,]*,[^,]*$")){       //Esta funcion sirve para idenficar concidencias de estos signos 
+                String partes[]=Operando.split(",");  //Esta funcion separa y guarda valores si hay una ',' entre estos
+                if(partes[0].matches(".*\\d.*")){     //Esta funcion verifica si en la primer parte del operando hay un digito
+                    int valor=Integer.parseInt(partes[0]); //Siendo que la primer parte del operando en un digito se manda a guardar en valor como entero
                     if(partes[1].equals("X") || partes[1].equals("Y") ||
-                       partes[1].equals("SP") || partes[1].equals("PC")){
-                            if(valor>-17 && valor<=15){
-                                idx="IDX(5b)";
+                       partes[1].equals("SP") || partes[1].equals("PC")){ //Aqui verifica si la segunda parte del operando coincide con eso
+                            if(valor>-17 && valor<=15){                   //Se mira que el valor (primera parte del operando) este entre los limites
+                                idx="IDX(5b)";                            // Si es asi se declara como este tipo de indexado
                             }
                             else{
-                                idx="0";
+                                idx="0";                                  //si no marca error
                             }
                     }
                     else if((partes[1].startsWith("+") || partes[1].startsWith("-") || partes[1].endsWith("+") ||
                              partes[1].endsWith("-"))&& (partes[1].contains("X") ||
-                             partes[1].contains("Y") || partes[1].contains("SP")) ){
-                                if(valor>0 && valor<9){
-                                    idx="IDX(pre-inc)";
+                             partes[1].contains("Y") || partes[1].contains("SP")) ){ //Aqui verifica si la segunda parte del operando coincide con eso
+                                if(valor>0 && valor<9){                    //Se mira que el valor (primera parte del operando) este entre los limites
+                                    idx="IDX(pre-inc)";                    // Si es asi se declara como este tipo de indexado
                                 }
                                 else{
-                                    idx="0";
+                                    idx="0";                               //si no marca error
                                 }
                     }
                     else{
-                        idx="0";
+                        idx="0"; //Si tenia alguna coincidencia con algunos de los otros requerimientos pero no cumple todo correctamente marca error
                     }
                 }
                 else if(partes[0].equals("A")||partes[0].equals("B")||partes[0].equals("D")){
                     if(partes[1].equals("X") || partes[1].equals("Y") ||
-                        partes[1].equals("SP") || partes[1].equals("PC")){
+                        partes[1].equals("SP") || partes[1].equals("PC")){ //Aqui valida que tanto la primera parte como la segunda tenga coincidencias con estos parametros
                             idx="IDX(acc)";
                     }
                 }
                 else{
-                    idx="0";
+                    idx="0";   //Si no cumple con ninguna de todas las condiciones marca error
                 }
         }
-            return idx;
+            return idx;  //retorna el tipo de indexado que sea
     }//Fin metodo para IDX
     
     //METODO PARA ADDR IDX1
     static boolean IDX1(String Operando){
-        boolean idx1=false;
-        String partes[]=Operando.split(",");
-        if(partes[0].matches(".*\\d.*")){
-            int valor=Integer.parseInt(partes[0]);
+        boolean idx1=false;                            //esta es la bandera que retorna si es cierto que es ese tipo de direccionamiento o no
+        String partes[]=Operando.split(",");           //separa el operando en dos partes
+        if(partes[0].matches(".*\\d.*")){              //mira que la primera parte del operando sean unicamente digitos
+            int valor=Integer.parseInt(partes[0]);     //si la primera parte del operando es un digito la convierte en entero
             if(partes[1].equals("X") || partes[1].equals("Y") ||
-               partes[1].equals("SP") || partes[1].equals("PC")){
-                    if((valor>-257 && valor<-16)||(valor>15 && valor<256)){
-                        idx1=true;
+               partes[1].equals("SP") || partes[1].equals("PC")){   //Mira que la segunda parte tenga coincidencias con estas condiciones
+                    if((valor>-257 && valor<-16)||(valor>15 && valor<256)){ //Verifica que la primera parte del operando se encuentre entre estos limites
+                        idx1=true;                    //retorna un verdadero validando que si es este tipo de direccionamiento
                     }
             }
         }
-        return idx1;
+        return idx1;                                  //retorna un booleano para verificar si es IDX1 o no
     }//Fin modo dir IDX1
             
     //METODO PARA ADDR IDX2
     static boolean IDX2(String Operando){
-        boolean idx2=false;
-        String partes[]=Operando.split(",");
-        if(partes[0].matches(".*\\d.*")){
+        boolean idx2=false;                          //esta es la bandera que retorna si es cierto que es ese tipo de direccionamiento o no
+        String partes[]=Operando.split(",");         //separa el operando en dos partes
+        if(partes[0].matches(".*\\d.*")){            //mira que la primera parte del operando sean unicamente digitos
             int valor=Integer.parseInt(partes[0]);
             if(partes[1].equals("X") || partes[1].equals("Y") ||
-               partes[1].equals("SP") || partes[1].equals("PC")){
-                    if(valor>255 && valor<65536){
-                        idx2=true;
+               partes[1].equals("SP") || partes[1].equals("PC")){ //Mira que la segunda parte tenga coincidencias con estas condiciones
+                    if(valor>255 && valor<65536){    //Verifica que la primera parte del operando se encuentre entre estos limites
+                        idx2=true;                   //retorna un verdadero validando que si es este tipo de direccionamiento
                     }
             }
         }
-        return idx2;
-    }
+        return idx2;                                 //retorna un booleano para verificar si es IDX2 o no
+    }//fin del metodo IDX2
     
     //METODO PARA ADDR [D,IDX]
     static boolean IdxD(String Operando){
-        boolean idx=false;
-        String partes[]=Operando.split(",");
-            if(partes[0].equals("[D")){               
+        boolean idx=false;                          //esta es la bandera que retorna si es cierto que es ese tipo de direccionamiento o no
+        String partes[]=Operando.split(",");        //separa el operando en dos partes
+            if(partes[0].equals("[D")){             //Verifica que la primera parte del operando sea esta
                 if(partes[1].equals("X]") || partes[1].equals("Y]") ||
-                   partes[1].equals("SP]") || partes[1].equals("PC]")){
-                        idx=true;
+                   partes[1].equals("SP]") || partes[1].equals("PC]")){ //Mira que la segunda parte tenga coincidencias con estas condiciones
+                        idx=true;                   //retorna un verdadero validando que si es este tipo de direccionamiento
                 }
                 else{
-                    idx=false;
+                    idx=false;                      //retorna un falso validando que no es este tipo de direccionamiento
                 }
             }
-            return idx;
-    }
+            return idx;                             //retorna un booleano para verificar si es [D,IDX] o no
+    }//fin del metodo IdxD
 
     //METODO PARA [IDX2]
     static boolean Idx2C(String Operando){
-        boolean idx=false;
-        String partes[]=Operando.split(",");
-        String valor = partes[0].substring(1);
-        if(valor.matches(".*\\d.*")){
-            int numero = Integer.parseInt(valor);
+        boolean idx=false;                          //esta es la bandera que retorna si es cierto que es ese tipo de direccionamiento o no
+        String partes[]=Operando.split(",");        //separa el operando en dos partes
+        String valor = partes[0].substring(1);      //guarda la primera parte del operando      
+        if(valor.matches(".*\\d.*")){               //mira que la primera parte del operando sean unicamente digitos
+            int numero = Integer.parseInt(valor);   //comvierte a valor en un entero
             if(numero<=65535 && (partes[1].equals("X]") || partes[1].equals("Y]") ||
-                                 partes[1].equals("SP]") || partes[1].equals("PC]"))){
-                idx=true;
+                                 partes[1].equals("SP]") || partes[1].equals("PC]"))){ //Mira que la segunda parte tenga coincidencias con estas condiciones
+                idx=true;                           //retorna un verdadero validando que si es este tipo de direccionamiento
             }
         }
-        return idx;        
-    }
+        return idx;                                 //retorna un booleano para verificar si es [IDX2] o no
+    }//fin del metodo Idx2C
     
     //METODO PARA BUSCAR ETIQUETA
     static boolean BuscarEtiqueta(String Etiqueta){
