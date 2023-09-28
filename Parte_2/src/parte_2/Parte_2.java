@@ -167,9 +167,9 @@ public class Parte_2 {
 //******************************************************************** PARTE 2 *************************************************
     
     //METODO DE APOYO PARA PASAR DE OCTAL A DECIMAL...
-    public static int octalADecimal(int octal) {
-    int decimal = 0;
-    int potencia = 0;
+    public static int octalADecimal(int octal) {//Este metodo lo usaremos para validar que no pase de los bits permitidos
+    int decimal = 0;//vatriable a retornar valor obtenido
+    int potencia = 0;//variable de apoyo
     // Ciclo infinito que se rompe cuando octal es 0
     while (true) {
         if (octal == 0) {//HASTA QUE OCTAL = 0 SE PARA EL BUCLE
@@ -180,49 +180,52 @@ public class Parte_2 {
             octal = octal / 10;
             potencia++;
             //PROCESO DE CONVERSION...
-        }
-    }
+        }//fin del else para procesar la conversion
+    }//final del while para validar y retornar valor
     return decimal; //regresa el valor para trabajarlo
     }//FIN METODO PARA PASAR OCTAL A DECIMAL...
     
+    //METODO PARA PASAR DE BINARIO A DECIMAL...
     public static int binarioADecimal(String binario) {
-        int decimal = 0;
-        int longitud = binario.length();
+        //La funcion se va a usar para validar que no se pase de los bits permitidos
+        int decimal = 0;//variable a retornar valor
+        int longitud = binario.length();//variable de apoyo
 
-        for (int i = 0; i < longitud; i++) {
-            char digito = binario.charAt(i);
-            int valorDigito = Character.getNumericValue(digito);
+        for (int i = 0; i < longitud; i++) {//ciclo for para recorrer el arreglo
+            char digito = binario.charAt(i);//funcion para analizar el caracter donde se encuentra el puntero
+            int valorDigito = Character.getNumericValue(digito);//esta funcion sirve...
+            //sirve para guardar un numero entero usando un string 
             
             // Multiplicar el valor actual por 2 elevado a la posición
-            int exponente = longitud - 1 - i;
-            decimal += valorDigito * Math.pow(2, exponente);
-        }
+            int exponente = longitud - 1 - i;//variable para revisar la potencia o exponente del numero.
+            decimal += valorDigito * Math.pow(2, exponente);//para hacer la operacion 2^n y sacar el valor del bit
+        }//fin del for
 
-        return decimal;
-    }
+        return decimal;//regresa el valor calculado
+    }//fin de funcion binario a decimal
     
      //METODO PARA VALIDAR UN HEXADECIMAL
     static boolean ValidarHexadecimal(String Hexa){
-        Hexa=Hexa.toUpperCase();
+        Hexa=Hexa.toUpperCase();//pasar los datos de minusculas a MAYUSCULAS
         boolean Valido=false;  //variable para aceptar o denegar
         if(Hexa.matches("[0-9A-F]+")){ // funcion que valida que tenga caracteres permitidos
             if(Hexa.length()<=4){ //si tiene el num mayor permitido (FFFF), o menos. Entonces acepta...
                 Valido=true;
-            }
-        }
+            }//fin del segundo if de validar valor
+        }//fin de primer for para validar porma de operando
         return Valido;
     }//Fin evaluar hexadecimal
     
     //METODO PARA EVALUAR UN OCTAL
     static boolean ValidarOctal(String Oct){
-      boolean banOctal = false;
-        int Octal;
+      boolean banOctal = false;//variable booleana para retornar valor
+        int Octal;//variable de apoyo octal
         if(Oct.matches("[0-7]+")){ // valida que tenga numeros solo del 0 al 7
             Octal = Integer.parseInt(Oct); //convierte de String s entero
             if(octalADecimal(Octal)<=65535){ //revisa que sea menor o igual a 16 bits que es lo permitido
                 banOctal=true;
-            }
-        }
+            } //fin del segundo if para validar que no se pase del valor permitido 
+        }//fin del primer if para validar la forma de operando, que tenga solo numeros octales
       //proceso...
       return banOctal;
     }//Fin evaluar octal
@@ -233,49 +236,53 @@ public class Parte_2 {
         if(nBin.matches("[0-1]+")){ //revisa que solo tenga valores permitidos (0 y 1).
             if(nBin.length()<=16){ //revisa que cumpla con la cantidad de bits permitidos.
                 Valido=true; //valida verdadero
-            }
-        }
+            }//fin segundo if para revisar la longitud de los bites
+        }//fin del primer if para revisar la forma de operando, que solo tenga 1 y 0
         return Valido;//regresa el valor
         
     }//Fin metodo para evaluar binario..
     
     //METODO PARA PASAR DE CUALQUIER BASE A DECIMAL
     static int ConvertirADecimal(String Operando){
-        int Decimal=0;
+        int Decimal=0;//variable para retornar el valor
         switch(Operando.charAt(0)){
-            case '$':
+            case '$':// para caso hexadecimal
                 if(ValidarHexadecimal(Operando.substring(1))){
                     Decimal = Integer.parseInt(Operando.substring(1), 16);
+                    //pasa el valor de hexadecimal a decimal
                 }
                 else{
-                    Decimal = -1;
+                    Decimal = -1; //si no cumple manda estado de error
                 }
-            break;
-            case '@':
+            break; //corte de instruccion
+            case '@'://caso octal
                 if(ValidarOctal(Operando.substring(1))){
                     Decimal = octalADecimal(Integer.parseInt(Operando.substring(1)));
+                    //pasa de octal a decimal
                 }
                 else{
-                    Decimal = -1;
+                    Decimal = -1;//si no cumple manda estado de error
                 }
-            break;
-            case '%':
+            break;//crte de instruccion
+            case '%': //caso binario
                 if(ValidarBinario(Operando.substring(1))){
                     Decimal = binarioADecimal(Operando.substring(1));
+                    //cambia de binario a decimal
                 }
                 else{
-                    Decimal=-1;
+                    Decimal=-1;//si no cumple manda estado de error
                 }
-            break;
-            default:
+            break;//corte de instruccion
+            default: //caso default (ya no ocupa hacerle conversion)
                 if(Operando.matches("[0-9]+")&&Integer.parseInt(Operando)<65535){
                     Decimal = Integer.parseInt(Operando);
+                    //lee decimal y lo pasa de String a Int
                 }
                 else{
-                    Decimal=-1;
+                    Decimal=-1;//si no cumple manda estado de error
                 }
-            break;
-        }
+            break;//corte de instruccion
+        }//fin del switch
         return Decimal;
     }//Fin metodo convertir a decimal
     
