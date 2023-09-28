@@ -246,9 +246,19 @@ public class Salvacion {
                                 siguiente=true;
                             }
                         }
+                        else if(Parte_2.BuscarEtiqueta(LinCod.getOperando())){
+                            if(AUX.Operando.equals("opr16a")){
+                                LinCod.setADDR("EXT");
+                                salir=true;
+                            }
+                            else{
+                                siguiente=true;
+                            }
+                        }
                         else{
                             AUX=Ultimo;
                         }
+                    
                         if(AUX==Ultimo && salir==false){
                             LinCod.setADDR( "OPR fuera de rango");
                             salir=true;

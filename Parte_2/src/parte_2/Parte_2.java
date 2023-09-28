@@ -100,7 +100,12 @@ public class Parte_2 {
                         if(!(campos[0].equals(""))){
                             if(validarEtiq(campos[0])){
                                 if(BuscarEtiqueta(campos[0])==false){
-                                    NewLinCod.setEtiqueta(campos[0]);
+                                    if(campos[0].endsWith(":")){
+                                        NewLinCod.setEtiqueta(campos[0].substring(0, campos[0].length()-1));
+                                    }
+                                    else{
+                                        NewLinCod.setEtiqueta(campos[0]);
+                                    }
                                 }
                                 else{
                                     NewLinCod.setEtiqueta("Etiq. repetida");
@@ -436,14 +441,6 @@ public class Parte_2 {
         boolean existe=false, fin=false;
         Linea Auxiliar = PrimerLinCod;
         while(existe==false && fin ==false){
-            if(!(Etiqueta.endsWith(":") && Auxiliar.getEtiqueta().endsWith(":"))) {
-               if(Auxiliar.getEtiqueta().substring(0, Auxiliar.getEtiqueta().length()-1).equals(Etiqueta)){
-                   existe=true;
-               }
-               else if(Auxiliar.getEtiqueta().equals(Etiqueta.substring(0, Etiqueta.length()-1))){
-                   existe=true;
-               }
-            }
             if(Auxiliar.getEtiqueta().equals(Etiqueta)){
                     existe=true;
             }
