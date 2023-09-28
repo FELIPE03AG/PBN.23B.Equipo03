@@ -99,16 +99,10 @@ public class Parte_2 {
                     if(campos.length<=4 && campos.length>1){//If para validacion de solo 4 bloques no mas
                         if(!(campos[0].equals(""))){
                             if(validarEtiq(campos[0])){
-                                if(BuscarEtiqueta(campos[0])==false){
-                                    if(campos[0].endsWith(":")){
-                                        NewLinCod.setEtiqueta(campos[0].substring(0, campos[0].length()-1));
-                                    }
-                                    else{
-                                        NewLinCod.setEtiqueta(campos[0]);
-                                    }
-                                }
-                                else{
-                                    NewLinCod.setEtiqueta("Etiq. repetida");
+                                if(campos[0].endsWith(":")){
+                                    NewLinCod.setEtiqueta(campos[0].substring(0, campos[0].length()-1));
+                                }else{
+                                    NewLinCod.setEtiqueta(campos[0]);
                                 }
                             }
                             else{
@@ -147,7 +141,7 @@ public class Parte_2 {
                     }//Fin no mas de 4 bloques
                     else{
                         if(campos.length>4){
-                            System.out.println("ERROR mas de 4 bloques en la linea");
+                            System.out.println("ERROR mas de 3 bloques en la linea");
                         }
                     }
                 }//Fin if: no es un comentario, es una linea de codigo
