@@ -250,7 +250,7 @@ public class Parte_2 {
         switch(Operando.charAt(0)){
             case '$':
                 if(ValidarHexadecimal(Operando.substring(1))){
-                    Decimal = Integer.parseInt(Operando, 16);
+                    Decimal = Integer.parseInt(Operando.substring(1), 16);
                 }
                 else{
                     Decimal = -1;
@@ -294,8 +294,13 @@ public class Parte_2 {
                 if(FormaOpr.equals("#opr8i") && AUX<256 && AUX>=0){
                     imm=true;
                 }
-                else if(FormaOpr.equals("#opr16i") && AUX<=65535 && AUX>255){
-                    imm=true;
+                else if(FormaOpr.equals("#opr16i")){
+                    if(operando.startsWith("$") && ValidarHexadecimal(operando) && operando.length()==5){
+                        imm=true;
+                    }
+                    else if(AUX<=65535 && AUX>255){
+                        imm=true;
+                    }
                 } 
             }
         }//Fin es imm
@@ -303,32 +308,27 @@ public class Parte_2 {
     }
     
     //METODO PARA EVALUAR UN ADDR DIR
-    static boolean DIR(String operando, String FormOpr){
+    static boolean DIR(String operando){
         boolean dir=false;
-        if(FormOpr.equals("opr8a")){
             if(ConvertirADecimal(operando)<=255 && ConvertirADecimal(operando)!=-1){
                 dir=true;
             }
-        }
         return dir;
     }//Fin metodo para dir
     
     //METODO PARA EVALUAR UN ADDR EXT
-    static boolean EXT(String operando, String FormOpr){
+    static boolean EXT(String operando){
         boolean ext=false;
-        if(FormOpr.equals("opr16a")){
             if(ConvertirADecimal(operando)>255){
                 ext=true;
             }
-        }
         return ext;
     }//Fin metodo para dir
     
     //METODO PARA EVALUAR UN ADDR IDX  
-    static String IDX(String Operando, String TipoOpr){
+    static String IDX(String Operando){
         String idx="0";
         if (Operando.matches("^[^,]*,[^,]*$")){
-            if(TipoOpr.equals("oprx0_xysp")){
                 String partes[]=Operando.split(",");
                 if(partes[0].matches(".*\\d.*")){
                     int valor=Integer.parseInt(partes[0]);
@@ -338,21 +338,21 @@ public class Parte_2 {
                                 idx="IDX(5b)";
                             }
                             else{
-                                idx="-1";
+                                idx="0";
                             }
                     }
                     else if((partes[1].startsWith("+") || partes[1].startsWith("-") || partes[1].endsWith("+") ||
                              partes[1].endsWith("-"))&& (partes[1].contains("X") ||
-                             partes[1].contains("Y") || partes[1].contains("SP") || partes[1].contains("PC")) ){
+                             partes[1].contains("Y") || partes[1].contains("SP")) ){
                                 if(valor>0 && valor<9){
                                     idx="IDX(pre-inc)";
                                 }
                                 else{
-                                    idx="-1";
+                                    idx="0";
                                 }
                     }
                     else{
-                        idx="-1";
+                        idx="0";
                     }
                 }
                 else if(partes[0].equals("A")||partes[0].equals("B")||partes[0].equals("D")){
@@ -362,19 +362,17 @@ public class Parte_2 {
                     }
                 }
                 else{
-                    idx="-1";
+                    idx="0";
                 }
-            }
         }
             return idx;
     }//Fin metodo para IDX
     
     //METODO PARA ADDR IDX1
-    static boolean IDX1(String Operando, String FormOpr){
+    static boolean IDX1(String Operando){
         boolean idx1=false;
-        if(FormOpr.equals("oprx9,xysp")){
-            String partes[]=Operando.split(",");
-                if(partes[0].matches(".*\\d.*")){
+        String partes[]=Operando.split(",");
+        if(partes[0].matches(".*\\d.*")){
             int valor=Integer.parseInt(partes[0]);
             if(partes[1].equals("X") || partes[1].equals("Y") ||
                partes[1].equals("SP") || partes[1].equals("PC")){
@@ -382,15 +380,13 @@ public class Parte_2 {
                         idx1=true;
                     }
             }
-            }
         }
         return idx1;
     }//Fin modo dir IDX1
             
     //METODO PARA ADDR IDX2
-    static boolean IDX2(String Operando, String FormOpr){
+    static boolean IDX2(String Operando){
         boolean idx2=false;
-        if(FormOpr.equals("oprx16,xysp")){
         String partes[]=Operando.split(",");
         if(partes[0].matches(".*\\d.*")){
             int valor=Integer.parseInt(partes[0]);
@@ -400,98 +396,40 @@ public class Parte_2 {
                         idx2=true;
                     }
             }
-            }
         }
         return idx2;
     }
     
-    //METODO PARA ADDR CON CORCHETES
-    static String IdxCorchetes(String Operando, String FormOpr){
-        String idx="0";
+    //METODO PARA ADDR [D,IDX]
+    static boolean IdxD(String Operando){
+        boolean idx=false;
         String partes[]=Operando.split(",");
-            if(partes[0].equals("[D")&& FormOpr.equals("[D,xysp]")){               
+            if(partes[0].equals("[D")){               
                 if(partes[1].equals("X]") || partes[1].equals("Y]") ||
                    partes[1].equals("SP]") || partes[1].equals("PC]")){
-                        idx="[D,IDX]";
+                        idx=true;
                 }
                 else{
-                    idx="-1";
+                    idx=false;
                 }
             }
-            else if(FormOpr.equals("[oprx16,xysp]")){
-                String valor = partes[0].substring(1);
-                if(valor.matches(".*\\d.*")){
-                    int numero = Integer.parseInt(valor);                   
-                    if(numero<=65535 && (partes[1].equals("X]") || partes[1].equals("Y]") ||
-                                         partes[1].equals("SP]") || partes[1].equals("PC]"))){
-                        idx="[IDX2]";
-                    }
-                
-                    else {
-                        idx="-1";
-                    }
-                }
-            }
-            else{
-                idx="-1";
-            }
-        return idx;
+            return idx;
     }
 
-    
-    
-    
-    
-    //METODO PARA IDENTIFICAR ADDR
-    static String ADDR(String operando, String FormaOpr){
-        String Addr="0";
-        int AUX=0;
-        if(operando.equals(" ") && FormaOpr.equals("-")){
-            Addr="INH";
-        }//Fin es inh
-        
-        else if(IMM(operando,FormaOpr)){
-                Addr="IMM";
-        }
-        
-        else if(ConvertirADecimal(operando)!=-1){
-            if(DIR(operando, FormaOpr)){
-                Addr="DIR";
-            }
-            else if(EXT(operando, FormaOpr)){
-                Addr="EXT";
+    //METODO PARA [IDX2]
+    static boolean Idx2C(String Operando){
+        boolean idx=false;
+        String partes[]=Operando.split(",");
+        String valor = partes[0].substring(1);
+        if(valor.matches(".*\\d.*")){
+            int numero = Integer.parseInt(valor);
+            if(numero<=65535 && (partes[1].equals("X]") || partes[1].equals("Y]") ||
+                                 partes[1].equals("SP]") || partes[1].equals("PC]"))){
+                idx=true;
             }
         }
-        
-        else if(operando.contains(",")&&(!operando.contains("["))){
-            if(!(IDX(operando,FormaOpr).equals("-1"))){
-                Addr = IDX(operando,FormaOpr);
-            }
-            else if(IDX1(operando, FormaOpr)){
-                Addr = "IDX1";
-            }
-            else if(IDX2(operando, FormaOpr)){
-                Addr = "IDX2";
-            }
-            else{
-                Addr = "ERROR";
-            }
-        }
-        
-        else if(operando.contains(",")&& operando.contains("[") && operando.contains("]")){
-            if(!(IdxCorchetes(operando, FormaOpr).equals("-1"))){
-                Addr=IdxCorchetes(operando, FormaOpr);
-            }
-            else{
-                Addr="ERROR";
-            }
-        }
-        else{
-            Addr="ERROR";
-        }
-        return Addr;
-        
-    }//Fin identificacion ADDR 
+        return idx;        
+    }
     
     //METODO PARA BUSCAR ETIQUETA
     static boolean BuscarEtiqueta(String Etiqueta){
@@ -528,6 +466,5 @@ public class Parte_2 {
             new Tabla().setVisible(true);
         }
         
-    }
-    
+    }   
 }

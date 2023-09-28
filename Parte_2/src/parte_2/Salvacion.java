@@ -54,7 +54,8 @@ public class Salvacion {
                         LinCod.setADDR("DIRECT");
                     }
                 }
-                else if(LinCod.getCodop().equals("END") || LinCod.getCodop().equals("EQU")){
+                else if(LinCod.getCodop().equals("END") || LinCod.getCodop().equals("EQU") || 
+                        LinCod.getCodop().equals("DS.B")){
                     LinCod.setADDR("DIRECT");
                 }
             }
@@ -69,8 +70,8 @@ public class Salvacion {
                         }
                     }
                     else if(primer.AddrMode.equals("IDX")){
-                        if(!(Parte_2.IDX(LinCod.getOperando(),primer.Operando).equals("-1"))){
-                            LinCod.setADDR(Parte_2.IDX(LinCod.getOperando(),primer.Operando));
+                        if(!(Parte_2.IDX(LinCod.getOperando()).equals("-1"))){
+                            LinCod.setADDR(Parte_2.IDX(LinCod.getOperando()));
                         }
                         else{
                             LinCod.setADDR( "OPR fuera de rango");
@@ -127,11 +128,134 @@ public class Salvacion {
                         }
                     }
                     else{
-                        System.out.println("ADDR NO RECONOCIDO");
+                        System.out.println("CODOP O ADDR NO RECONOCIDO");
                         System.out.println("CODOP= "+primer.CODOP);
                         System.out.println("OPERANDO= "+LinCod.getOperando());
                         System.out.println("Forma del Operando= "+primer.Operando);
                         LinCod.setADDR( "OPR fuera de rango");
+                    }
+                }
+                else{
+                    NodoSalvacion AUX = primer;
+                    boolean salir=false,siguiente;
+                    while(salir==false){
+                        siguiente=false;
+                        if(LinCod.getOperando().equals(" ")){
+                            if(AUX.Operando.equals("-")){
+                                LinCod.setADDR("INH");
+                                salir=true;
+                            }
+                            else{
+                                siguiente=true;
+                            }
+                        }
+                        else if(LinCod.getOperando().startsWith("#")){
+                            if(AUX.Operando.equals("#opr8i")||AUX.Operando.equals("#opr16i")){
+                                if(Parte_2.IMM(LinCod.getOperando(),AUX.Operando)){
+                                    LinCod.setADDR("IMM"); 
+                                    salir=true;
+                                }
+                                else{
+                                    AUX=Ultimo;
+                                }
+                            }
+                            else{
+                                siguiente=true;
+                            }
+                        }
+                        else if(LinCod.getOperando().startsWith("[D")){
+                            if(AUX.Operando.equals("[D,xysp]")){
+                                if(Parte_2.IdxD(LinCod.getOperando())){
+                                    LinCod.setADDR("[D,IDX]");
+                                    salir=true;
+                                }
+                                else{
+                                    AUX=Ultimo;
+                                }
+                            }
+                            else{
+                                siguiente=true;
+                            }
+                        }
+                        else if(LinCod.getOperando().startsWith("[")){
+                            if(AUX.Operando.equals("[oprx16,xysp]")){
+                                if(Parte_2.Idx2C(LinCod.getOperando())){
+                                    LinCod.setADDR("[IDX2]");
+                                    salir=true;
+                                }
+                                else{
+                                    AUX=Ultimo;
+                                }
+                            }
+                            else{
+                                siguiente=true;
+                            }
+                        }
+                        else if(LinCod.getOperando().contains(",")){
+                            if(AUX.Operando.equals("oprx0_xysp")){
+                                if(!(Parte_2.IDX(LinCod.getOperando()).equals("0"))){
+                                    LinCod.setADDR(Parte_2.IDX(LinCod.getOperando()));
+                                    salir=true;
+                                }
+                                else{
+                                    siguiente=true;
+                                }
+                            }
+                            else if(AUX.Operando.equals("oprx9,xysp")){
+                                if(Parte_2.IDX1(LinCod.getOperando())){
+                                    LinCod.setADDR("IDX1");
+                                    salir=true;
+                                }
+                                else{
+                                    siguiente=true;
+                                }
+                            }
+                            else if(AUX.Operando.equals("oprx16,xysp")){
+                                if(Parte_2.IDX2(LinCod.getOperando())){
+                                    LinCod.setADDR("IDX2");
+                                    salir=true;
+                                }
+                                else{
+                                    AUX=Ultimo;
+                                }
+                            }
+                            else{
+                                siguiente=true;
+                            }
+                        }
+                        else if(Parte_2.ConvertirADecimal(LinCod.getOperando())!=-1){
+                            if(AUX.Operando.equals("opr8a")&&Parte_2.ConvertirADecimal(LinCod.getOperando())<256){
+                                if(Parte_2.DIR(LinCod.getOperando())){
+                                    LinCod.setADDR("DIR");
+                                    salir=true;
+                                }
+                                else{
+                                    AUX=Ultimo;
+                                }
+                            }
+                            else if(AUX.Operando.equals("opr16a")){
+                                if(Parte_2.EXT(LinCod.getOperando())){
+                                    LinCod.setADDR("EXT");
+                                    salir=true;
+                                }
+                                else{
+                                    AUX=Ultimo;
+                                }
+                            }
+                            else{
+                                siguiente=true;
+                            }
+                        }
+                        else{
+                            AUX=Ultimo;
+                        }
+                        if(AUX==Ultimo && salir==false){
+                            LinCod.setADDR( "OPR fuera de rango");
+                            salir=true;
+                        }
+                        else if(siguiente){
+                            AUX=AUX.siguiente;
+                        }
                     }
                 }
                 encontrado=false;
