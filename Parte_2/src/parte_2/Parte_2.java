@@ -96,7 +96,7 @@ public class Parte_2 {
                 if(!(Comentario)){ //Si no es un comentario, debe ser una linea de codigo
                     String[] campos = lecturaLinea.split("\\s+");//Separa por bloques segun cada espacios o tabulación
                     NewLinCod = new Linea(" "," "," ",null," "); //Inicializo valores
-                    if(campos.length<=4 && campos.length>1){//If para validacion de solo 4 bloques no mas
+                    if(campos.length<=3 && campos.length>1){//If para validacion de solo 4 bloques no mas
                         if(!(campos[0].equals(""))){
                             if(validarEtiq(campos[0])){
                                 if(campos[0].endsWith(":")){
@@ -113,9 +113,6 @@ public class Parte_2 {
                             NewLinCod.setCodop(campos[1]);
                             if(campos.length==3){//Si hay siguiente bloque debe ser el operando
                                 NewLinCod.setOperando(campos[2]); 
-                            }
-                            else if(campos.length==4 && campos[2].contains(",")){
-                                NewLinCod.setOperando(campos[2].concat(campos[3]));
                             }
                             else if(NewLinCod.getCodop().equals("END")){
                                 if(NewLinCod.getOperando().equals(" ")){
