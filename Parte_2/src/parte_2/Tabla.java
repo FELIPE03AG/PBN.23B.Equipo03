@@ -24,7 +24,7 @@ public class Tabla extends javax.swing.JFrame {
     }
     public Tabla() {
         initComponents();
-        String[] titulo = new String[]{"ETQ","CODOP","OPR","ADDR","SIZE","CALCULADOS","POR CALCULAR"};
+        String[] titulo = new String[]{"ETQ","CODOP","OPR","ADDR","SIZE","POR CALCULAR"};
         diseño.setColumnIdentifiers(titulo);
         TablaCod.setModel(diseño);
         Llenado();
