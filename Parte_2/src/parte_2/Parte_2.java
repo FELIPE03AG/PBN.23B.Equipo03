@@ -118,12 +118,11 @@ public class Parte_2 {
                                 NewLinCod.setOperando(campos[2].concat(campos[3]));
                             }
                             else if(NewLinCod.getCodop().equals("END")){
-                                if(NewLinCod.getEtiqueta().equals(" ") && NewLinCod.getOperando().equals(" ")){
+                                if(NewLinCod.getOperando().equals(" ")){
                                     cursorActual=auxArchivo.length();
                                 }
                                 else{
-                                    System.out.println("EL END NO DEBE DE LLEVAR ETIQUETA NI OPERANDO");
-                                    NewLinCod.setEtiqueta(" ");
+                                    System.out.println("EL END NO DEBE DE LLEVAR OPERANDO");
                                     NewLinCod.setOperando(" ");
                                 }
                             }
