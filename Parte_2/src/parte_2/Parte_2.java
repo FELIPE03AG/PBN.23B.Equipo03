@@ -57,7 +57,6 @@ public class Parte_2 {
                     banCodop=false;
                     i=codop.length();
                 }//Fin else
-                
             }//Fin for para recorrer el CODOP
         }//Fin no mas de 5 caracteres 
         return banCodop;
@@ -100,29 +99,30 @@ public class Parte_2 {
                         if(!(campos[0].equals(""))){
                             if(validarEtiq(campos[0])){
                                 if(campos[0].endsWith(":")){
-                                    NewLinCod.setEtiqueta(campos[0].substring(0, campos[0].length()-1));
+                                    NewLinCod.setEtiqueta(campos[0].substring(0, campos[0].length()-1).toUpperCase());//Guardado de etiqueta en un nuevo elemento en la lista
                                 }else{
-                                    NewLinCod.setEtiqueta(campos[0]);
+                                    NewLinCod.setEtiqueta(campos[0].toUpperCase());//Guardar etiqueta en una nueva linea de la lista
                                 }
                             }
                             else{
-                                NewLinCod.setEtiqueta("Formato Etiqueta");
+                                NewLinCod.setEtiqueta("Formato Etiqueta");//Guardar el error de la etiqueta 
                             }
                         }//Busco una etiqueta
                         if(validarCodop(campos[1])){
-                            NewLinCod.setCodop(campos[1]);
+                            NewLinCod.setCodop(campos[1].toUpperCase());
                             if(campos.length==3){//Si hay siguiente bloque debe ser el operando
-                                NewLinCod.setOperando(campos[2]); 
+                                NewLinCod.setOperando(campos[2].toUpperCase()); 
                             }
                             else if(NewLinCod.getCodop().equals("END")){
-                                if(NewLinCod.getOperando().equals(" ")){
-                                    cursorActual=auxArchivo.length();
+                                if(NewLinCod.getOperando().equals(" ")){//Validacion del end
+                                    cursorActual=auxArchivo.length();//Para salir del archivo
                                 }
                                 else{
                                     System.out.println("EL END NO DEBE DE LLEVAR OPERANDO");
                                     NewLinCod.setOperando(" ");
                                 }
                             }
+                            //GUARDAR LINEA EN LA LISTA
                             if(PrimerLinCod==null){
                                 PrimerLinCod=NewLinCod;
                             }
@@ -153,11 +153,12 @@ public class Parte_2 {
                 }//Fin else no es linea de codigo, es un comentario 
             }//Fin del while
             
+            //Si el end no existe en el archivo
             if(cursorActual==auxArchivo.length() && (!NewLinCod.getCodop().equals("END"))){
                 System.out.println("END NO LOCALIZADO");
                 PrimerLinCod=null;
                 FinLinCod=null;
-                            }
+            }
             leerArchivo.close();
         }catch(IOException ex){
             ex.printStackTrace();
@@ -206,7 +207,6 @@ public class Parte_2 {
     
      //METODO PARA VALIDAR UN HEXADECIMAL
     static boolean ValidarHexadecimal(String Hexa){
-        Hexa=Hexa.toUpperCase();//pasar los datos de minusculas a MAYUSCULAS
         boolean Valido=false;  //variable para aceptar o denegar
         if(Hexa.matches("[0-9A-F]+")){ // funcion que valida que tenga caracteres permitidos
             if(Hexa.length()<=4){ //si tiene el num mayor permitido (FFFF), o menos. Entonces acepta...
@@ -290,38 +290,24 @@ public class Parte_2 {
     static boolean IMM(String operando, String FormaOpr){
         boolean imm=false;                                //Esta variable es para ver si el operando en cuestion si es un IMM
         int AUX=0;                                        //Variable auxiliar para guardar el valor del operando
-        if(operando.charAt(0)=='#'){                      //Si el operando tiene el # significa que es un inmediato
-            AUX=ConvertirADecimal(operando.substring(1)); //Se convierte a decimal el operando
-            if(AUX!=-1){                                  //Este if es para seguir con el proceso en todo caso de que este escrito correctamente el operando                                  
-                if(FormaOpr.equals("#opr8i") && AUX<256 && AUX>=0){ //Verifica que el operando sea de tipo #opr8i a traves del valor del operando
-                    imm=true;                                       //Manda un verdadero validando como correcto
-                }
-                else if(FormaOpr.equals("#opr16i")){      //En el caso de que el operando no sea de tipo #opr8i verifica que sea #opr16i
-                    if(operando.startsWith("$") && ValidarHexadecimal(operando) && operando.length()==5){ //Verifica si el operndo esta en hexadecimal y cumple con el largo adecuado
-                        imm=true;                                  //Manda un verdadero validando como correcto
-                    }
-                    else if(AUX<=65535 && AUX>255){       //verifica que el operando se encuentre entre los valores asignados
-                        imm=true;                                  //Manda un verdadero validando como correcto
-                    } 
-                } 
+        AUX=ConvertirADecimal(operando.substring(1)); //Se convierte a decimal el operando
+        if(AUX!=-1){                                  //Este if es para seguir con el proceso en todo caso de que este escrito correctamente el operando                                  
+            if(FormaOpr.equals("#opr8i") && AUX<256 && AUX>=0){ //Verifica que el operando sea de tipo #opr8i a traves del valor del operando
+                imm=true;                                       //Manda un verdadero validando como correcto
             }
-        }//Fin es imm
+            else if(FormaOpr.equals("#opr16i")){
+                if(AUX<=65535 && AUX>255){       //verifica que el operando se encuentre entre los valores asignados
+                    imm=true;                                  //Manda un verdadero validando como correcto
+                } 
+            } 
+        }
         return imm;                          //retorna el valor que se le haya asignado a la variable, viendo si es verdadera o falsa
     }
-    
-    //METODO PARA EVALUAR UN ADDR DIR
-    static boolean DIR(String operando){
-        boolean dir=false;                                       //Esta variable sirve para que se retorne si es verdad que es un DIR
-            if(ConvertirADecimal(operando)<=255 && ConvertirADecimal(operando)!=-1){ //Convierte a decimal y verifica que este correcto el operando
-                dir=true;             //Manda un verdero validando como correcto
-            }
-        return dir;                   //retorna el valor que se le haya asignado a la variable, viendo si es verdadera o falsa
-    }//Fin metodo para dir
     
     //METODO PARA EVALUAR UN ADDR EXT
     static boolean EXT(String operando){ 
         boolean ext=false;               //Esta variable retorna si es que es verdadero que es un EXT
-            if(ConvertirADecimal(operando)>255 && ConvertirADecimal(operando)<=65535){  //Convierte a decimal y verifica que el opernado se encuentre entre los limites 
+            if(ConvertirADecimal(operando)>255){  //Convierte a decimal y verifica que el opernado se encuentre entre los limites 
                 ext=true;             //Manda un verdadero validando como correcto
             }
         return ext;               //Retorna el valor que se le haya asignado a la variable
@@ -330,7 +316,7 @@ public class Parte_2 {
     //METODO PARA EVALUAR UN ADDR IDX  
     static String IDX(String Operando){
         String idx="0";                               //Esta variable sirve para guardar el tipo idx en custion
-        if (Operando.matches("^[^,]*,[^,]*$")){       //Esta funcion sirve para idenficar concidencias de estos signos 
+        if (Operando.matches("^[^,]*,[^,]*$")){       //Esta funcion sirve para validar que tenga una sola coma
                 String partes[]=Operando.split(",");  //Esta funcion separa y guarda valores si hay una ',' entre estos
                 if(partes[0].matches(".*\\d.*")){     //Esta funcion verifica si en la primer parte del operando hay un digito
                     int valor=Integer.parseInt(partes[0]); //Siendo que la primer parte del operando en un digito se manda a guardar en valor como entero

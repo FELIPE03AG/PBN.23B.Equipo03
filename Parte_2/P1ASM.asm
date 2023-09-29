@@ -23,8 +23,6 @@ Uno:	EORA	255,X
 	BLT	Uno
 	LBLT	Uno
 	IBNE	A,Uno
-	EORA Uno
 ; comentario número 2 ¡Bajo!
 ;comentario número 3 -Nivel-
 	END
-	
