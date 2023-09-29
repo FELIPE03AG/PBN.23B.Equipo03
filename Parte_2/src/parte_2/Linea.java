@@ -3,13 +3,13 @@ package parte_2;
 
 public class Linea {
     //ATRIBUTOS
-    private String etiqueta;
-    private String codop;
-    private String operando;
-    private Linea siguiente;
-    private String ADDR;
-    private String size;
-    private String porCalcular;
+    private String etiqueta;// Almacena la etiqueta de la línea.
+    private String codop;// Almacena el código de operación.
+    private String operando;// Almacena el operando.
+    private Linea siguiente;// Referencia a la siguiente línea en la secuencia.
+    private String ADDR;// Almacena la dirección de memoria.
+    private String size;// Almacena el tamaño de la línea.
+    private String porCalcular;// Almacena información por calcular o procesar.
     
 
     public Linea(String etiqueta, String codop, String operando, Linea siguiente, String ADDR) {
@@ -18,10 +18,10 @@ public class Linea {
         this.operando = operando;
         this.siguiente = siguiente;
         this.ADDR = ADDR;
-        this.size = " ";
-        this.porCalcular = " ";
+        this.size = " ";// Tamaño inicialmente vacío.
+        this.porCalcular = " ";// Información por calcular inicialmente vacía.
     }
-
+    // MÉTODOS GETTERS
     public String getEtiqueta() {
         return etiqueta;
     }
@@ -50,7 +50,7 @@ public class Linea {
         return porCalcular;
     }
     
-
+    // MÉTODOS SETTERS
     public void setEtiqueta(String etiqueta) {
         this.etiqueta = etiqueta;
     }

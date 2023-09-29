@@ -435,22 +435,23 @@ public class Parte_2 {
     
     //METODO PARA BUSCAR ETIQUETA
     static boolean BuscarEtiqueta(String Etiqueta){
-        boolean existe=false, fin=false;
-        Linea Auxiliar = PrimerLinCod;
-        while(existe==false && fin ==false){
+        boolean existe=false, fin=false;// Variable para indicar si la etiqueta existe y si hemos llegado al final de la estructura
+        Linea Auxiliar = PrimerLinCod;// Variable auxiliar para iterar a través de la estructura
+
+        while(existe==false && fin ==false){   // Bucle para recorrer la estructura hasta encontrar la etiqueta o llegar al final
             if(Auxiliar.getEtiqueta().equals(Etiqueta)){
-                    existe=true;
+                    existe=true;// La etiqueta existe, establece el indicador a true
             }
             else{
                 if(Auxiliar!=FinLinCod){
-                    Auxiliar=Auxiliar.getSiguiente();
+                    Auxiliar=Auxiliar.getSiguiente();// Avanzar a la siguiente línea si no hemos llegado al final
                 }
                 else{
-                    fin=true;
+                    fin=true;// Establece el indicador a true
                 }
             }
         }
-        return existe;
+        return existe;// Devuelve true si la etiqueta fue encontrada, de lo contrario, devuelve false
     }//Fin encontrar etiqueta
     
     public static void main(String[] args) {
