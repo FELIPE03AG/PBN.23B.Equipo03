@@ -57,6 +57,7 @@ public class Salvacion {
                 }//Fin CODOP es una directiva
                 else{
                     LinCod.setADDR("ADDR no aceptado");
+                    System.out.println("CODOP "+ LinCod.getCodop()+" NO EXISTE");
                 }//Fin codop no existe
             }//Fin no se encontro al codop
             else{
