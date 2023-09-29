@@ -7,8 +7,6 @@
             EQUIPO 3
 */
 
-//Hola
-
 package proyectointegrador;
 
 import java.io.FileReader;
@@ -30,7 +28,7 @@ public class ProyectoIntegrador {
                 if(Character.isLetter(c) && i == 0){ 
                     banEtiq =true;
                 }//Fin if primer caracter debe ser una letra
-                else if(Character.isLetterOrDigit(c) || c == '_' || (c==':' && i==etiqueta.length()-1) && i!=0){
+                else if((Character.isLetterOrDigit(c) || c == '_' || (c==':' && i==etiqueta.length()-1)) && i!=0){
                     banEtiq =true;
                 }//Fin if validacion letras numeros, guion bajo o dos puntos al final
                 else{
@@ -92,7 +90,9 @@ public class ProyectoIntegrador {
             while(cursorActual!=auxArchivo.length()){//mientras el lector no llegue al final del archivo
                 lecturaLinea = auxArchivo.readLine();//leo la linea
                 bandera=false;
-                Comentario(lecturaLinea);
+                if(!(lecturaLinea.equals(""))){
+                    Comentario(lecturaLinea);
+                }
                 if(!(bandera)){
                     String[] campos = lecturaLinea.split("\\s+");//Separa por bloques segun cada espacios o tabulación
                     LinCod = new Linea(null,null,null); //Inicializo valores
