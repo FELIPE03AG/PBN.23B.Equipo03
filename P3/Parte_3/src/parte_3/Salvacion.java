@@ -43,6 +43,16 @@ public class Salvacion {
                         auxiliar.setADDR("DIRECT");
                         encontrado=true;
                     }//Fin CODOP es una directiva
+                    else if(auxiliar.getCodop().equals("EQU")){
+                        if(auxiliar.getEtiqueta()==null && Parte_3.ConvertirADecimal(auxiliar.getOperando())!=-1){
+                            auxiliar.setADDR("DIRECT");
+                            encontrado=true;
+                        }
+                        else{
+                            auxiliar.setADDR("OPR fuera de rango");
+                            System.out.println("ERROR EQU NO tiene etiqueta o el operando es incorrecto");
+                        }
+                    }
                     else{
                         auxiliar.setADDR("ADDR no aceptado");
                         System.out.println("CODOP "+ auxiliar.getCodop()+" NO EXISTE");
