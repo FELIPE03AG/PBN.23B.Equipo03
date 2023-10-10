@@ -22,6 +22,7 @@ public class Salvacion {
                 String lecturaLinea;
                 encontrado=false;
                 coincidencias=0;
+                IdentificacionDirectivas(auxiliar);
                 //Aqui es donde empieza a leer por linea
                 while(cursorActual!=auxArchivo.length() && encontrado==false){//mientras el lector no llegue al final del archivo
                     lecturaLinea = auxArchivo.readLine();//leeo la linea
@@ -36,30 +37,12 @@ public class Salvacion {
                         
                     }
                 }//Fin del while
-                if(coincidencias==0){
-                    //En caso de ser ORG, END, EQU O DS.B se deben considerar directivas, si no el CODOP no existe
-                    if(auxiliar.getCodop().equals("ORG") || auxiliar.getCodop().equals("END") || auxiliar.getCodop().equals("EQU") ||
-                        auxiliar.getCodop().equals("DS.B")){
-                        auxiliar.setADDR("DIRECT");
-                        encontrado=true;
-                    }//Fin CODOP es una directiva
-                    else if(auxiliar.getCodop().equals("EQU")){
-                        if(auxiliar.getEtiqueta()==null && Parte_3.ConvertirADecimal(auxiliar.getOperando())!=-1){
-                            auxiliar.setADDR("DIRECT");
-                            encontrado=true;
-                        }
-                        else{
-                            auxiliar.setADDR("OPR fuera de rango");
-                            System.out.println("ERROR EQU NO tiene etiqueta o el operando es incorrecto");
-                        }
-                    }
-                    else{
+                if(!encontrado){
+                    if(coincidencias==0){
                         auxiliar.setADDR("ADDR no aceptado");
                         System.out.println("CODOP "+ auxiliar.getCodop()+" NO EXISTE");
-                    }//Fin codop no existe
-                }
-                if(!encontrado){
-                    if(coincidencias==1) {
+                    }
+                    else if(coincidencias==1) {
                             IdentificacionREL(auxiliar,auxSalvacion);
                     }           
                     else if(coincidencias>1){
@@ -231,5 +214,42 @@ public class Salvacion {
             System.out.println("Forma del Operando= "+AUX.Operando);
             LinCod.setADDR( "OPR fuera de rango");
         }//Fin codop que no vamos a evaluar
+    }
+    
+    static void IdentificacionDirectivas(Linea LinCod){
+        String auxiliar = LinCod.getCodop();
+        
+        if(auxiliar.contains(".")){
+            String[] campos = auxiliar.split("\\.");
+            auxiliar=campos[0];
+        }
+        encontrado=true;
+        switch(auxiliar){
+            case "ORG":
+                LinCod.setADDR("DIRECT");
+            break;
+            case "END":
+                LinCod.setADDR("DIRECT");
+            break;
+            case "EQU":
+                if(!(LinCod.getEtiqueta().equals(" ")) && Parte_3.ConvertirADecimal(LinCod.getOperando())!=-1){
+                    LinCod.setADDR("DIRECT");
+                }
+                else{
+                    LinCod.setADDR("OPR fuera de rango");
+                    System.out.println("ERROR EQU NO tiene etiqueta o el operando es incorrecto");
+                    encontrado=false;
+                }
+            break;
+            case "DC":
+                LinCod.setADDR("DIRECT");
+            break;
+            case "DS":
+                LinCod.setADDR("DIRECT");
+            break;
+            default:
+                encontrado=false;
+            break;
+        }
     }
 }//Fin clase
