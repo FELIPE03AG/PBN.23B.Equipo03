@@ -10,13 +10,13 @@ public class Tabla extends javax.swing.JFrame {
     //METODO PARA LLENAR LA TABLA
     void Llenado(){
         for (Linea auxiliar : Parte_3.LineasCodigo) {
-            diseño.addRow(new Object[]{auxiliar.getEtiqueta(),auxiliar.getCodop(),auxiliar.getOperando(),auxiliar.getADDR(),
+            diseño.addRow(new Object[]{auxiliar.getConloc(),auxiliar.getEtiqueta(),auxiliar.getCodop(),auxiliar.getOperando(),auxiliar.getADDR(),
                                         auxiliar.getSize(),auxiliar.getPorCalcular()});
         }
     }
     public Tabla() {
         initComponents();
-        String[] titulo = new String[]{"ETQ","CODOP","OPR","ADDR","SIZE","POR CALCULAR"};
+        String[] titulo = new String[]{"CONLOC","ETQ","CODOP","OPR","ADDR","SIZE","POR CALCULAR"};
         diseño.setColumnIdentifiers(titulo);
         TablaCod.setModel(diseño);
         Llenado();
@@ -65,8 +65,8 @@ public class Tabla extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

@@ -97,7 +97,7 @@ public class Parte_3 {
                 }
                 if(!(Comentario)){ //Si no es un comentario, debe ser una linea de codigo
                     String[] campos = lecturaLinea.split("\\s+");//Separa por bloques segun cada espacios o tabulación
-                    NewLinCod = new Linea(" "," "," "," "); //Inicializo valores
+                    NewLinCod = new Linea(" ", " "," "," "," "); //Inicializo valores
                     if(campos.length<=3 && campos.length>1){//If para validacion de solo 4 bloques no mas
                         if(!(campos[0].equals(""))){
                             if(campos[0].endsWith(":")){

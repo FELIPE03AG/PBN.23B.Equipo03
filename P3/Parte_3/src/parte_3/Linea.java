@@ -3,6 +3,7 @@ package parte_3;
 
 public class Linea {
     //ATRIBUTOS
+    private String conloc;
     private String etiqueta;// Almacena la etiqueta de la línea.
     private String codop;// Almacena el código de operación.
     private String operando;// Almacena el operando.
@@ -11,7 +12,8 @@ public class Linea {
     private String porCalcular;// Almacena información por calcular o procesar.
     
 
-    public Linea(String etiqueta, String codop, String operando, String ADDR) {
+    public Linea(String conloc, String etiqueta, String codop, String operando, String ADDR) {
+        this.conloc = conloc;
         this.etiqueta = etiqueta;
         this.codop = codop;
         this.operando = operando;
@@ -43,6 +45,10 @@ public class Linea {
     public String getPorCalcular() {
         return porCalcular;
     }
+
+    public String getConloc() {
+        return conloc;
+    }
     
     // MÉTODOS SETTERS
     public void setEtiqueta(String etiqueta) {
@@ -68,5 +74,10 @@ public class Linea {
     public void setPorCalcular(String porCalcular) {
         this.porCalcular = porCalcular;
     }
+
+    public void setConloc(String conloc) {
+        this.conloc = conloc;
+    }
+    
     
 }

@@ -23,6 +23,11 @@ Uno:	EORA	255,X
 	BLT	$12
 	LBLT	Uno
 	IBNE	A,Uno
+	NOP 	
+	INX
+Et2:	ADCA	#3
+Tres	EQU	%111
+Uno	DS.B
 ; comentario número 2 ¡Bajo!
 ;comentario número 3 -Nivel-
 	END
