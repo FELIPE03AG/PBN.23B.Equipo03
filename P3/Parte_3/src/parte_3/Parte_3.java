@@ -442,6 +442,8 @@ public class Parte_3 {
         Leer();//Llamo el metodo
         if(LineasCodigo.size()!=0){
             Salvacion.BuscarCodop(LineasCodigo);
+            //new TablaListado().setVisible(true);
+            //new TablaTABSIM().setVisible(true);
             new Tabla().setVisible(true);
         }
         
