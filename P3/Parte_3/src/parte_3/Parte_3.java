@@ -18,6 +18,7 @@ public class Parte_3 {
     static Linea NewLinCod=null; //Para guardar en una lista las lineas del codigo
     static boolean Comentario = false;//Variable que indica si la linea es un comentario
     static ArrayList <Linea> LineasCodigo = new ArrayList<>();
+    static boolean org = false;
     
 //**************************************************************** PARTE 1 *******************************************************
     //METODO PARA EVALUAR ETIQUETA
@@ -40,7 +41,7 @@ public class Parte_3 {
         }//Fin largo menor a 8   
         return banEtiq;
     }//Fin validar etiqueta
-    
+   
     //METODO PARA EVALUAR CODOP
     static boolean validarCodop(String codop){
         boolean banCodop=false;
@@ -113,6 +114,24 @@ public class Parte_3 {
                             NewLinCod.setCodop(campos[1].toUpperCase());
                             if(campos.length==3){//Si hay siguiente bloque debe ser el operando
                                 NewLinCod.setOperando(campos[2].toUpperCase()); 
+                                if(NewLinCod.getCodop().equals("ORG")){
+                                    if(NewLinCod.getEtiqueta()!=null && !org){
+                                        if(ConvertirADecimal(NewLinCod.getOperando())!=-1){
+                                            NewLinCod.setOperando(String.valueOf(ConvertirADecimal(NewLinCod.getOperando())));
+                                            NewLinCod.setOperando(Integer.toHexString(Integer.parseInt(NewLinCod.getOperando())).toUpperCase());
+                                            NewLinCod.setOperando("$".concat(NewLinCod.getOperando()));
+                                            org=true;
+                                        }
+                                        else{
+                                            System.out.println("ERROR CON EL OPERANDO DEL ORG");
+                                            NewLinCod=null;
+                                        }
+                                    }
+                                    else{
+                                        System.out.println("ERROR CON EL ORG, ya existe o tiene etiqueta");
+                                        NewLinCod=null;
+                                    }
+                                }
                             }
                             else if(NewLinCod.getCodop().equals("END")){
                                 if(NewLinCod.getOperando().equals(" ")){//Validacion del end
@@ -123,7 +142,9 @@ public class Parte_3 {
                                     NewLinCod.setOperando(" ");
                                 }
                             }
-                            LineasCodigo.add(NewLinCod);
+                            if(NewLinCod!=null){
+                                LineasCodigo.add(NewLinCod);
+                            }
                         }//Fin CODOP correcto
                         else{
                             System.out.println("ERROR "+campos[1]+"No es un CODOP");
