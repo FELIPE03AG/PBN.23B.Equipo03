@@ -50,7 +50,7 @@ public class Salvacion {
                 }
                 if(!encontrado){
                     if(coincidencias==1) {
-                            ValidacionREL(auxiliar,auxSalvacion);
+                            IdentificacionREL(auxiliar,auxSalvacion);
                     }           
                     else if(coincidencias>1){
                         auxiliar.setADDR("OPR fuera de rango");
@@ -155,7 +155,7 @@ public class Salvacion {
         }
     }
     
-    static void ValidacionREL(Linea LinCod,NodoSalvacion AUX){
+    static void IdentificacionREL(Linea LinCod,NodoSalvacion AUX){
         if(AUX.AddrMode.equals("REL")){//Si el operando es REL, hay dos posibilidades
             if(AUX.Operando.equals("rel8")){//Si es de este tipo
                 if(LinCod.getOperando().startsWith("$")){//Si es una direccion debe ser en hexadecimal
