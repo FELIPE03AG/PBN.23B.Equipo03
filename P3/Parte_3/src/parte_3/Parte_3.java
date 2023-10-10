@@ -20,6 +20,27 @@ public class Parte_3 {
     static ArrayList <Linea> LineasCodigo = new ArrayList<>();
     static boolean org = false;
     
+    static String validarDireccion(String direccion){
+        boolean valor = false;
+       if(valor=direccion.startsWith("$")){
+           if(direccion.length()<5){
+               //...
+               
+               
+           }
+           
+       }else{
+           ConvertirADecimal(direccion);
+           String hexa = Integer.toHexString(ConvertirADecimal(direccion));
+           //...
+       }
+        
+        
+        return direccion;
+    }
+    //EN PROCESO...
+    
+    
 //**************************************************************** PARTE 1 *******************************************************
     //METODO PARA EVALUAR ETIQUETA
     static boolean validarEtiq(String etiqueta){
