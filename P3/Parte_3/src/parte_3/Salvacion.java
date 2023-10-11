@@ -219,10 +219,12 @@ public class Salvacion {
     static void IdentificacionDirectivas(Linea LinCod){
         String auxiliar = LinCod.getCodop();
         
-        if(auxiliar.contains(".")){
+        
+        //if(auxiliar.contains(".")){
             String[] campos = auxiliar.split("\\.");
             auxiliar=campos[0];
-        }
+            String tamPala = campos[1];
+        //}
         encontrado=true;
         switch(auxiliar){
             case "ORG":
@@ -242,10 +244,49 @@ public class Salvacion {
                 }
             break;
             case "DC":
-                LinCod.setADDR("DIRECT");
+                if(tamPala.equals("B")){
+                    if(LinCod.getOperando().matches("[0-9A-Z,]+")){
+                        String [] partOpr = LinCod.getOperando().split(",");
+                        LinCod.setADDR("DC.B");
+                    }else{
+                        System.out.println("ERROR DS.B el operando es incorrecto");
+                        encontrado = false;
+                    }
+                }else if(tamPala.equals("W")){
+                    if(LinCod.getOperando().matches("[0-9A-Z,]+")){
+                        LinCod.setADDR("DC.W");
+                    }else{
+                        System.out.println("ERROR DS.B el operando es incorrecto");
+                        encontrado = false;
+                    }
+                }else{
+                    LinCod.setADDR("tamano de palabra fuera de rango");
+                    System.out.println("ERROR DC. el tamano de la palabra es incorrecto");
+                    encontrado = false;
+                }
             break;
             case "DS":
-                LinCod.setADDR("DIRECT");
+                String opr = LinCod.getOperando().toString();
+                
+                if(tamPala.equals("B")){
+                    if(opr.matches("[0-9]+")){
+                        LinCod.setADDR("DS.B");
+                    }else{
+                        System.out.println("ERROR DS.B el operando es incorrecto");
+                        encontrado = false;
+                    }
+                }else if(tamPala.equals("W")){
+                    if(opr.matches("[0-9]+")){
+                        LinCod.setADDR("DS.W");
+                    }else{
+                        System.out.println("ERROR DS.B el operando es incorrecto");
+                        encontrado = false;
+                    }
+                }else{
+                    LinCod.setADDR("Tamano de palabra fuera de rango");
+                    System.out.println("ERROR DS. el tamano de la palabra es incorrecto");
+                    encontrado = false;
+                }
             break;
             default:
                 encontrado=false;
