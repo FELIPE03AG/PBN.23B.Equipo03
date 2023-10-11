@@ -26,8 +26,9 @@ Uno:	EORA	255,X
 	NOP 	
 	INX
 Et2:	ADCA	#3
-Tres	EQU	%111
-Uno	DS.B
+tres:	EQU	%111
+Uno	DS.B	3
+	DC.W	4,$3
 ; comentario número 2 ¡Bajo!
 ;comentario número 3 -Nivel-
 	END
