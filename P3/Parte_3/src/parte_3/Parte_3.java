@@ -319,16 +319,13 @@ public class Parte_3 {
         }
         switch (dirCorrecta.length()) {
             case 1:
-                dirCorrecta="$000".concat(dirCorrecta);
+                dirCorrecta="000".concat(dirCorrecta);
             break;
             case 2:
-                dirCorrecta="$00".concat(dirCorrecta);
+                dirCorrecta="00".concat(dirCorrecta);
             break;
             case 3:
-                dirCorrecta="$0".concat(dirCorrecta);
-            break;
-            case 4:
-                dirCorrecta="$".concat(dirCorrecta);
+                dirCorrecta="0".concat(dirCorrecta);
             break;
         }
         return dirCorrecta;
@@ -472,8 +469,7 @@ public class Parte_3 {
         Leer();//Llamo el metodo
         if(LineasCodigo.size()!=0){
             Salvacion.BuscarCodop(LineasCodigo);
-            //new TablaListado().setVisible(true);
-            //new TablaTABSIM().setVisible(true);
+            MetodosP3.LlenarList(LineasCodigo);
             new Tabla().setVisible(true);
         }
         

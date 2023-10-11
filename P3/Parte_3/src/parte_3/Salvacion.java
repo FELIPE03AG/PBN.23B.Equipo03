@@ -246,32 +246,34 @@ public class Salvacion {
             break;
             case "DC":
                 int tam=0;
-                if(LinCod.getOperando().contains(",")){
-                    String [] partOpr = LinCod.getOperando().split(",");
-                    tam=partOpr.length;
-                }
-                if(tamPala.equals("B")){
-                    if(tam!=0){
-                        LinCod.setSize(String.valueOf(tam)+" bytes");
-                        LinCod.setPorCalcular("0 bytes");
+                if(!(LinCod.getOperando().equals(" "))){
+                    if(LinCod.getOperando().contains(",")){
+                        String [] partOpr = LinCod.getOperando().split(",");
+                        tam=partOpr.length;
                     }
-                    else{
-                        LinCod.setSize("1 bytes");
-                        LinCod.setPorCalcular("0 bytes");
-                    }
-                    LinCod.setADDR("DIRECT");
-                }else if(tamPala.equals("W")){
-                    if(tam!=0){
-                        LinCod.setSize(String.valueOf(tam*2)+" bytes");
-                        LinCod.setPorCalcular("0 bytes");
-                    }
-                    else{
+                    if(tamPala.equals("B")){
+                        if(tam!=0){
+                            LinCod.setSize(String.valueOf(tam)+" bytes");
+                            LinCod.setPorCalcular("0 bytes");
+                        }
+                        else{
+                            LinCod.setSize("1 bytes");
+                            LinCod.setPorCalcular("0 bytes");
+                        }
+                            LinCod.setADDR("DIRECT");
+                    }else if(tamPala.equals("W")){
+                        if(tam!=0){
+                            LinCod.setSize(String.valueOf(tam*2)+" bytes");
+                            LinCod.setPorCalcular("0 bytes");
+                        }
+                        else{
                         
+                        }
+                        LinCod.setADDR("DIRECT");
+                    }else{
+                        System.out.println("ERROR DC. el tamano de la palabra es incorrecto");
+                        encontrado = false;
                     }
-                    LinCod.setADDR("DIRECT");
-                }else{
-                    System.out.println("ERROR DC. el tamano de la palabra es incorrecto");
-                    encontrado = false;
                 }
             break;
             case "DS":
