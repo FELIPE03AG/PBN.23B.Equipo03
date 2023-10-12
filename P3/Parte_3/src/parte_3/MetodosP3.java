@@ -95,7 +95,6 @@ public class MetodosP3 {
                     auxArchivo.writeBytes("\n");
                     String[] campos= auxiliar.getSize().split("\\s+");
                     bytes=Integer.parseInt(campos[0]);
-                    System.out.println(bytes);
                 }
             }
         }catch(IOException ex){

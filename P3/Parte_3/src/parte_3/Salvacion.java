@@ -255,6 +255,9 @@ public class Salvacion {
                         String [] partOpr = LinCod.getOperando().split(",");
                         tam=partOpr.length;
                     }
+                    else if(LinCod.getOperando().startsWith("\"")&&LinCod.getOperando().endsWith("\"")){
+                        tam=LinCod.getOperando().substring(1, LinCod.getOperando().length()-1).length();
+                    }
                     if(tamPala.equals("B")){
                         if(tam!=0){
                             LinCod.setSize(String.valueOf(tam)+" bytes");
