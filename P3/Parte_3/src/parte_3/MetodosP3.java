@@ -69,12 +69,14 @@ public class MetodosP3 {
                     else if(auxiliar.getCodop().equals("EQU")){
                         auxArchivo.writeBytes("VALOR,       ");
                         auxArchivo.writeBytes(Parte_3.validarDireccion(auxiliar.getOperando())+",       ");
+                        auxiliar.setConloc(Parte_3.validarDireccion(auxiliar.getOperando()));
                     }
                     else{
                         if(!(valor.equals("0"))){
                             auxArchivo.writeBytes("CONTLOC,       ");
                             valor= sumarHexadecimal(valor,bytes);
                             auxArchivo.writeBytes(valor+",       ");
+                            auxiliar.setConloc(valor);
                         }
                     }
                     if(auxiliar.getEtiqueta().equals(" ")){
