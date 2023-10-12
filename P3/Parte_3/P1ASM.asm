@@ -1,4 +1,3 @@
-; comentario número 1 =Programación=
 	ORG 	$4040
 	EORA	#1500
 	EORA 	1,+PC
@@ -23,6 +22,4 @@ Uno	DS.B	3
 	DC.B	$FFFF,5
 	DS.W	$5
 	sss	efd
-; comentario número 2 ¡Bajo!
-;comentario número 3 -Nivel-
 	END

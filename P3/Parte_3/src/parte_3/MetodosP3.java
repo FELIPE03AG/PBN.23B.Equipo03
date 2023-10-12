@@ -54,6 +54,7 @@ public class MetodosP3 {
     static void LlenarList(ArrayList <Linea> AuxLineasCodigo) {
         int bytes=0;
         String valor="0";
+        boolean equ=false;
         CrearArchivoList();
         Creartabsim();
         try{
@@ -68,13 +69,14 @@ public class MetodosP3 {
                             auxArchivo.writeBytes(sumarHexadecimal(valor,bytes)+",       ");
                         }
                         else{
-                            System.out.println("NO SE PUEDE CALCULAR EL CONLOC PORQUE OPR DE 'ORG' ES INCORRECTO");
+                            System.out.println("NO SE PUEDE CALCULAR EL CONLOC PORQUE OPR DE ORG ES INCORRECTO");
                         }
                     }
                     else if(auxiliar.getCodop().equals("EQU")){
                         auxArchivo.writeBytes("VALOR,       ");
                         auxArchivo.writeBytes(Parte_3.validarDireccion(auxiliar.getOperando())+",       ");
                         auxiliar.setConloc(Parte_3.validarDireccion(auxiliar.getOperando()));
+                        equ=true;
                     }
                     else{
                         if(!(valor.equals("0"))){
@@ -86,20 +88,23 @@ public class MetodosP3 {
                             bytes=Integer.parseInt(campos[0]);
                         }
                     }
-                    if(auxiliar.getEtiqueta().equals(" ")){
-                        auxArchivo.writeBytes("NULL,       ");
+                    if(!(valor.equals("0")) || equ){
+                        if(auxiliar.getEtiqueta().equals(" ")){
+                            auxArchivo.writeBytes("NULL,       ");
+                        }
+                        else{
+                            auxArchivo.writeBytes(auxiliar.getEtiqueta()+",       ");
+                        }
+                        auxArchivo.writeBytes(auxiliar.getCodop()+",       ");
+                        if(auxiliar.getOperando().equals(" ")){
+                            auxArchivo.writeBytes("NULL,       ");
+                        }
+                        else{
+                            auxArchivo.writeBytes(auxiliar.getOperando()+",       ");
+                        }
+                        auxArchivo.writeBytes("\n");
                     }
-                    else{
-                        auxArchivo.writeBytes(auxiliar.getEtiqueta()+",       ");
-                    }
-                    auxArchivo.writeBytes(auxiliar.getCodop()+",       ");
-                    if(auxiliar.getOperando().equals(" ")){
-                        auxArchivo.writeBytes("NULL,       ");
-                    }
-                    else{
-                        auxArchivo.writeBytes(auxiliar.getOperando()+",       ");
-                    }
-                    auxArchivo.writeBytes("\n");
+                    equ=false;
                 }
             }
         }catch(IOException ex){
@@ -143,7 +148,7 @@ public class MetodosP3 {
             RandomAccessFile auxArchivo = new RandomAccessFile("TABSIM.txt","rw"); //Encuentro el archivo y accedo para leer y escribir
             for(Linea auxiliar : AuxLineasCodigo){
                 auxArchivo.seek(auxArchivo.length()); //Seek posiciona el puntero donde escribir, length es para decirle donde esta el final
-                if(!(auxiliar.getEtiqueta().equals(" "))){
+                if(!(auxiliar.getEtiqueta().equals(" "))&& !(auxiliar.getADDR().equals("ERROR"))){
                     if(auxiliar.getCodop().equals("EQU")){
                         auxArchivo.writeBytes("ABSOLUTA       ");
                     }

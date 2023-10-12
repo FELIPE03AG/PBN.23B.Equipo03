@@ -1,5 +1,3 @@
 TIPO            Si       Ti            
 ABSOLUTA       TRES       0007       
-ABSOLUTA       H               
-ABSOLUTA       F               
 RELATIVA       UNO       4040       
