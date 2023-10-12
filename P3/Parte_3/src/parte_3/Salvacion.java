@@ -33,22 +33,19 @@ public class Salvacion {
                         coincidencias++;
                         IdentificarADDR(auxiliar,auxSalvacion);
                     }//Fin comparacion con salvacion
-                    else if((!campos[0].equals(Buscar))){
-                        
-                    }
                 }//Fin del while
                 if(!encontrado){
                     if(coincidencias==0){
                         auxiliar.setADDR("ERROR");
-                        System.out.println("ADDR no aceptado");
-                        System.out.println("CODOP "+ auxiliar.getCodop()+" NO EXISTE");
+                        System.out.print("ADDR no aceptado");
+                        System.out.println(" en codop: "+ auxiliar.getCodop()+" porque NO EXISTE");
                     }
                     else if(coincidencias==1) {
                             IdentificacionREL(auxiliar,auxSalvacion);
                     }           
                     else if(coincidencias>1){
                         auxiliar.setADDR("ERROR");
-                        System.out.println("OPR fuera de rango en linea del CODOP " + auxiliar.getCodop() + " con el operando " + auxiliar.getOperando());
+                        System.out.println("OPR fuera de rango en linea: " + auxiliar.getCodop() + " " + auxiliar.getOperando());
                     }
                 }
                 leerArchivo.close();
@@ -229,60 +226,98 @@ public class Salvacion {
         encontrado=true;
         switch(auxiliar){
             case "ORG":
-                LinCod.setADDR("DIRECT");
-                LinCod.setSize("0 bytes");
-                LinCod.setPorCalcular("0 bytes");
+                if(Parte_3.ConvertirADecimal(LinCod.getOperando())==-1){
+                    LinCod.setADDR("ERROR");
+                    System.out.println("opr fuera de rango en: "+LinCod.getCodop()+" "+LinCod.getOperando());
+                }
+                else{
+                    LinCod.setADDR("DIRECT");
+                }
             break;
             case "END":
                 LinCod.setADDR("DIRECT");
-                LinCod.setSize("0 bytes");
-                LinCod.setPorCalcular("0 bytes");
             break;
             case "EQU":
-                if(!(LinCod.getEtiqueta().equals(" ")) && Parte_3.ConvertirADecimal(LinCod.getOperando())!=-1){
-                    LinCod.setADDR("DIRECT");
-                    LinCod.setSize("0 bytes");
-                    LinCod.setPorCalcular("0 bytes");
+                if(LinCod.getEtiqueta().equals(" ") || Parte_3.ConvertirADecimal(LinCod.getOperando())==-1){
+                    LinCod.setADDR("ERROR");
+                    System.out.print("ERROR EQU "+LinCod.getOperando()+" porque");
+                    if(LinCod.getEtiqueta().equals(" ")){
+                        System.out.println(" no tiene etiqueta");
+                    }
+                    else{
+                        System.out.println(" el OPR esta fuera de rango");
+                    }
                 }
                 else{
-                    LinCod.setADDR("OPR fuera de rango");
-                    System.out.println("ERROR EQU NO tiene etiqueta o el operando es incorrecto");
-                    encontrado=false;
+                    LinCod.setADDR("DIRECT");
                 }
             break;
             case "DC":
                 int tam=0;
+                boolean oprBien=true,mayor255=false;
                 if(!(LinCod.getOperando().equals(" "))){
                     if(LinCod.getOperando().contains(",")){
                         String [] partOpr = LinCod.getOperando().split(",");
                         tam=partOpr.length; 
+                        for(int i=0; i<tam; i++){
+                            if(Parte_3.ConvertirADecimal(partOpr[i])==-1){
+                                oprBien=false;
+                            }
+                            else if(Parte_3.ConvertirADecimal(partOpr[i])>255){
+                                mayor255=true;
+                            }
+                        }
                     }
                     else if(LinCod.getOperando().startsWith("\"")&&LinCod.getOperando().endsWith("\"")){
                         tam=LinCod.getOperando().substring(1, LinCod.getOperando().length()-1).length();
                     }
+                    
                     if(tamPala.equals("B")){
                         if(tam!=0){
-                            LinCod.setSize(String.valueOf(tam)+" bytes");
-                            LinCod.setPorCalcular("0 bytes");
+                            if(oprBien && !mayor255){
+                                LinCod.setSize(String.valueOf(tam)+" bytes");
+                                LinCod.setADDR("DIRECT");
+                            }
+                            else{
+                                LinCod.setADDR("ERROR");
+                                System.out.println("OPR fuera de rango en: "+LinCod.getCodop()+" "+LinCod.getOperando());
+                            }
                         }
                         else{
-                            LinCod.setSize("1 bytes");
-                            LinCod.setPorCalcular("0 bytes");
+                            if(Parte_3.ConvertirADecimal(LinCod.getOperando())!=-1 && Parte_3.ConvertirADecimal(LinCod.getOperando())<255){
+                                LinCod.setSize("1 bytes");
+                                LinCod.setADDR("DIRECT");
+                            }
+                            else{
+                                LinCod.setADDR("ERROR");
+                                System.out.println("OPR fuera de rango en: "+LinCod.getCodop()+" "+LinCod.getOperando());
+                            }
                         }
-                            LinCod.setADDR("DIRECT");
-                    }else if(tamPala.equals("W")){
+                    }
+                    else if(tamPala.equals("W")){
                         if(tam!=0){
                             LinCod.setSize(String.valueOf(tam*2)+" bytes");
-                            LinCod.setPorCalcular("0 bytes");
+                            LinCod.setADDR("DIRECT");
                         }
                         else{
-                        
+                            if(Parte_3.ConvertirADecimal(LinCod.getOperando())!=-1){
+                                LinCod.setSize("2 bytes");
+                                LinCod.setADDR("DIRECT");
+                            }
+                            else{
+                                LinCod.setADDR("ERROR");
+                                System.out.println("OPR fuera de rango en: "+LinCod.getCodop()+" "+LinCod.getOperando());
+                            }
                         }
-                        LinCod.setADDR("DIRECT");
-                    }else{
-                        System.out.println("ERROR DC. el tamano de la palabra es incorrecto");
-                        encontrado = false;
                     }
+                    else{
+                        LinCod.setADDR("ERROR");
+                        System.out.println("ADDR no aceptado en: "+LinCod.getCodop()+" "+LinCod.getOperando()+ " porque el tamano de la palabra es incorrecto");
+                    }
+                }
+                else{
+                    LinCod.setADDR("ERROR");
+                    System.out.println("OPR fuera de rango en codop: "+LinCod.getCodop()+" con opr: "+LinCod.getOperando());
                 }
             break;
             case "DS":
@@ -291,26 +326,32 @@ public class Salvacion {
                     if(tamPala.equals("B")){
                         LinCod.setADDR("DIRECT");
                         LinCod.setSize(LinCod.getOperando()+" bytes");
-                        LinCod.setPorCalcular("0 bytes");
                     }
                     else if(tamPala.equals("W")){
                         LinCod.setADDR("DIRECT");
                         LinCod.setSize(String.valueOf(Integer.parseInt(LinCod.getOperando())*2)+" bytes");
-                        LinCod.setPorCalcular("0 bytes");
                     }
                     else{
-                        System.out.println("ERROR DS. el tamano de la palabra es incorrecto");
-                        encontrado = false;
+                        LinCod.setADDR("ERROR");
+                        System.out.println("ADDR no aceptado en: "+LinCod.getCodop()+" "+LinCod.getOperando()+ " porque el tamano de la palabra es incorrecto");
                     }
                 }
                 else{
-                    LinCod.setADDR("OPR fuera de rango");
-                    encontrado = false;
+                    LinCod.setADDR("ERROR");
+                    System.out.println("OPR fuera de rango en: "+LinCod.getCodop()+" "+LinCod.getOperando());
                 }
             break;
             default:
                 encontrado=false;
             break;
+        }
+        if(encontrado==true){
+            if(!((LinCod.getCodop().contains("DS")) || (LinCod.getCodop().contains("DC"))) && !(LinCod.getADDR().equals("ERROR"))){
+                LinCod.setSize("0 bytes");
+            }
+            if(!(LinCod.getADDR().equals("ERROR"))){
+                LinCod.setPorCalcular("0 bytes");
+            }
         }
     }
 }//Fin clase

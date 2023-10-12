@@ -173,10 +173,9 @@ public class Parte_3 {
             int indiceUltimoElemento = LineasCodigo.size() - 1;
             if(cursorActual==auxArchivo.length() && (!LineasCodigo.get(indiceUltimoElemento).getCodop().equals("END"))){
                 System.out.println("END NO LOCALIZADO");
-                // Elimina el último elemento del ArrayList
-                if (indiceUltimoElemento >= 0) {
-                    LineasCodigo.remove(indiceUltimoElemento);
-                }
+            }
+            if(!org){
+                System.out.println("ORG NO LOCALIZADO, el programa no podrá funcionar correctamente");
             }
             leerArchivo.close();
         }catch(IOException ex){

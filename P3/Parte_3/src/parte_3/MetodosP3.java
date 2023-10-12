@@ -53,7 +53,7 @@ public class MetodosP3 {
     
     static void LlenarList(ArrayList <Linea> AuxLineasCodigo) {
         int bytes=0;
-        String valor="0",valorEqu="0";
+        String valor="0";
         CrearArchivoList();
         Creartabsim();
         try{
@@ -62,9 +62,14 @@ public class MetodosP3 {
                 if(!(auxiliar.getSize().equals(" "))){
                     auxArchivo.seek(auxArchivo.length()); //Seek posiciona el puntero donde escribir, length es para decirle donde esta el final
                     if(auxiliar.getCodop().equals("ORG")){
-                        auxArchivo.writeBytes("DIR_INIC,        ");
-                        valor=Parte_3.validarDireccion(auxiliar.getOperando());
-                        auxArchivo.writeBytes(sumarHexadecimal(valor,bytes)+",       ");
+                        if(!(auxiliar.getADDR().equals("ERROR"))){
+                            auxArchivo.writeBytes("DIR_INIC,        ");
+                            valor=Parte_3.validarDireccion(auxiliar.getOperando());
+                            auxArchivo.writeBytes(sumarHexadecimal(valor,bytes)+",       ");
+                        }
+                        else{
+                            System.out.println("NO SE PUEDE CALCULAR EL CONLOC PORQUE OPR DE 'ORG' ES INCORRECTO");
+                        }
                     }
                     else if(auxiliar.getCodop().equals("EQU")){
                         auxArchivo.writeBytes("VALOR,       ");
