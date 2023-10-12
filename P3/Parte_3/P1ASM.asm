@@ -29,6 +29,7 @@ Et2:	ADCA	#3
 tres:	EQU	%111
 Uno	DS.B	3
 	DC.W	4,$3
+	DC.B	"ABC"
 ; comentario número 2 ¡Bajo!
 ;comentario número 3 -Nivel-
 	END
