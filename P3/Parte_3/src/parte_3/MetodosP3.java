@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class MetodosP3 {
     static File archivo = new File("P1ASM.lst");
+    static File archivo2 = new File("TABSIM.txt");
     static void CrearArchivoList(){ 
         try {
             // Eliminar el archivo si ya existe
@@ -38,6 +39,35 @@ public class MetodosP3 {
         }
     }//fin crear
     
+    static void Creartabsim(){
+        try {
+            // Eliminar el archivo si ya existe
+            if (archivo2.exists()) {
+                archivo2.delete();
+                System.out.println("El archivo TABSIM se va a sobreescribir");
+            }
+
+            // Crear el archivo nuevamente
+            archivo2.createNewFile();
+            System.out.println("El archivo TABSIM se creo correctamente: " + archivo2.getName());
+
+            RandomAccessFile auxArchivo = new RandomAccessFile("TABSIM.txt", "rw");
+            auxArchivo.seek(auxArchivo.length());
+
+            // Escribir en el documento
+            auxArchivo.writeBytes("TIPO            ");
+            auxArchivo.writeBytes("Si       ");
+            auxArchivo.writeBytes("Ti            ");
+            auxArchivo.writeBytes("\n");
+
+            // Cerrar el archivo después de escribir
+            auxArchivo.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            System.out.println("No se ha creado el archivo");
+        }
+    }
+    
     public static String sumarHexadecimal(String hexadecimal, int entero) {
         // Convertir el valor hexadecimal a entero
         int valorHexadecimal = Integer.parseInt(hexadecimal, 16);
@@ -55,6 +85,7 @@ public class MetodosP3 {
         int bytes=0;
         String valor="0",valorEqu="0";
         CrearArchivoList();
+        Creartabsim();
         try{
             RandomAccessFile auxArchivo = new RandomAccessFile("P1ASM.lst","rw"); //Encuentro el archivo y accedo para leer y escribir
             for(Linea auxiliar : AuxLineasCodigo){
