@@ -228,9 +228,13 @@ public class Salvacion {
         switch(auxiliar){
             case "ORG":
                 LinCod.setADDR("DIRECT");
+                LinCod.setSize("0 bytes");
+                LinCod.setPorCalcular("0 bytes");
             break;
             case "END":
                 LinCod.setADDR("DIRECT");
+                LinCod.setSize("0 bytes");
+                LinCod.setPorCalcular("0 bytes");
             break;
             case "EQU":
                 if(!(LinCod.getEtiqueta().equals(" ")) && Parte_3.ConvertirADecimal(LinCod.getOperando())!=-1){

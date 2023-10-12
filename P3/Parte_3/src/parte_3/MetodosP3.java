@@ -7,30 +7,53 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
 public class MetodosP3 {
-    static File archivo=null;
+    static File archivo = new File("P1ASM.lst");
     static void CrearArchivoList(){ 
-        try{
-            archivo = new File ("P1ASM.lst"); //Nombro el archivo
-            archivo.createNewFile();//Creo el archivo
-            System.out.println("El archivo se creo correctamente: "+archivo.getName());
-            RandomAccessFile auxArchivo = new RandomAccessFile("P1ASM.lst","rw"); //Encuentro el archivo y accedo para leer y escribir
-            auxArchivo.seek(auxArchivo.length()); //Seek posiciona el puntero donde escribir, length es para decirle donde esta el final
-            //escribe en el documento
-            auxArchivo.writeBytes("TIPO,        "); 
+        try {
+            // Eliminar el archivo si ya existe
+            if (archivo.exists()) {
+                archivo.delete();
+                System.out.println("El archivo se va a sobreescribir");
+            }
+
+            // Crear el archivo nuevamente
+            archivo.createNewFile();
+            System.out.println("El archivo se creo correctamente: " + archivo.getName());
+
+            RandomAccessFile auxArchivo = new RandomAccessFile("P1ASM.lst", "rw");
+            auxArchivo.seek(auxArchivo.length());
+
+            // Escribir en el documento
+            auxArchivo.writeBytes("TIPO,        ");
             auxArchivo.writeBytes("VALOR,       ");
             auxArchivo.writeBytes("ETQ,         ");
             auxArchivo.writeBytes("CODOP,       ");
             auxArchivo.writeBytes("OPER \n");
-        }//fin try
-        catch(IOException ex){
-            ex.printStackTrace();//Por si hay algun error al crear
+
+            // Cerrar el archivo después de escribir
+            auxArchivo.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
             System.out.println("No se ha creado el archivo");
-        }//fin catch
+        }
     }//fin crear
     
+    public static String sumarHexadecimal(String hexadecimal, int entero) {
+        // Convertir el valor hexadecimal a entero
+        int valorHexadecimal = Integer.parseInt(hexadecimal, 16);
+
+        // Sumar el entero al valor hexadecimal
+        int suma = valorHexadecimal + entero;
+
+        // Obtener la representación hexadecimal del resultado
+        String resultadoHexadecimal = Integer.toHexString(suma).toUpperCase();
+
+        return resultadoHexadecimal;
+    }
+    
     static void LlenarList(ArrayList <Linea> AuxLineasCodigo) {
-        int memoria=0, bytes=0, valorEqu=0;
-        String valor=" ";
+        int bytes=0;
+        String valor="0",valorEqu="0";
         CrearArchivoList();
         try{
             RandomAccessFile auxArchivo = new RandomAccessFile("P1ASM.lst","rw"); //Encuentro el archivo y accedo para leer y escribir
@@ -40,27 +63,20 @@ public class MetodosP3 {
                     if(auxiliar.getCodop().equals("ORG")){
                         System.out.println("Identifico ORG");
                         auxArchivo.writeBytes("DIR_INIC,        ");
-                        memoria=Integer.parseInt(Parte_3.validarDireccion(auxiliar.getOperando()));
+                        valor=Parte_3.validarDireccion(auxiliar.getOperando());
+                        auxArchivo.writeBytes(sumarHexadecimal(valor,bytes)+",       ");
                     }
                     else if(auxiliar.getCodop().equals("EQU")){
                         auxArchivo.writeBytes("VALOR,       ");
-                        valorEqu=Integer.parseInt(Parte_3.validarDireccion(auxiliar.getOperando()));
+                        auxArchivo.writeBytes(Parte_3.validarDireccion(auxiliar.getOperando())+",       ");
                     }
                     else{
-                        if(memoria!=0){
+                        if(!(valor.equals("0"))){
                             auxArchivo.writeBytes("CONTLOC,       ");
+                            valor= sumarHexadecimal(valor,bytes);
+                            auxArchivo.writeBytes(valor+",       ");
                         }
                     }
-                    if(valorEqu==0){
-                        memoria=memoria+bytes;
-                        valor= Integer.toString(memoria);
-                    }
-                    else{
-                        valor=Integer.toString(valorEqu);
-                        valorEqu=0;
-                    }
-                    //valor=valor.substring(0,2).concat(" ").concat(valor.substring(2, 4));
-                    auxArchivo.writeBytes(valor+",       ");
                     if(auxiliar.getEtiqueta().equals(" ")){
                         auxArchivo.writeBytes("NULL,       ");
                     }
@@ -77,6 +93,7 @@ public class MetodosP3 {
                     auxArchivo.writeBytes("\n");
                     String[] campos= auxiliar.getSize().split("\\s+");
                     bytes=Integer.parseInt(campos[0]);
+                    System.out.println(bytes);
                 }
             }
         }catch(IOException ex){
