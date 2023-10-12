@@ -39,14 +39,16 @@ public class Salvacion {
                 }//Fin del while
                 if(!encontrado){
                     if(coincidencias==0){
-                        auxiliar.setADDR("ADDR no aceptado");
+                        auxiliar.setADDR("ERROR");
+                        System.out.println("ADDR no aceptado");
                         System.out.println("CODOP "+ auxiliar.getCodop()+" NO EXISTE");
                     }
                     else if(coincidencias==1) {
                             IdentificacionREL(auxiliar,auxSalvacion);
                     }           
                     else if(coincidencias>1){
-                        auxiliar.setADDR("OPR fuera de rango");
+                        auxiliar.setADDR("ERROR");
+                        System.out.println("OPR fuera de rango en linea del CODOP " + auxiliar.getCodop() + " con el operando " + auxiliar.getOperando());
                     }
                 }
                 leerArchivo.close();
