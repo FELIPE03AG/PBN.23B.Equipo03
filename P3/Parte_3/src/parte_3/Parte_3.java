@@ -470,6 +470,7 @@ public class Parte_3 {
         if(LineasCodigo.size()!=0){
             Salvacion.BuscarCodop(LineasCodigo);
             MetodosP3.LlenarList(LineasCodigo);
+            MetodosP3.LlenarTabsim(LineasCodigo);
             new Tabla().setVisible(true);
         }
         

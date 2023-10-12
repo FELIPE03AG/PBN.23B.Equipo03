@@ -253,7 +253,7 @@ public class Salvacion {
                 if(!(LinCod.getOperando().equals(" "))){
                     if(LinCod.getOperando().contains(",")){
                         String [] partOpr = LinCod.getOperando().split(",");
-                        tam=partOpr.length;
+                        tam=partOpr.length; 
                     }
                     else if(LinCod.getOperando().startsWith("\"")&&LinCod.getOperando().endsWith("\"")){
                         tam=LinCod.getOperando().substring(1, LinCod.getOperando().length()-1).length();
