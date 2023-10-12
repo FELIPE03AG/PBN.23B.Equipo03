@@ -77,6 +77,8 @@ public class MetodosP3 {
                             valor= sumarHexadecimal(valor,bytes);
                             auxArchivo.writeBytes(valor+",       ");
                             auxiliar.setConloc(valor);
+                            String[] campos= auxiliar.getSize().split("\\s+");
+                            bytes=Integer.parseInt(campos[0]);
                         }
                     }
                     if(auxiliar.getEtiqueta().equals(" ")){
@@ -93,8 +95,6 @@ public class MetodosP3 {
                         auxArchivo.writeBytes(auxiliar.getOperando()+",       ");
                     }
                     auxArchivo.writeBytes("\n");
-                    String[] campos= auxiliar.getSize().split("\\s+");
-                    bytes=Integer.parseInt(campos[0]);
                 }
             }
         }catch(IOException ex){
