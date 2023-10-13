@@ -68,7 +68,7 @@ public class MetodosP3 {
                             auxArchivo.writeBytes("DIR_INIC,        "); // escribe esto en el txt list
                             valor=Parte_3.validarDireccion(auxiliar.getOperando());
                             //la variable valor toma el valor de operando
-                            auxArchivo.writeBytes(sumarHexadecimal(valor,bytes)+",       ");
+                            auxArchivo.writeBytes("$".concat(valor)+",       ");
                             //deja un espacio en el txt para organizarce
                         }//fin de segundo if
                         else{
@@ -76,7 +76,7 @@ public class MetodosP3 {
                         }//fin del else
                     }//fin del primer if
                     else if(auxiliar.getCodop().equals("EQU")){ //analiza que el OPR sea = EQU
-                        auxArchivo.writeBytes("VALOR,       ");// escribe valor y deja un espacio para organizarse
+                        auxArchivo.writeBytes("VALOR,          ");// escribe valor y deja un espacio para organizarse
                         auxArchivo.writeBytes(Parte_3.validarDireccion(auxiliar.getOperando())+",       ");//escribe esto en el txt
                         auxiliar.setConloc(Parte_3.validarDireccion(auxiliar.getOperando()));//valida la direccion y la establece en conloc
                         equ=true;
@@ -85,8 +85,8 @@ public class MetodosP3 {
                         if(!(valor.equals("0"))){//valida que no sea 0 la varaible valor
                             auxArchivo.writeBytes("CONTLOC,       ");// escribe esto en el txt list
                             valor= sumarHexadecimal(valor,bytes);//suma los bytes al valor
-                            auxArchivo.writeBytes(valor+",       ");//escribe en el txt list el nuevo valor
-                            auxiliar.setConloc(valor); //toma conloc el nuevo valor
+                            auxArchivo.writeBytes(Parte_3.validarDireccion(valor)+",       ");//escribe en el txt list el nuevo valor
+                            auxiliar.setConloc(Parte_3.validarDireccion("$".concat(valor))); //toma conloc el nuevo valor
                             String[] campos= auxiliar.getSize().split("\\s+");//agarra el valor de la posicion
                             bytes=Integer.parseInt(campos[0]);//lo converte de String a entero
                         }//fin del if

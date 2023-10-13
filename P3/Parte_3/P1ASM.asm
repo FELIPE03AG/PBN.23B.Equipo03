@@ -1,25 +1,30 @@
-	ORG 	$4040
-	EORA	#1500
-	EORA 	1,+PC
-tres:	EQU	%111
-	EQU	$3
-h	EQU	
-F	equ	$#@
-Uno	DS.B	3
-	DS.B	1,5
-	DS.W	5
-	DS.L	4
-	DS.b	#	
-	DC.W	4,$3
-	dc.b	@4,5
-	DC,L	4
-	DC.B	%1
-	DC.W	#4
-	DC.W	7
-	DC.B	"ABC"
-	DC.W	"A"
-	DC.B	$FFFF
-	DC.B	$FFFF,5
-	DS.W	$5
-	sss	efd
-	END
+	ORG $1
+Et1: SWI
+dos: EORA 5
+    EORA @5
+Tres: EORA %111
+Pru: EQU @34
+    EORA $6
+    EORA 300
+    EORA $FFF
+    DS.B 4
+    EORA #5
+    EORA #@5
+    EORA #1500
+    EORA 1,X
+Uno: EORA -255,X
+    EORA 32768,X
+    EORA 1,+SP
+    EORA A,X
+    EORA 254,X
+    EORA 64444,X
+    EORA [1,X]
+    EORA [6444,X]
+    EORA [D,X]
+    BLT Uno
+    CPD Dos
+    ADDD #28455
+    ADDD
+    LBLT Uno
+    IBNE A,Uno
+    END

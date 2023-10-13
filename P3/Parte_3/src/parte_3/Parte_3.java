@@ -327,7 +327,7 @@ public class Parte_3 {
                 dirCorrecta="0".concat(dirCorrecta);
             break;
         }
-        return dirCorrecta;
+        return dirCorrecta.toUpperCase();
     }
 
     

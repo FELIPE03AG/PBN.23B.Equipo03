@@ -1,3 +1,6 @@
 TIPO            Si       Ti            
-ABSOLUTA       TRES       0007       
-RELATIVA       UNO       4040       
+RELATIVA       ET1       0001       
+RELATIVA       DOS       0002       
+RELATIVA       TRES       0006       
+ABSOLUTA       PRU       001C       
+RELATIVA       UNO       001A       
