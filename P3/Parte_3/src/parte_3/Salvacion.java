@@ -38,14 +38,14 @@ public class Salvacion {
                     if(coincidencias==0){
                         auxiliar.setADDR("ERROR");
                         System.out.print("ADDR no aceptado");
-                        System.out.println(" en codop: "+ auxiliar.getCodop()+" porque NO EXISTE");
+                        System.out.println(" en codop: "+auxiliar.getEtiqueta()+" "+ auxiliar.getCodop()+" porque NO EXISTE");
                     }
                     else if(coincidencias==1) {
                             IdentificacionREL(auxiliar,auxSalvacion);
                     }           
                     else if(coincidencias>1){
                         auxiliar.setADDR("ERROR");
-                        System.out.println("OPR fuera de rango en linea: " + auxiliar.getCodop() + " " + auxiliar.getOperando());
+                        System.out.println("OPR fuera de rango en linea: "+auxiliar.getEtiqueta()+" "+ auxiliar.getCodop() + " " + auxiliar.getOperando());
                     }
                 }
                 leerArchivo.close();
@@ -228,7 +228,7 @@ public class Salvacion {
             case "ORG":
                 if(Parte_3.ConvertirADecimal(LinCod.getOperando())==-1){
                     LinCod.setADDR("ERROR");
-                    System.out.println("opr fuera de rango en: "+LinCod.getCodop()+" "+LinCod.getOperando());
+                    System.out.println("opr fuera de rango en: "+LinCod.getEtiqueta()+" "+LinCod.getCodop()+" "+LinCod.getOperando());
                 }
                 else{
                     LinCod.setADDR("DIRECT");
@@ -240,7 +240,7 @@ public class Salvacion {
             case "EQU":
                 if(LinCod.getEtiqueta().equals(" ") || Parte_3.ConvertirADecimal(LinCod.getOperando())==-1){
                     LinCod.setADDR("ERROR");
-                    System.out.print("ERROR EQU "+LinCod.getOperando()+" porque");
+                    System.out.print("ERROR en: "+LinCod.getEtiqueta()+" EQU "+LinCod.getOperando()+" porque");
                     if(LinCod.getEtiqueta().equals(" ")){
                         System.out.println(" no tiene etiqueta");
                     }
@@ -280,7 +280,7 @@ public class Salvacion {
                             }
                             else{
                                 LinCod.setADDR("ERROR");
-                                System.out.println("OPR fuera de rango en: "+LinCod.getCodop()+" "+LinCod.getOperando());
+                                System.out.println("OPR fuera de rango en: "+LinCod.getEtiqueta()+" "+LinCod.getCodop()+" "+LinCod.getOperando());
                             }
                         }
                         else{
@@ -290,7 +290,7 @@ public class Salvacion {
                             }
                             else{
                                 LinCod.setADDR("ERROR");
-                                System.out.println("OPR fuera de rango en: "+LinCod.getCodop()+" "+LinCod.getOperando());
+                                System.out.println("OPR fuera de rango en: "+LinCod.getEtiqueta()+" "+LinCod.getCodop()+" "+LinCod.getOperando());
                             }
                         }
                     }
@@ -306,18 +306,18 @@ public class Salvacion {
                             }
                             else{
                                 LinCod.setADDR("ERROR");
-                                System.out.println("OPR fuera de rango en: "+LinCod.getCodop()+" "+LinCod.getOperando());
+                                System.out.println("OPR fuera de rango en: "+LinCod.getEtiqueta()+" "+LinCod.getCodop()+" "+LinCod.getOperando());
                             }
                         }
                     }
                     else{
                         LinCod.setADDR("ERROR");
-                        System.out.println("ADDR no aceptado en: "+LinCod.getCodop()+" "+LinCod.getOperando()+ " porque el tamano de la palabra es incorrecto");
+                        System.out.println("ADDR no aceptado en: "+LinCod.getEtiqueta()+" "+LinCod.getCodop()+" "+LinCod.getOperando()+ " porque el tamano de la palabra es incorrecto");
                     }
                 }
                 else{
                     LinCod.setADDR("ERROR");
-                    System.out.println("OPR fuera de rango en codop: "+LinCod.getCodop()+" con opr: "+LinCod.getOperando());
+                    System.out.println("OPR fuera de rango en codop: "+LinCod.getEtiqueta()+" "+LinCod.getCodop()+" con opr: "+LinCod.getOperando());
                 }
             break;
             case "DS":
@@ -333,12 +333,12 @@ public class Salvacion {
                     }
                     else{
                         LinCod.setADDR("ERROR");
-                        System.out.println("ADDR no aceptado en: "+LinCod.getCodop()+" "+LinCod.getOperando()+ " porque el tamano de la palabra es incorrecto");
+                        System.out.println("ADDR no aceptado en: "+LinCod.getEtiqueta()+" "+LinCod.getCodop()+" "+LinCod.getOperando()+ " porque el tamano de la palabra es incorrecto");
                     }
                 }
                 else{
                     LinCod.setADDR("ERROR");
-                    System.out.println("OPR fuera de rango en: "+LinCod.getCodop()+" "+LinCod.getOperando());
+                    System.out.println("OPR fuera de rango en: "+LinCod.getEtiqueta()+" "+LinCod.getCodop()+" "+LinCod.getOperando());
                 }
             break;
             default:

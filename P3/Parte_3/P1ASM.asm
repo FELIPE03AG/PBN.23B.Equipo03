@@ -1,4 +1,4 @@
-ORG $1
+	ORG $1
 Et1: SWI
 dos: EORA 5
     EORA @5

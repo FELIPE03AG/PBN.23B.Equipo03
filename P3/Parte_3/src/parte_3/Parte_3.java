@@ -107,7 +107,8 @@ public class Parte_3 {
                                 NewLinCod.setEtiqueta(campos[0].toUpperCase());//Guardar etiqueta en una nueva linea de la lista
                             }
                             else{
-                                NewLinCod.setEtiqueta("Formato Etiqueta");//Guardar el error de la etiqueta 
+                                NewLinCod.setEtiqueta("ERROR");//Guardar el error de la etiqueta 
+                                System.out.println("ERROR Formato Etiqueta en: "+campos[0]);
                             }
                         }//Busco una etiqueta
                         if(validarCodop(campos[1])){
@@ -123,12 +124,12 @@ public class Parte_3 {
                                             org=true;
                                         }
                                         else{
-                                            System.out.println("ERROR CON EL OPERANDO DEL ORG");
+                                            System.out.println("ERROR CON EL OPERANDO DEL ORG, se ignorara esa linea");
                                             NewLinCod=null;
                                         }
                                     }
                                     else{
-                                        System.out.println("ERROR CON EL ORG, ya existe o tiene etiqueta");
+                                        System.out.println("ERROR CON EL ORG, ya existe o tiene etiqueta, se ignorara esa linea");
                                         NewLinCod=null;
                                     }
                                 }
@@ -138,7 +139,7 @@ public class Parte_3 {
                                     cursorActual=auxArchivo.length();//Para salir del archivo
                                 }
                                 else{
-                                    System.out.println("EL END NO DEBE DE LLEVAR OPERANDO");
+                                    System.out.println("EL END NO DEBE DE LLEVAR OPERANDO, el operando no se tomara en cuenta");
                                     NewLinCod.setOperando(" ");
                                 }
                             }
@@ -147,23 +148,21 @@ public class Parte_3 {
                             }
                         }//Fin CODOP correcto
                         else{
-                            System.out.println("ERROR "+campos[1]+"No es un CODOP");
+                            System.out.println("ERROR "+campos[1]+" no es un CODOP");
                         }//Fin error con codigo de operacion
                     }//Fin no mas de 3 bloques
                     else{
                         if(campos.length>3){
-                            System.out.println("ERROR mas de 3 bloques en la linea");
+                            System.out.println("ERROR hay mas de 3 bloques en la linea");
                         }
                     }                   
                 }//Fin if: no es un comentario, es una linea de codigo
                 else{
                     if (Comentario (lecturaLinea)){
                         System.out.println("COMENTARIO CON EXCESO DE CARACTERES");
-                        System.out.println("");
                     }//Fin comentario incorrecto
                     else {
                         System.out.println("COMENTARIO");
-                        System.out.println("");
                     }//Fin comentario correcto
                 }//Fin else no es linea de codigo, es un comentario
                 NewLinCod=null;
@@ -175,7 +174,7 @@ public class Parte_3 {
                 System.out.println("END NO LOCALIZADO");
             }
             if(!org){
-                System.out.println("ORG NO LOCALIZADO, el programa no podrá funcionar correctamente");
+                System.out.println("ORG NO LOCALIZADO, el programa no podra funcionar correctamente");
             }
             leerArchivo.close();
         }catch(IOException ex){
