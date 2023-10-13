@@ -152,7 +152,7 @@ public class MetodosP3 {
             RandomAccessFile auxArchivo = new RandomAccessFile("TABSIM.txt","rw"); //Encuentro el archivo y accedo para leer y escribir
             for(Linea auxiliar : AuxLineasCodigo){ //bucle for each para escribir el txt
                 auxArchivo.seek(auxArchivo.length()); //Seek posiciona el puntero donde escribir, length es para decirle donde esta el final
-                if(!(auxiliar.getEtiqueta().equals(" "))&& !(auxiliar.getADDR().equals("ERROR"))){
+                if(!(auxiliar.getEtiqueta().equals(" ")) && !(auxiliar.getADDR().equals("ERROR")) && !(auxiliar.getConloc().equals(" "))){
                  //en la anterior linea  comprueba si los valores de etiqueta y ADDR
                  //del objeto Linea son diferentes de " " y "ERROR", para seguir con la validacion
                     if(auxiliar.getCodop().equals("EQU")){//analiza si el CODOP es igual a EQU

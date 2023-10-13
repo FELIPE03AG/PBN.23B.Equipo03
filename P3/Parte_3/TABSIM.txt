@@ -1,6 +1,2 @@
 TIPO            Si       Ti            
-RELATIVA       ET1       0001       
-RELATIVA       DOS       0002       
-RELATIVA       TRES       0006       
 ABSOLUTA       PRU       001C       
-RELATIVA       UNO       001A       
