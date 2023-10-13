@@ -40,8 +40,12 @@ public class Salvacion {
                         System.out.print("ADDR no aceptado");
                         System.out.println(" en codop: "+auxiliar.getEtiqueta()+" "+ auxiliar.getCodop()+" porque NO EXISTE");
                     }
-                    else if(coincidencias==1) {
+                    else if(coincidencias==1 && (auxSalvacion.AddrMode.equals("REL") || auxSalvacion.AddrMode.equals("REL(9-bit)"))) {
                             IdentificacionREL(auxiliar,auxSalvacion);
+                            if(!encontrado){
+                                auxiliar.setADDR("ERROR");
+                                System.out.println("OPR fuera de rango en linea: "+auxiliar.getEtiqueta()+" "+ auxiliar.getCodop() + " " + auxiliar.getOperando());
+                            }
                     }           
                     else if(coincidencias>1){
                         auxiliar.setADDR("ERROR");
