@@ -54,66 +54,64 @@ public class MetodosP3 {
     //funcion para llenar el txt list
     static void LlenarList(ArrayList <Linea> AuxLineasCodigo) {
         int bytes=0;//variable int de apoyo, tomará el valor de los bytes de cada linea 
-        String valor="0"; //Variable en la que se guardara el valor del conloc de cada linea
+        String valor=" "; //Variable en la que se guardara el valor del conloc de cada linea
         boolean equ=false;//variable booleana de apoyo, indica cuando la linea tiene el CODOP "EQU"
         CrearArchivoList(); //mandamos llamar el metodo crear list
         try{
             RandomAccessFile auxArchivo = new RandomAccessFile("P1ASM.lst","rw"); //Encuentro el archivo y accedo para leer y escribir
-            for(Linea auxiliar : AuxLineasCodigo){ //ciclo for para excribir en linea
-                if(!(auxiliar.getSize().equals(" "))){//analiza el valor de size
+            for(Linea auxiliar : AuxLineasCodigo){ //ciclo for para recorrer las lineas del asm que estan en el arraylist
+                if(!(auxiliar.getSize().equals(" "))){//analiza el valor de size, si no tiene valor es que es una linea con error
                     auxArchivo.seek(auxArchivo.length()); //Seek posiciona el puntero donde escribir, length es para decirle donde esta el final
                     if(auxiliar.getCodop().equals("ORG")){//analiza si el CODOP es igual a ORG para seguir validando
-                        if(!(auxiliar.getADDR().equals("ERROR"))){//analiza si el ADDR es erroneo "ERROR".
+                        if(!(auxiliar.getADDR().equals("ERROR"))){//si el ADDR es "ERROR", quiere decir que no se puede calcular el conloc
                             auxArchivo.writeBytes("DIR_INIC,        "); // escribe esto en el txt list
-                            valor=Parte_3.validarDireccion(auxiliar.getOperando());
-                            //la variable valor toma el valor de operando
-                            auxArchivo.writeBytes(valor+",       ");
-                            //deja un espacio en el txt para organizarce
+                            valor=Parte_3.validarDireccion(auxiliar.getOperando());//valor toma el valor de operando en 2bytes 
+                            auxArchivo.writeBytes(valor+",       ");//escribe el valor en 2 bytes y sin $ en el .lst, el espacio es para organizar
                         }//fin de segundo if
                         else{
-                            System.out.println("NO SE PUEDE CALCULAR EL CONLOC PORQUE OPR DE ORG ES INCORRECTO"); //manda error por fallas en operando 
+                            System.out.println("NO SE PUEDE CALCULAR EL CONLOC PORQUE OPR DE ORG ES INCORRECTO"); //manda error por fallas en estructura de org
                         }//fin del else
-                    }//fin del primer if
+                    }//fin es el codop es org
                     else if(auxiliar.getCodop().equals("EQU")){ //analiza que el OPR sea = EQU
-                        auxArchivo.writeBytes("VALOR,          ");// escribe valor y deja un espacio para organizarse
-                        auxArchivo.writeBytes(Parte_3.validarDireccion(auxiliar.getOperando())+",       ");//escribe esto en el txt
-                        auxiliar.setConloc(Parte_3.validarDireccion(auxiliar.getOperando()));//valida la direccion y la establece en conloc
-                        equ=true;
-                    }//fin de else if
+                        auxArchivo.writeBytes("VALOR,          ");// identifica que es tipo VALOR y lo escribe en el .lst
+                        auxArchivo.writeBytes(Parte_3.validarDireccion(auxiliar.getOperando())+",       ");//escribe su valor en 2bytes en el .lst
+                        auxiliar.setConloc(Parte_3.validarDireccion(auxiliar.getOperando()));//valida la direccion y la establece en conloc en 2bytes
+                        equ=true;//Indica que la linea es de un EQU
+                    }//fin el codop es EQU
                     else{
-                        if(!(valor.equals("0"))){//valida que no sea 0 la varaible valor
-                            auxArchivo.writeBytes("CONTLOC,       ");// escribe esto en el txt list
-                            valor= sumarHexadecimal(valor,bytes);//suma los bytes al valor
-                            auxArchivo.writeBytes(Parte_3.validarDireccion("$".concat(valor))+",       ");//escribe en el txt list el nuevo valor
-                            auxiliar.setConloc(Parte_3.validarDireccion("$".concat(valor))); //toma conloc el nuevo valor
-                            String[] campos= auxiliar.getSize().split("\\s+");//agarra el valor de la posicion
+                        if(!(valor.equals(" "))){//valida que ya se haya inicializado el conloc
+                            auxArchivo.writeBytes("CONTLOC,       ");// identifica que es de tipo conloc y lo escribe en el .lst
+                            valor= sumarHexadecimal(valor,bytes);//añade los bytes de la linea al valor del conloc
+                            auxArchivo.writeBytes(Parte_3.validarDireccion("$".concat(valor))+",       ");//escribe en el .lst el nuevo valor del conloc en 2bytes
+                            auxiliar.setConloc(Parte_3.validarDireccion("$".concat(valor))); //guarda en el arreglo el valor del conloc en 2bytes de la linea correspondiente
+                            String[] campos= auxiliar.getSize().split("\\s+");//guarda los bytes de la linea examinada
                             bytes=Integer.parseInt(campos[0]);//lo converte de String a entero
-                        }//fin del if
-                    }//fin de else
-                    if(!(valor.equals("0")) || equ){//revisa que valor sea diferente a 0 o a la variable equ
-                        if(auxiliar.getEtiqueta().equals(" ")){// revisa si el valor.etiqueta es igual a nada
-                            auxArchivo.writeBytes("NULL,       "); //escribe null
-                        }//fin del if
+                        }//fin cuando el conloc si esta inicializado
+                    }//fin de else, el codop no es equ ni org
+                    if(!(valor.equals(" ")) || equ){//si el conloc esta incializado o la linea es de un EQU
+                        if(auxiliar.getEtiqueta().equals(" ")){// si la linea no tiene etiqueta
+                            auxArchivo.writeBytes("NULL,       "); //escribe null en la parte de etiqueta
+                        }//fin la linea no tiene etiqueta
                         else{//inicio de else
                             auxArchivo.writeBytes(auxiliar.getEtiqueta()+",       "); //escribe esto en el txt
-                        }//fin del else
-                        auxArchivo.writeBytes(auxiliar.getCodop()+",       ");//escribe esto en el txt
-                        if(auxiliar.getOperando().equals(" ")){//valida que sea igual a nada, pues a " ".
+                        }//fin si tiene etiqueta
+                        auxArchivo.writeBytes(auxiliar.getCodop()+",       ");//escribe el codop en el .lst
+                        if(auxiliar.getOperando().equals(" ")){//si no tiene operando
                             auxArchivo.writeBytes("NULL,       ");//escribe esta parte en el txt list ...
-                        }
+                        }//Fin no tiene operando
                         else{
-                            auxArchivo.writeBytes(auxiliar.getOperando()+",       ");
-                        }
-                        auxArchivo.writeBytes("\n");
-                    }
-                    equ=false;
-                }
-            }
+                            auxArchivo.writeBytes(auxiliar.getOperando()+",       ");//escribe en el lst el operando
+                        }//fin si tiene operando
+                        auxArchivo.writeBytes("\n");//da un salto de linea en el .lst
+                    }//fin el conloc si esta inicializado
+                    equ=false;//Para que siempre inicie considerando que la linea no es de un equ
+                }//Fin no es una linea con error
+            }//fin ciclo for
         }catch(IOException ex){
             System.out.println("ERROR");
             ex.printStackTrace();
         }//fin catch
-    }    
+    }//Fin metodo llenar list    
     
     //metodo para crear la tabsim
     static void Creartabsim(){
@@ -172,5 +170,5 @@ public class MetodosP3 {
         }//fin catch
     } //fin del metodo llenar tabsim
     
-}
+}//fin clase metodosP3
  
