@@ -116,7 +116,7 @@ public class Parte_3 {
                             if(campos.length==3){//Si hay siguiente bloque debe ser el operando
                                 NewLinCod.setOperando(campos[2].toUpperCase()); 
                                 if(NewLinCod.getCodop().equals("ORG")){
-                                    if(NewLinCod.getEtiqueta()!=null && !org){
+                                    if(NewLinCod.getEtiqueta().equals(" ") && !org){
                                         if(ConvertirADecimal(NewLinCod.getOperando())!=-1){
                                             NewLinCod.setOperando(String.valueOf(ConvertirADecimal(NewLinCod.getOperando())));
                                             NewLinCod.setOperando(Integer.toHexString(Integer.parseInt(NewLinCod.getOperando())).toUpperCase());
