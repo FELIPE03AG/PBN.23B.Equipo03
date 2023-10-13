@@ -145,23 +145,37 @@ public class MetodosP3 {
     //ya esta creado, solo falta llenarlo con la siguiente funcion...
     static void LlenarTabsim(ArrayList <Linea> AuxLineasCodigo) {
         Creartabsim(); //mandamos a llamar primero la funcion de crear
+        ArrayList <String> Etiquetas = new ArrayList<>();//Guardara todas las etiquetas encontradas previamente
+        boolean etqRepetida=false;//Indica si la etiqueta que se quiere agregar ya existe
         try{ // try para el proceso
             RandomAccessFile auxArchivo = new RandomAccessFile("TABSIM.txt","rw"); //Encuentro el archivo y accedo para leer y escribir
             for(Linea auxiliar : AuxLineasCodigo){ //bucle for each para escribir el txt
                 auxArchivo.seek(auxArchivo.length()); //Seek posiciona el puntero donde escribir, length es para decirle donde esta el final
-                if(!(auxiliar.getEtiqueta().equals(" ")) && !(auxiliar.getADDR().equals("ERROR")) && !(auxiliar.getConloc().equals(" "))){
-                 //en la anterior linea  comprueba si los valores de etiqueta y ADDR
-                 //del objeto Linea son diferentes de " " y "ERROR", para seguir con la validacion
-                    if(auxiliar.getCodop().equals("EQU")){//analiza si el CODOP es igual a EQU
-                        auxArchivo.writeBytes("ABSOLUTA       ");// aqui valida que sea Absoluta si y solo si es de forma EQU
-                    }//fin del segundo if
-                    else{//si no es EQU(absoluta),entonces...
-                        auxArchivo.writeBytes("RELATIVA       "); //es relativa, por que es de forma ORG
-                    }//fin del else
-                    auxArchivo.writeBytes(auxiliar.getEtiqueta()+"       "); // escribe la etiqueta en txt
-                    auxArchivo.writeBytes(auxiliar.getConloc()+"       "); // escribe el CONTLOC en el txt
-                    auxArchivo.writeBytes("\n"); //hace el salto de linea para la siguiente instruccion...
-                }//fin del primer if 
+                etqRepetida=false;
+                for(String Etiqueta : Etiquetas){
+                    if(Etiqueta.equals(auxiliar.getEtiqueta())){
+                        etqRepetida=true;
+                    }
+                }
+                if(!etqRepetida){
+                    if(!(auxiliar.getEtiqueta().equals(" ")) && !(auxiliar.getADDR().equals("ERROR")) && !(auxiliar.getConloc().equals(" "))){
+                     //en la anterior linea  comprueba si los valores de etiqueta y ADDR
+                     //del objeto Linea son diferentes de " " y "ERROR", para seguir con la validacion
+                        if(auxiliar.getCodop().equals("EQU")){//analiza si el CODOP es igual a EQU
+                            auxArchivo.writeBytes("ABSOLUTA       ");// aqui valida que sea Absoluta si y solo si es de forma EQU
+                        }//fin del segundo if
+                        else{//si no es EQU(absoluta),entonces...
+                            auxArchivo.writeBytes("RELATIVA       "); //es relativa, por que es de forma ORG
+                        }//fin del else
+                        auxArchivo.writeBytes(auxiliar.getEtiqueta()+"       "); // escribe la etiqueta en txt
+                        auxArchivo.writeBytes(auxiliar.getConloc()+"       "); // escribe el CONTLOC en el txt
+                        auxArchivo.writeBytes("\n"); //hace el salto de linea para la siguiente instruccion...
+                        Etiquetas.add(auxiliar.getEtiqueta());
+                    }//fin del primer if todo bien con la linea del asm
+                }
+                else{
+                    auxArchivo.writeBytes("ERROR Etiqueta: "+auxiliar.getEtiqueta()+" ya esta en el archivo \n");
+                }
             } //fin del bucle for
                 
         }catch(IOException ex){ //catch por si no es valido el proceso
