@@ -303,19 +303,27 @@ public class Parte_3 {
         return Decimal;
     }//Fin metodo convertir a decimal
     
+    
+    /**
+     * Este metodo valida que este correcta la direccion de memoria, a su vez
+     * tambien completa la direccion para que sean 16 bits
+     * 
+     * @param direccion 
+     * @return devuelve la direccion completada o correcta
+     */
     static String validarDireccion(String direccion){
         int valor = 0;
         String dirCorrecta=" ";
-        if(!(direccion.startsWith("$"))){
-            if(ConvertirADecimal(direccion)!=-1){
+        if(!(direccion.startsWith("$"))){             //Se verifica que la funcion cuente con $ indicando que esta en hexadecimal
+            if(ConvertirADecimal(direccion)!=-1){     //Se convierte a decimal para comprobar que esta escrito correctamente 
                 valor=ConvertirADecimal(direccion);
                 dirCorrecta=Integer.toHexString(valor);
             }
         }
         else{
-            dirCorrecta=direccion.substring(1);
+            dirCorrecta=direccion.substring(1);       //Si no cumple correctamente escrito se manda un error
         }
-        switch (dirCorrecta.length()) {
+        switch (dirCorrecta.length()) {              //Se completa la direccion en caso de que no lo este
             case 1:
                 dirCorrecta="000".concat(dirCorrecta);
             break;
