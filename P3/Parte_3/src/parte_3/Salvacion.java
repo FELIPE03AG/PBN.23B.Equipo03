@@ -215,30 +215,30 @@ public class Salvacion {
         }//Fin codop que no vamos a evaluar
     }
     
-    static void IdentificacionDirectivas(Linea LinCod){
+    static void IdentificacionDirectivas(Linea LinCod){ // Método para identificar las directivas
         String auxiliar = LinCod.getCodop();
         String tamPala = " ";
-        if(auxiliar.contains(".")){
+        if(auxiliar.contains(".")){  // Verificamos si el CODOP contiene un punto (.)
             String[] campos = auxiliar.split("\\.");
             auxiliar=campos[0];
-            tamPala = campos[1];
-        }
+            tamPala = campos[1];// Si contiene un punto, dividimos el CODOP y el tamaño de la palabra
+        } //fin de if
         encontrado=true;
         switch(auxiliar){
-            case "ORG":
+            case "ORG": // Directiva ORG: Establece la dirección de inicio del programa
                 if(Parte_3.ConvertirADecimal(LinCod.getOperando())==-1){
                     LinCod.setADDR("ERROR");
                     System.out.println("opr fuera de rango en: "+LinCod.getEtiqueta()+" "+LinCod.getCodop()+" "+LinCod.getOperando());
-                }
+                } 
                 else{
                     LinCod.setADDR("DIRECT");
-                }
+                } //Fin de la directiva ORG
             break;
-            case "END":
+            case "END":  // Directiva END: Marca el final del programa
                 LinCod.setADDR("DIRECT");
-            break;
-            case "EQU":
-                if(LinCod.getEtiqueta().equals(" ") || Parte_3.ConvertirADecimal(LinCod.getOperando())==-1){
+            break; //Fin de la directiva END
+            case "EQU":  // Directiva EQU: Asigna un valor constante a una etiqueta
+                if(LinCod.getEtiqueta().equals(" ") || Parte_3.ConvertirADecimal(LinCod.getOperando())==-1){  
                     LinCod.setADDR("ERROR");
                     System.out.print("ERROR en: "+LinCod.getEtiqueta()+" EQU "+LinCod.getOperando()+" porque");
                     if(LinCod.getEtiqueta().equals(" ")){
@@ -251,12 +251,12 @@ public class Salvacion {
                 else{
                     LinCod.setADDR("DIRECT");
                 }
-            break;
-            case "DC":
+            break; //fin de la directiva EQU
+            case "DC": // Manejo de la directiva "DC" que define constantes o datos
                 int tam=0;
                 boolean oprBien=true,mayor255=false;
-                if(!(LinCod.getOperando().equals(" "))){
-                    if(LinCod.getOperando().contains(",")){
+                if(!(LinCod.getOperando().equals(" "))){ 
+                    if(LinCod.getOperando().contains(",")){ // Si el operando contiene comas, hay múltiples valores
                         String [] partOpr = LinCod.getOperando().split(",");
                         tam=partOpr.length; 
                         for(int i=0; i<tam; i++){
@@ -268,12 +268,12 @@ public class Salvacion {
                             }
                         }
                     }
-                    else if(LinCod.getOperando().startsWith("\"")&&LinCod.getOperando().endsWith("\"")){
+                    else if(LinCod.getOperando().startsWith("\"")&&LinCod.getOperando().endsWith("\"")){  // Si el operando está entre comillas, es una cadena
                         tam=LinCod.getOperando().substring(1, LinCod.getOperando().length()-1).length();
                     }
                     
                     if(tamPala.equals("B")){
-                        if(tam!=0){
+                        if(tam!=0){ // Si el tamaño de la palabra es en bytes
                             if(oprBien && !mayor255){
                                 LinCod.setSize(String.valueOf(tam)+" bytes");
                                 LinCod.setADDR("DIRECT");
@@ -295,11 +295,11 @@ public class Salvacion {
                         }
                     }
                     else if(tamPala.equals("W")){
-                        if(tam!=0){
+                        if(tam!=0){ // Si el tamaño de la palabra es en palabras (2 bytes por palabra)
                             LinCod.setSize(String.valueOf(tam*2)+" bytes");
                             LinCod.setADDR("DIRECT");
                         }
-                        else{
+                        else{ // Manejo de otros casos de tamaño de palabra no definidos
                             if(Parte_3.ConvertirADecimal(LinCod.getOperando())!=-1){
                                 LinCod.setSize("2 bytes");
                                 LinCod.setADDR("DIRECT");
@@ -319,15 +319,15 @@ public class Salvacion {
                     LinCod.setADDR("ERROR");
                     System.out.println("OPR fuera de rango en codop: "+LinCod.getEtiqueta()+" "+LinCod.getCodop()+" con opr: "+LinCod.getOperando());
                 }
-            break;
-            case "DS":
+            break; //Fin de DC
+            case "DS":  // Directiva DS: Reserva espacio de memoria en bytes
                 String opr = LinCod.getOperando().toString();
                 if(opr.matches("\\d+")){
                     if(tamPala.equals("B")){
                         LinCod.setADDR("DIRECT");
                         LinCod.setSize(LinCod.getOperando()+" bytes");
                     }
-                    else if(tamPala.equals("W")){
+                    else if(tamPala.equals("W")){ // Reserva espacio de memoria en palabras (2 bytes por palabra)
                         LinCod.setADDR("DIRECT");
                         LinCod.setSize(String.valueOf(Integer.parseInt(LinCod.getOperando())*2)+" bytes");
                     }
@@ -338,7 +338,7 @@ public class Salvacion {
                 }
                 else{
                     LinCod.setADDR("ERROR");
-                    System.out.println("OPR fuera de rango en: "+LinCod.getEtiqueta()+" "+LinCod.getCodop()+" "+LinCod.getOperando());
+                    System.out.println("OPR fuera de rango en: "+LinCod.getEtiqueta()+" "+LinCod.getCodop()+" "+LinCod.getOperando()); 
                 }
             break;
             default:
@@ -352,6 +352,6 @@ public class Salvacion {
             if(!(LinCod.getADDR().equals("ERROR"))){
                 LinCod.setPorCalcular("0 bytes");
             }
-        }
-    }
+        } //Fin del switch
+    } // Fin IdentificacionDirectivas
 }//Fin clase
