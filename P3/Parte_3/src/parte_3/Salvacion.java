@@ -51,6 +51,11 @@ public class Salvacion {
                         auxiliar.setADDR("ERROR");
                         System.out.println("OPR fuera de rango en linea: "+auxiliar.getEtiqueta()+" "+ auxiliar.getCodop() + " " + auxiliar.getOperando());
                     }
+                    else{
+                        auxiliar.setADDR("ERROR");
+                        System.out.print("ADDR no aceptado");
+                        System.out.println(" en codop: "+auxiliar.getEtiqueta()+" "+ auxiliar.getCodop()+" porque no cuenta para el proyecto");
+                    }
                 }
                 leerArchivo.close();
             }catch(IOException ex){
