@@ -53,11 +53,10 @@ public class MetodosP3 {
     
     //funcion para llenar el txt list
     static void LlenarList(ArrayList <Linea> AuxLineasCodigo) {
-        int bytes=0;//variable int de apoyo
-        String valor="0";
-        boolean equ=false;//variable booleana de apoyo
+        int bytes=0;//variable int de apoyo, tomará el valor de los bytes de cada linea 
+        String valor="0"; //Variable en la que se guardara el valor del conloc de cada linea
+        boolean equ=false;//variable booleana de apoyo, indica cuando la linea tiene el CODOP "EQU"
         CrearArchivoList(); //mandamos llamar el metodo crear list
-        Creartabsim();//mandamos llamar el metodo crear tabsim
         try{
             RandomAccessFile auxArchivo = new RandomAccessFile("P1ASM.lst","rw"); //Encuentro el archivo y accedo para leer y escribir
             for(Linea auxiliar : AuxLineasCodigo){ //ciclo for para excribir en linea
@@ -68,7 +67,7 @@ public class MetodosP3 {
                             auxArchivo.writeBytes("DIR_INIC,        "); // escribe esto en el txt list
                             valor=Parte_3.validarDireccion(auxiliar.getOperando());
                             //la variable valor toma el valor de operando
-                            auxArchivo.writeBytes("$".concat(valor)+",       ");
+                            auxArchivo.writeBytes(valor+",       ");
                             //deja un espacio en el txt para organizarce
                         }//fin de segundo if
                         else{
@@ -85,7 +84,7 @@ public class MetodosP3 {
                         if(!(valor.equals("0"))){//valida que no sea 0 la varaible valor
                             auxArchivo.writeBytes("CONTLOC,       ");// escribe esto en el txt list
                             valor= sumarHexadecimal(valor,bytes);//suma los bytes al valor
-                            auxArchivo.writeBytes(Parte_3.validarDireccion(valor)+",       ");//escribe en el txt list el nuevo valor
+                            auxArchivo.writeBytes(Parte_3.validarDireccion("$".concat(valor))+",       ");//escribe en el txt list el nuevo valor
                             auxiliar.setConloc(Parte_3.validarDireccion("$".concat(valor))); //toma conloc el nuevo valor
                             String[] campos= auxiliar.getSize().split("\\s+");//agarra el valor de la posicion
                             bytes=Integer.parseInt(campos[0]);//lo converte de String a entero
