@@ -238,19 +238,25 @@ public class Salvacion {
                 }
             break; //fin de la directiva EQU
             case "DC": // Manejo de la directiva "DC" que define constantes o datos
-                int tam=0;
+                int tam=0,auxtam=0;
                 boolean oprBien=true,mayor255=false;
                 if(!(LinCod.getOperando().equals(" "))){ 
                     if(LinCod.getOperando().contains(",")){ // Si el operando contiene comas, hay múltiples valores
                         String [] partOpr = LinCod.getOperando().split(",");
-                        tam=partOpr.length; 
-                        for(int i=0; i<tam; i++){
-                            if(Parte_4.ConvertirADecimal(partOpr[i])==-1){
+                        auxtam=partOpr.length;
+                        for(int i=0; i<auxtam; i++){
+                            if(Parte_4.ConvertirADecimal(partOpr[i])!=-1){
+                               tam++;
+                               if(Parte_4.ConvertirADecimal(partOpr[i])>255){
+                                    mayor255=true;
+                                }
+                            }
+                            else if(partOpr[i].startsWith("\"")&&LinCod.getOperando().endsWith("\"")){
+                                tam=tam+partOpr[i].substring(1, partOpr[i].length()-1).length();
+                            }
+                            else{
                                 oprBien=false;
-                            }
-                            else if(Parte_4.ConvertirADecimal(partOpr[i])>255){
-                                mayor255=true;
-                            }
+                            } 
                         }
                     }
                     else if(LinCod.getOperando().startsWith("\"")&&LinCod.getOperando().endsWith("\"")){  // Si el operando está entre comillas, es una cadena
