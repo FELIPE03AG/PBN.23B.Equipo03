@@ -80,6 +80,8 @@ public class Parte_4 {
     
     //METODO PARA LEER EL ASM
     static void Leer(){
+        ArrayList <String> Etiquetas = new ArrayList<>();//Guardara todas las etiquetas encontradas previamente
+        boolean etqRepetida=false;//Indica si la etiqueta que se quiere agregar ya existe
         try{
             RandomAccessFile auxArchivo = new RandomAccessFile("P1ASM.asm","r");//r es para solo leer el archivo
             long cursorActual;//Para saber donde estamos en el asm
@@ -104,7 +106,16 @@ public class Parte_4 {
                                 campos[0]=campos[0].substring(0, campos[0].length()-1);
                             }
                             if(validarEtiq(campos[0])){
-                                NewLinCod.setEtiqueta(campos[0].toUpperCase());//Guardar etiqueta en una nueva linea de la lista
+                                etqRepetida=false;
+                                for(String Etiqueta : Etiquetas){
+                                    if(Etiqueta.equals(campos[0].toUpperCase())){
+                                        etqRepetida=true;
+                                    }
+                                }
+                                if(!etqRepetida){
+                                    NewLinCod.setEtiqueta(campos[0].toUpperCase());//Guardar etiqueta en una nueva linea de la lista
+                                    Etiquetas.add(campos[0].toUpperCase());
+                                }
                             }
                             else{
                                 NewLinCod.setEtiqueta("ERROR");//Guardar el error de la etiqueta 
