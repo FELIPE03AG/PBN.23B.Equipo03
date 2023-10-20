@@ -13,6 +13,7 @@ public class Linea {
     private String form;// Almacena la forma
     private String cop;// Almacena el cop
     
+    
 
     public Linea(String conloc, String etiqueta, String codop, String operando, String ADDR) {
         this.conloc = conloc;
@@ -74,7 +75,7 @@ public class Linea {
         this.codop = codop;
     }
 
-    public void setOperando(String operando) {
+    public void setOperando(String operando) {        
         this.operando = operando;
     }
 

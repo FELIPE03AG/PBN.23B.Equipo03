@@ -92,9 +92,38 @@ public class Salvacion {
         else if(LinCod.getOperando().startsWith("#")){//Si el operando parece de tipo IMM
             if(AUX.Operando.equals("#opr8i")||AUX.Operando.equals("#opr16i")){//Puede ser de cualquiera de estas dos estructuras para coincidir
                 if(Parte_4.IMM(LinCod.getOperando(),AUX.Operando)){//Evaluo si si es IMM
+                int i = 0;
+                boolean band = true;
+                //String frmbase [] = LinCod.getForm().split(",");
+                String cop1 = "";
+                String frmbase [] = AUX.SourceForm.split(",");
+                Integer cop2_1 = Parte_4.ConvertirADecimal(LinCod.getOperando().substring(1));
+                String cop2 = Integer.toHexString(cop2_1);
+                    while(band == true){
+                        if (frmbase[i].equals("ii")){
+                            band = false;
+                        }else{
+                            cop1 = cop1 + frmbase[i] + " ";
+                            i = i + 1;
+                        }
+                        
+                        if(AUX.Operando.equals("#opr8i")){
+                            while(cop2.length() <= 1){
+                                cop2 = "0" + cop2 ;
+                            }
+                            LinCod.setCop(cop1 + cop2);
+                        }else if(AUX.Operando.equals("#opr16i")){
+                            while(cop2.length() <= 3){
+                                cop2 = "0" + cop2 ;
+                            }
+                            LinCod.setCop(cop1 + cop2);
+                        }
+                    }
                     LinCod.setADDR("IMM"); 
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
+                    
                     LinCod.setForm(AUX.SourceForm);
+                    LinCod.getCop();
                     LinCod.setSize(AUX.byteTotal+" bytes");
                     encontrado=true;
                 }//Fin si es IMM
