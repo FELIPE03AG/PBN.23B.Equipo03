@@ -11,6 +11,20 @@ public class Salvacion {
     static int coincidencias=0;
     static NodoSalvacion auxSalvacion=null;
     
+    static String Separarform(String forma) {
+        String campo3 = forma;
+        String resultado;
+        StringBuilder campo3Separado = new StringBuilder();
+        for (int i = 0; i < campo3.length(); i += 2) {
+            campo3Separado.append(campo3.substring(i, Math.min(i + 2, campo3.length())));
+            if (i + 2 < campo3.length()) {
+                campo3Separado.append(",");
+            }
+        }
+        resultado = campo3Separado.toString();
+        return resultado;
+    }
+    
     static void BuscarCodop(ArrayList <Linea> AuxLineasCodigo){//Buscar es el codigo de operancion que se buscara en la salvacion
         for(Linea auxiliar : AuxLineasCodigo){
             String Buscar=auxiliar.getCodop();
@@ -29,21 +43,9 @@ public class Salvacion {
                     cursorActual = auxArchivo.getFilePointer();
                     String[] campos = lecturaLinea.split("\\s+");//Separamos el txt por tabuladores
                     if(campos[0].equals(Buscar)){//En la primera palabra del txt estan los codop asi que si esa palabra es igual al CODOP buscado, lo encotnramos
-                        auxSalvacion = new NodoSalvacion(campos[0],campos[1],campos[2],campos[3],campos[4],campos[5]); 
+                        auxSalvacion = new NodoSalvacion(campos[0],campos[1],campos[2],Separarform(campos[3]),campos[4],campos[5]);
                         coincidencias++;
                         IdentificarADDR(auxiliar,auxSalvacion);
-                        
-                    String campo3 = campos[3];
-                    StringBuilder campo3Separado = new StringBuilder();
-
-                    for (int i = 0; i < campo3.length(); i += 2) {
-                        campo3Separado.append(campo3.substring(i, Math.min(i + 2, campo3.length())));
-                        if (i + 2 < campo3.length()) {
-                            campo3Separado.append(",");
-                        }
-                    }
-                    String resultado = campo3Separado.toString();
-
                     }//Fin comparacion con salvacion
                 }//Fin del while
                 if(!encontrado){
