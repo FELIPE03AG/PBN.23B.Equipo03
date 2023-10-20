@@ -13,7 +13,7 @@ public class Tabla extends javax.swing.JFrame {
     void Llenado(){
         for (Linea auxiliar : Parte_4.LineasCodigo) {
             diseño.addRow(new Object[]{auxiliar.getConloc(),auxiliar.getEtiqueta(),auxiliar.getCodop(),auxiliar.getOperando(),auxiliar.getADDR(),
-                                        auxiliar.getSize(),auxiliar.getPorCalcular()});
+                                        auxiliar.getSize(),auxiliar.getPorCalcular(), auxiliar.getForm(), auxiliar.getCop()});
         }
     }
     public Tabla() {

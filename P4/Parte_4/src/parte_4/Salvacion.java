@@ -83,6 +83,8 @@ public class Salvacion {
             if(AUX.Operando.equals("-")){//La estructura de operando que coincide
                 LinCod.setADDR("INH");//ADDR correspondiente
                 LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
+                LinCod.setForm(AUX.SourceForm);
+                LinCod.setCop(AUX.SourceForm);
                 LinCod.setSize(AUX.byteTotal+" bytes");
                 encontrado=true;//Ya lo encontro, puede terminar la busquerda
             }//Fin es inh
@@ -92,6 +94,7 @@ public class Salvacion {
                 if(Parte_4.IMM(LinCod.getOperando(),AUX.Operando)){//Evaluo si si es IMM
                     LinCod.setADDR("IMM"); 
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
+                    LinCod.setForm(AUX.SourceForm);
                     LinCod.setSize(AUX.byteTotal+" bytes");
                     encontrado=true;
                 }//Fin si es IMM

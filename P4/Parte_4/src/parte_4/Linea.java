@@ -25,7 +25,9 @@ public class Linea {
         this.form = " ";// Forma inicialmente vacia.
         this.cop = " ";// Cop inicialmente vacio.
     }
+    
     // MÉTODOS GETTERS
+    
     public String getEtiqueta() {
         return etiqueta;
     }
@@ -54,14 +56,16 @@ public class Linea {
         return conloc;
     }
     
-        public String getForm() {
+    public String getForm() {
         return form;
     }
         
-        public String getCop() {
+    public String getCop() {
         return cop;
     }
+    
     // MÉTODOS SETTERS
+    
     public void setEtiqueta(String etiqueta) {
         this.etiqueta = etiqueta;
     }
@@ -90,7 +94,7 @@ public class Linea {
         this.conloc = conloc;
     }
     
-    public void setForm(String forma) {
+    public void setForm(String form) {
         this.form = form;
     }
     
