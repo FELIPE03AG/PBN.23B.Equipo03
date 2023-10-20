@@ -10,7 +10,7 @@ public class Linea {
     private String ADDR;// Almacena la dirección de memoria.
     private String size;// Almacena el tamaño de la línea.
     private String porCalcular;// Almacena información por calcular o procesar.
-    private String forma;// Almacena la forma
+    private String form;// Almacena la forma
     private String cop;// Almacena el cop
     
 
@@ -22,7 +22,7 @@ public class Linea {
         this.ADDR = ADDR;
         this.size = " ";// Tamaño inicialmente vacío.
         this.porCalcular = " ";// Información por calcular inicialmente vacía.
-        this.forma = " ";// Forma inicialmente vacia.
+        this.form = " ";// Forma inicialmente vacia.
         this.cop = " ";// Cop inicialmente vacio.
     }
     // MÉTODOS GETTERS
@@ -54,8 +54,8 @@ public class Linea {
         return conloc;
     }
     
-        public String getForma() {
-        return forma;
+        public String getForm() {
+        return form;
     }
         
         public String getCop() {
@@ -90,8 +90,8 @@ public class Linea {
         this.conloc = conloc;
     }
     
-    public void setForma(String forma) {
-        this.forma = forma;
+    public void setForm(String forma) {
+        this.form = form;
     }
     
     public void setCop(String cop) {
