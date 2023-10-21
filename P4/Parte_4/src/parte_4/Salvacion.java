@@ -109,7 +109,16 @@ public class Salvacion {
                 frmbase[1]="0".concat(frmbase[1]);
             }
             postbyte=postbyte.concat(" ").concat(frmbase[1]);
-        }
+        } else if(opraux >256 && opraux < 65535 && size ==3 && calcular ==1 && frmbase[1].equals("hh") && tipo.equals("ll") ){
+            postbyte = frmbase[0];
+            frmbase[1] = Integer.toHexString(opraux).toUpperCase();
+            if(opraux<16){
+              frmbase[1] = "0".concat(frmbase[1]);
+            }
+            postbyte = postbyte.concat(" ").concat(frmbase[1]);
+                 
+            }
+             
         return postbyte;
     }
     
