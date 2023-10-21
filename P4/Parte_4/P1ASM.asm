@@ -9,5 +9,5 @@
 	LDX	$20
 	ldaa	@777
 	ldaa 	$ffff
-	LAA	$38
+	LDAA	$38
 	END

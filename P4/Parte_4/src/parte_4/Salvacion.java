@@ -103,6 +103,11 @@ public class Salvacion {
         String postbyte=" ";
         String frmbase [] = sourceform.split(",");
         Integer opraux = Parte_4.ConvertirADecimal(opr);
+        System.out.println("opr "+opr+" en decimal= "+opraux);
+        System.out.println("size "+size);
+        System.out.println("calcular "+calcular);
+        System.out.println("sourceform "+sourceform);
+        System.out.println("tipo "+tipo);
         if(opraux<256 && size==2 && calcular==1 && frmbase[1].equals("dd")&&tipo.equals("D")){
             postbyte=frmbase[0];
             frmbase[1]=Integer.toHexString(opraux).toUpperCase();
@@ -111,7 +116,8 @@ public class Salvacion {
             }
             postbyte=postbyte.concat(" ").concat(frmbase[1]);
         } 
-        else if(opraux >256 && size ==3 && calcular ==1 && frmbase[1].equals("hh") && tipo.equals("ll")&&tipo.equals("E")){
+        else if(opraux>255 && size==3 && calcular==2 && frmbase[1].equals("hh") && frmbase[2].equals("ll")&&tipo.equals("E")){
+            System.out.println("SI ENTRO CON "+opr);
             aux=Parte_4.validarDireccion(opr);
             postbyte=frmbase[0].concat(" ").concat(aux.substring(0, 2)).concat(" ").concat(aux.substring(2));
         }       
@@ -204,6 +210,7 @@ public class Salvacion {
                     LinCod.setADDR("EXT");
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
                     LinCod.setSize(AUX.byteTotal+" bytes");
+                    LinCod.setForm(AUX.SourceForm);
                     LinCod.setCop(FormDirExt(LinCod.getOperando(),AUX.SourceForm,Integer.parseInt(AUX.byteTotal),Integer.parseInt(AUX.byteCalcular), "E"));
                     encontrado=true;
                }
