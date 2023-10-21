@@ -124,6 +124,67 @@ public class Salvacion {
         return postbyte;
     }
     
+    static String ValorXb(String form, String opr, String vaa){
+        String rr = " ";
+        String aa = " ";
+        
+        
+        
+        switch(opr){
+            case "X":
+                if(opr.equals("X")){
+                rr = "00";
+             }
+            break;
+            case "Y":
+                if(opr.equals("Y")){
+                rr = "01";
+                }
+            break;
+            case "SP":
+                if(opr.equals("SP")){
+                rr = "10";
+                }
+            break;
+            case "PC":
+                if(opr.equals("PC")){
+                rr = "11";
+                }
+        
+            break;    
+        }// fin switch rr
+        System.out.println("Valor de rr = " + rr);
+        
+        switch(vaa){
+            case "A":
+                if(vaa.equals("A")){
+                    aa ="00";
+                }
+            break;
+            case "B":
+                if(vaa.equals("B")){
+                    aa = "01";
+                }
+            break;
+            case "D":
+                if(vaa.equals("D")){
+                    aa= "10";
+                }
+            break;
+            case "[D,":
+                if(vaa.equals("[D,")){
+                    aa = "11";
+                }
+            break;
+            
+                }
+            
+        
+        
+        
+       return form; 
+    }
+    
     static void IdentificarADDR(Linea LinCod,NodoSalvacion AUX){
         if(LinCod.getOperando().equals(" ")){//Primer caso no hay operando
             if(AUX.Operando.equals("-")){//La estructura de operando que coincide
