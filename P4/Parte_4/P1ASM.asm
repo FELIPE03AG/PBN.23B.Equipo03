@@ -1,9 +1,13 @@
-	ORG	$1010
-	NOP
-	INX	
-	SUBD	#$FFF
-	SUBB	@77
-Et1:	ADCA	#3
-Tres:	EQU	%111
-Uno:	DS.B	3
+	ORG	0
+	ABA
+	BGND
+	LDAA	#$55
+	LDX	#$1234
+	LDY	#%110111
+	LDAA	$055
+	LDAA	85
+	LDX	$20
+	ldaa	@777
+	ldaa 	$ffff
+	LAA	$38
 	END
