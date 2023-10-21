@@ -2,6 +2,7 @@
 	NOP
 	INX	
 	SUBD	#$FFF
+	SUBB	@77
 Et1:	ADCA	#3
 Tres:	EQU	%111
 Uno:	DS.B	3

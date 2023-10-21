@@ -98,6 +98,21 @@ public class Salvacion {
         return postbyte;
     }
     
+    static String FormDirExt(String opr, String sourceform,int size, int calcular, String tipo){
+        String postbyte=" ";
+        String frmbase [] = sourceform.split(",");
+        Integer opraux = Parte_4.ConvertirADecimal(opr);
+        if(opraux<256 && size==2 && calcular==1 && frmbase[1].equals("dd")&&tipo.equals("D")){
+            postbyte=frmbase[0];
+            frmbase[1]=Integer.toHexString(opraux).toUpperCase();
+            if(opraux<16){
+                frmbase[1]="0".concat(frmbase[1]);
+            }
+            postbyte=postbyte.concat(" ").concat(frmbase[1]);
+        }
+        return postbyte;
+    }
+    
     static void IdentificarADDR(Linea LinCod,NodoSalvacion AUX){
         if(LinCod.getOperando().equals(" ")){//Primer caso no hay operando
             if(AUX.Operando.equals("-")){//La estructura de operando que coincide
@@ -175,6 +190,8 @@ public class Salvacion {
                     LinCod.setADDR("DIR");
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
                     LinCod.setSize(AUX.byteTotal+" bytes");
+                    LinCod.setForm(AUX.SourceForm);
+                    LinCod.setCop(FormDirExt(LinCod.getOperando(),AUX.SourceForm,Integer.parseInt(AUX.byteTotal),Integer.parseInt(AUX.byteCalcular), "D"));
                     encontrado=true;
             }//Fin es DIR
             else if(AUX.Operando.equals("opr16a")){//Estructura de EXT
