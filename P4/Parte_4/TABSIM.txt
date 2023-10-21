@@ -1,4 +1,4 @@
 TIPO            Si       Ti            
-RELATIVA       ET1       1012       
+RELATIVA       ET1       1015       
 ABSOLUTA       TRES       0007       
-RELATIVA       UNO       1014       
+RELATIVA       UNO       1017       

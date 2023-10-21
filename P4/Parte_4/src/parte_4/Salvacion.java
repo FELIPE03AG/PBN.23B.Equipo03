@@ -78,6 +78,26 @@ public class Salvacion {
         }//Fin for
     }//Fin leer y buscar en salvacion
     
+    static String FormIMM(String opr, String sourceform,int size, int calcular){
+        String aux=" ";
+        String postbyte=" ";
+        String frmbase [] = sourceform.split(",");
+        Integer opraux = Parte_4.ConvertirADecimal(opr);
+        if(opraux<256 && size==2 && calcular==1 && frmbase[1].equals("ii")){
+            postbyte=frmbase[0];
+            frmbase[1]=Integer.toHexString(opraux).toUpperCase();
+            if(opraux<16){
+                frmbase[1]="0".concat(frmbase[1]);
+            }
+            postbyte=postbyte.concat(" ").concat(frmbase[1]);
+        }
+        else if(opraux>=256 && size==3 && calcular==2 && frmbase[1].equals("jj")&& frmbase[2].equals("kk")){
+            aux=Parte_4.validarDireccion(opr);
+            postbyte=frmbase[0].concat(" ").concat(aux.substring(0, 2)).concat(" ").concat(aux.substring(2));
+        }
+        return postbyte;
+    }
+    
     static void IdentificarADDR(Linea LinCod,NodoSalvacion AUX){
         if(LinCod.getOperando().equals(" ")){//Primer caso no hay operando
             if(AUX.Operando.equals("-")){//La estructura de operando que coincide
@@ -92,38 +112,12 @@ public class Salvacion {
         else if(LinCod.getOperando().startsWith("#")){//Si el operando parece de tipo IMM
             if(AUX.Operando.equals("#opr8i")||AUX.Operando.equals("#opr16i")){//Puede ser de cualquiera de estas dos estructuras para coincidir
                 if(Parte_4.IMM(LinCod.getOperando(),AUX.Operando)){//Evaluo si si es IMM
-                int i = 0;
-                boolean band = true;
-                //String frmbase [] = LinCod.getForm().split(",");
-                String cop1 = "";
-                String frmbase [] = AUX.SourceForm.split(",");
-                Integer cop2_1 = Parte_4.ConvertirADecimal(LinCod.getOperando().substring(1));
-                String cop2 = Integer.toHexString(cop2_1);
-                    while(band == true){
-                        if (frmbase[i].equals("ii")){
-                            band = false;
-                        }else{
-                            cop1 = cop1 + frmbase[i] + " ";
-                            i = i + 1;
-                        }
-                        
-                        if(AUX.Operando.equals("#opr8i")){
-                            while(cop2.length() <= 1){
-                                cop2 = "0" + cop2 ;
-                            }
-                            LinCod.setCop(cop1 + cop2);
-                        }else if(AUX.Operando.equals("#opr16i")){
-                            while(cop2.length() <= 3){
-                                cop2 = "0" + cop2 ;
-                            }
-                            LinCod.setCop(cop1 + cop2);
-                        }
-                    }
+                    
                     LinCod.setADDR("IMM"); 
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
                     
                     LinCod.setForm(AUX.SourceForm);
-                    LinCod.getCop();
+                    LinCod.setCop(FormIMM(LinCod.getOperando().substring(1),AUX.SourceForm,Integer.parseInt(AUX.byteTotal),Integer.parseInt(AUX.byteCalcular)));
                     LinCod.setSize(AUX.byteTotal+" bytes");
                     encontrado=true;
                 }//Fin si es IMM
