@@ -110,12 +110,11 @@ public class Salvacion {
                 frmbase[1]="0".concat(frmbase[1]);
             }
             postbyte=postbyte.concat(" ").concat(frmbase[1]);
-        } else if(opraux >256 && opraux < 65535 && size ==3 && calcular ==1 && frmbase[1].equals("hh") && tipo.equals("ll") ){
+        } 
+        else if(opraux >256 && size ==3 && calcular ==1 && frmbase[1].equals("hh") && tipo.equals("ll")&&tipo.equals("E")){
             aux=Parte_4.validarDireccion(opr);
             postbyte=frmbase[0].concat(" ").concat(aux.substring(0, 2)).concat(" ").concat(aux.substring(2));
-        }
-                 
-                 
+        }       
         return postbyte;
     }
     
@@ -205,6 +204,7 @@ public class Salvacion {
                     LinCod.setADDR("EXT");
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
                     LinCod.setSize(AUX.byteTotal+" bytes");
+                    LinCod.setCop(FormDirExt(LinCod.getOperando(),AUX.SourceForm,Integer.parseInt(AUX.byteTotal),Integer.parseInt(AUX.byteCalcular), "E"));
                     encontrado=true;
                }
             }//Fin es EXT
