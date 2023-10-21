@@ -99,6 +99,7 @@ public class Salvacion {
     }
     
     static String FormDirExt(String opr, String sourceform,int size, int calcular, String tipo){
+        String aux = " ";
         String postbyte=" ";
         String frmbase [] = sourceform.split(",");
         Integer opraux = Parte_4.ConvertirADecimal(opr);
@@ -110,15 +111,11 @@ public class Salvacion {
             }
             postbyte=postbyte.concat(" ").concat(frmbase[1]);
         } else if(opraux >256 && opraux < 65535 && size ==3 && calcular ==1 && frmbase[1].equals("hh") && tipo.equals("ll") ){
-            postbyte = frmbase[0];
-            frmbase[1] = Integer.toHexString(opraux).toUpperCase();
-            if(opraux<16){
-              frmbase[1] = "0".concat(frmbase[1]);
-            }
-            postbyte = postbyte.concat(" ").concat(frmbase[1]);
+            aux=Parte_4.validarDireccion(opr);
+            postbyte=frmbase[0].concat(" ").concat(aux.substring(0, 2)).concat(" ").concat(aux.substring(2));
+        }
                  
-            }
-             
+                 
         return postbyte;
     }
     
