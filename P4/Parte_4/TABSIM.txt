@@ -1,2 +1,2 @@
 TIPO            Si       Ti            
-RELATIVA       ET1       000E       
+RELATIVA       ET1       0006       

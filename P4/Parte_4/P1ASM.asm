@@ -1,9 +1,5 @@
 	ORG	0
-	STAA	1,-SP
-	CPY	5,Y-
-	STAA	1,SP-
-	LDY 	3,-SP
-	CPX 	8,+Y
-	STX	2,+SP
-	STX	2,SP+
+	STAA	A,X
+	STAA	B,X
+	STAA	D,X
 Et1	END

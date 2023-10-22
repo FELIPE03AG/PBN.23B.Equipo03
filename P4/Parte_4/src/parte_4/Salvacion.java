@@ -188,38 +188,58 @@ public class Salvacion {
         char signo=' ';
         int valor =0;
         String frmbase [] = sourceform.split(",");
+        
         if(frmbase[1].equals("xb")){
-            System.out.println("SI ENCONTRO LA FORMA BASE xb");
             postbyte=frmbase[0].concat(" ");
-            System.out.println("postbyte al principio "+postbyte);
-            String operando [] = opr.split(",");
-            if(operando[1].startsWith("+")||operando[1].startsWith("-")){
-                xb="10";
-                signo=operando[1].charAt(0);
-                operando[1]=operando[1].substring(1);
-            }
-            else if (operando[1].endsWith("+")||operando[1].endsWith("-")){
-                xb="11";
-                signo=operando[1].charAt(operando[1].length()-1);
-                operando[1]=operando[1].substring(0, operando[1].length()-1);
-            }
-            System.out.println("xb con 1 y p "+xb);
-            xb=calculoRR(operando[1]).concat(xb);
-            System.out.println("xb calculando rr1p "+xb);
-            valor=Integer.parseInt(operando[0]);
-            System.out.println("Valor = "+valor);
-            System.out.println("SIGNO "+signo);
-            if(signo=='+'){
-                valor=valor-1;
-                xb=xb.concat(decimalABinario(valor));
-            }
-            else if(signo=='-'){
-                xb=xb.concat(calcularComplementoDos(decimalABinario(valor)));
-            }
-            System.out.println("xb final rr1pnnnn "+xb);
-            postbyte=postbyte.concat(Integer.toHexString(Parte_4.binarioADecimal(xb)));
-            System.out.println("postbyte final "+postbyte);
         } 
+        else if(frmbase[1].equals("xb")){
+            postbyte=frmbase[0].concat(" ").concat(frmbase[1].concat(" "));
+        }
+        
+        String operando[] = opr.split(",");
+        if (operando[1].startsWith("+") || operando[1].startsWith("-")) {
+            xb = "10";
+            signo = operando[1].charAt(0);
+            operando[1] = operando[1].substring(1);
+        } else if (operando[1].endsWith("+") || operando[1].endsWith("-")) {
+            xb = "11";
+            signo = operando[1].charAt(operando[1].length() - 1);
+            operando[1] = operando[1].substring(0, operando[1].length() - 1);
+        }
+        xb = calculoRR(operando[1]).concat(xb);
+        valor = Integer.parseInt(operando[0]);
+        if (signo == '+') {
+            valor = valor - 1;
+            xb = xb.concat(decimalABinario(valor));
+        } else if (signo == '-') {
+            xb = xb.concat(calcularComplementoDos(decimalABinario(valor)));
+        }
+        postbyte = postbyte.concat(Integer.toHexString(Parte_4.binarioADecimal(xb)));
+        return postbyte.toUpperCase();
+    }
+    
+    static String idxAcc(String opr, String sourceform){
+        String postbyte=" ", xb="111";
+        String frmbase [] = sourceform.split(",");
+        if(frmbase[1].equals("xb")){
+            postbyte=frmbase[0].concat(" ");
+        } 
+        else if(frmbase[1].equals("xb")){
+            postbyte=frmbase[0].concat(" ").concat(frmbase[1].concat(" "));
+        }
+        
+        String operando[] = opr.split(",");
+        xb=xb.concat(calculoRR(operando[1]).concat("1"));
+        if(operando[0].equals("A")){
+            xb=xb.concat("00");
+        }
+        else if(operando[0].equals("B")){
+            xb=xb.concat("01");
+        }
+        else if (operando[0].equals("D")){
+            xb=xb.concat("10");
+        }
+        postbyte = postbyte.concat(Integer.toHexString(Parte_4.binarioADecimal(xb)));
         return postbyte.toUpperCase();
     }
     
@@ -275,6 +295,9 @@ public class Salvacion {
                     LinCod.setForm(AUX.SourceForm);
                     if(LinCod.getADDR().equals("IDX(pre-inc)")){
                         LinCod.setCop(idxIncrement(LinCod.getOperando(), LinCod.getForm()));
+                    }
+                    if(LinCod.getADDR().equals("IDX(acc)")){
+                        LinCod.setCop(idxAcc(LinCod.getOperando(), LinCod.getForm()));
                     }
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
                     LinCod.setSize(AUX.byteTotal+" bytes");
