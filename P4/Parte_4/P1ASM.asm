@@ -1,5 +1,5 @@
 	ORG	0
-	STAA	A,X
-	STAA	B,X
-	STAA	D,X
+	STAB	-8,y
+	LDAA	,x
+	LDAA	15,x
 Et1	END

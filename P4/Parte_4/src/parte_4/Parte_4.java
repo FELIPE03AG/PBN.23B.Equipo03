@@ -380,6 +380,9 @@ public class Parte_4 {
     static String IDX(String Operando){
         String idx="0";                               //Esta variable sirve para guardar el tipo idx en custion
         if (Operando.matches("^[^,]*,[^,]*$")){       //Esta funcion sirve para validar que tenga una sola coma
+                if(Operando.startsWith(",")){
+                    Operando="0".concat(Operando);
+                }
                 String partes[]=Operando.split(",");  //Esta funcion separa y guarda valores si hay una ',' entre estos
                 if(partes[0].matches(".*\\d.*")){     //Esta funcion verifica si en la primer parte del operando hay un digito
                     int valor=Integer.parseInt(partes[0]); //Siendo que la primer parte del operando en un digito se manda a guardar en valor como entero
