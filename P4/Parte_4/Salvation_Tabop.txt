@@ -84,7 +84,7 @@ BCLR	oprx16,xysp,msk8	IDX2		0Dxbeeffmm	4	5
 BCS	rel8			REL		25rr		1	2
 BEQ	rel8			REL		27rr		1	2
 BGE	rel8			REL		2Crr		1	2
-BGND	-			INH		00		0	0
+BGND	-			INH		00		0	1
 BGT	rel8			REL		2Err		1	2
 BHI	rel8			REL		22rr		1	2
 BHS	rel8			REL		24rr		1	2
