@@ -359,7 +359,7 @@ public class Parte_4 {
                 imm=true;                                       //Manda un verdadero validando como correcto
             }
             else if(FormaOpr.equals("#opr16i")){
-                if(AUX<=65535 && AUX>255){       //verifica que el operando se encuentre entre los valores asignados
+                if(AUX<=65535){       //verifica que el operando se encuentre entre los valores asignados
                     imm=true;                                  //Manda un verdadero validando como correcto
                 } 
             } 
