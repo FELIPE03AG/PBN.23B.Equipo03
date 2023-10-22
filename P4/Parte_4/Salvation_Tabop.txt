@@ -352,7 +352,7 @@ LDX	[oprx16,xysp]		[IDX2]		EExbeeff	3	4
 LDY	#opr16i			IMM		CDjjkk		2	3
 LDY	opr8a			DIR		DDdd		1	2
 LDY	opr16a			EXT		FDhhll		2	3
-LDY	oprx0_xysp		IDX		EDxd		1	2
+LDY	oprx0_xysp		IDX		EDxb		1	2
 LDY	oprx9,xysp		IDX1		EDxbff		2	3
 LDY	oprx16,xysp		IDX2		EDxbeeff	3	4
 LDY	[D,xysp]		[D,IDX]		EDxb		1	2
@@ -521,7 +521,7 @@ STS	[D,xysp]		[D,IDX]		6Fxb		1	2
 STS	[oprx16,xysp]		[IDX2]		6fxbeeff	3	4
 STX	opr8a			DIR		5Edd		1	2
 STX	opr16a			EXT		7Ehhll		2	3
-STX	oprx0_xysp		IDX		6Exb		1	1
+STX	oprx0_xysp		IDX		6Exb		1	2
 STX	oprx9,xysp		IDX1		6Exbff		2	3
 STX	oprx16,xysp		IDX2		6Exbeeff	3	4
 STX	[D,xysp]		[D,IDX]		6Exb		1	2

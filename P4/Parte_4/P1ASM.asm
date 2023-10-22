@@ -1,13 +1,9 @@
 	ORG	0
-	ABA
-	BGND
-	LDAA	#$55
-	LDX	#$1234
-	LDY	#%110111
-	LDAA	$055
-	LDAA	85
-	LDX	$20
-	ldaa	@777
-	ldaa 	$ffff
-	LDAA	$38
-	END
+	STAA	1,-SP
+	CPY	5,Y-
+	STAA	1,SP-
+	LDY 	3,-SP
+	CPX 	8,+Y
+	STX	2,+SP
+	STX	2,SP+
+Et1	END

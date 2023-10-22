@@ -118,65 +118,109 @@ public class Salvacion {
         return postbyte;
     }
     
-    static String ValorXb(String form, String opr, String vaa){
-        String rr = " ";
-        String aa = " ";
-        
-        
-        
-        switch(opr){
+    static String calculoRR(String registro){
+         switch(registro){
             case "X":
-                if(opr.equals("X")){
-                rr = "00";
+                if(registro.equals("X")){
+                registro = "00";
              }
             break;
             case "Y":
-                if(opr.equals("Y")){
-                rr = "01";
+                if(registro.equals("Y")){
+                registro = "01";
                 }
             break;
             case "SP":
-                if(opr.equals("SP")){
-                rr = "10";
+                if(registro.equals("SP")){
+                registro = "10";
                 }
             break;
             case "PC":
-                if(opr.equals("PC")){
-                rr = "11";
+                if(registro.equals("PC")){
+                registro = "11";
                 }
-        
+
             break;    
         }// fin switch rr
-        System.out.println("Valor de rr = " + rr);
-        
-        switch(vaa){
-            case "A":
-                if(vaa.equals("A")){
-                    aa ="00";
-                }
-            break;
-            case "B":
-                if(vaa.equals("B")){
-                    aa = "01";
-                }
-            break;
-            case "D":
-                if(vaa.equals("D")){
-                    aa= "10";
-                }
-            break;
-            case "[D,":
-                if(vaa.equals("[D,")){
-                    aa = "11";
-                }
-            break;
-            
-                }
-            
-        
-        
-        
-       return form; 
+        return registro;
+    }
+    
+    public static String decimalABinario(int numeroDecimal) {
+        if (numeroDecimal < 0 || numeroDecimal > 15) {
+            return "Error"; // El número debe estar en el rango de 0 a 15 para representarse en 4 bits
+        }
+        StringBuilder resultado = new StringBuilder();
+        for (int i = 3; i >= 0; i--) {
+            int bit = (numeroDecimal >> i) & 1; // Obtén el i-ésimo bit del número
+            resultado.append(bit);
+        }
+        System.out.println("VALOR EN BINARIO "+resultado.toString());
+        return resultado.toString();
+    }
+    
+    public static String calcularComplementoDos(String numeroBinario) {
+        int longitud = numeroBinario.length();
+        StringBuilder complemento = new StringBuilder();
+
+        // Invertir los bits del número
+        for (int i = 0; i < longitud; i++) {
+            char bit = numeroBinario.charAt(i);
+            complemento.append((bit == '0') ? '1' : '0');
+        }
+
+        // Sumar 1 al número invertido
+        int carry = 1;
+        for (int i = longitud - 1; i >= 0; i--) {
+            char bit = complemento.charAt(i);
+            if (bit == '1' && carry == 1) {
+                complemento.setCharAt(i, '0');
+            } else if (bit == '0' && carry == 1) {
+                complemento.setCharAt(i, '1');
+                carry = 0;
+            }
+        }
+
+        return complemento.toString();
+    }
+    
+    static String idxIncrement(String opr, String sourceform){
+        String xb=" ", postbyte=" ";
+        char signo=' ';
+        int valor =0;
+        String frmbase [] = sourceform.split(",");
+        if(frmbase[1].equals("xb")){
+            System.out.println("SI ENCONTRO LA FORMA BASE xb");
+            postbyte=frmbase[0].concat(" ");
+            System.out.println("postbyte al principio "+postbyte);
+            String operando [] = opr.split(",");
+            if(operando[1].startsWith("+")||operando[1].startsWith("-")){
+                xb="10";
+                signo=operando[1].charAt(0);
+                operando[1]=operando[1].substring(1);
+            }
+            else if (operando[1].endsWith("+")||operando[1].endsWith("-")){
+                xb="11";
+                signo=operando[1].charAt(operando[1].length()-1);
+                operando[1]=operando[1].substring(0, operando[1].length()-1);
+            }
+            System.out.println("xb con 1 y p "+xb);
+            xb=calculoRR(operando[1]).concat(xb);
+            System.out.println("xb calculando rr1p "+xb);
+            valor=Integer.parseInt(operando[0]);
+            System.out.println("Valor = "+valor);
+            System.out.println("SIGNO "+signo);
+            if(signo=='+'){
+                valor=valor-1;
+                xb=xb.concat(decimalABinario(valor));
+            }
+            else if(signo=='-'){
+                xb=xb.concat(calcularComplementoDos(decimalABinario(valor)));
+            }
+            System.out.println("xb final rr1pnnnn "+xb);
+            postbyte=postbyte.concat(Integer.toHexString(Parte_4.binarioADecimal(xb)));
+            System.out.println("postbyte final "+postbyte);
+        } 
+        return postbyte.toUpperCase();
     }
     
     static void IdentificarADDR(Linea LinCod,NodoSalvacion AUX){
@@ -228,6 +272,10 @@ public class Salvacion {
             if(AUX.Operando.equals("oprx0_xysp")){//Debe coincidir con esta estructura
                 if(!(Parte_4.IDX(LinCod.getOperando()).equals("0"))){//Valido que el operando completo tenga la forma completa
                     LinCod.setADDR(Parte_4.IDX(LinCod.getOperando()));
+                    LinCod.setForm(AUX.SourceForm);
+                    if(LinCod.getADDR().equals("IDX(pre-inc)")){
+                        LinCod.setCop(idxIncrement(LinCod.getOperando(), LinCod.getForm()));
+                    }
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
                     LinCod.setSize(AUX.byteTotal+" bytes");
                     encontrado=true;
