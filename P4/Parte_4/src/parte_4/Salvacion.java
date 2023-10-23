@@ -318,6 +318,58 @@ public class Salvacion {
         return postbyte.toUpperCase();
     }
     
+static String idx2(String opr, String sourceform) {
+    String postbyte = " ", xb = " ", ee = " ", ff = " ";
+    String frmbase[] = sourceform.split(",");
+    
+    if (frmbase[1].equals("xb") && frmbase[2].equals("ee") && frmbase[3].equals("ff")) {
+        postbyte = frmbase[0].concat(" ");
+        String operando[] = opr.split(",");
+        xb = "111".concat(calculoRR(operando[1])).concat("01");
+
+        int valorAbsoluto = Math.abs(Integer.parseInt(operando[0]));
+        ee = Integer.toHexString(valorAbsoluto);
+
+        ff=Integer.toBinaryString(Integer.parseInt(operando[0].substring(1)));
+        if(ff.length()>4){ 
+        switch (ff.length()) {
+            case 5:
+                ff="000".concat(ff);
+                break;
+            case 6:
+                ff="00".concat(ff);
+                break;
+            case 7:
+                ff="0".concat(ff);
+                break;
+            default:
+                break;
+            }
+        if(ee.length()>4){ 
+        switch (ee.length()) {
+            case 5:
+                ee="000".concat(ee);
+                break;
+            case 6:
+                ee="00".concat(ee);
+                break;
+            case 7:
+                ee="0".concat(ee);
+                break;
+            default:
+                break;
+            }
+        }
+        }
+
+        ee = ee.toUpperCase();
+        ff = Integer.toHexString(valorAbsoluto);
+    }
+
+    postbyte = postbyte + Integer.toHexString(Parte_4.binarioADecimal(xb)) + " " + ee + " " + ff;
+    return postbyte.toUpperCase();
+}
+
     static void IdentificarADDR(Linea LinCod,NodoSalvacion AUX){
         if(LinCod.getOperando().equals(" ")){//Primer caso no hay operando
             if(AUX.Operando.equals("-")){//La estructura de operando que coincide
@@ -397,6 +449,9 @@ public class Salvacion {
                     LinCod.setADDR("IDX2");
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
                     LinCod.setSize(AUX.byteTotal+" bytes");
+                    encontrado=true;
+                    LinCod.setForm(AUX.SourceForm);
+                    LinCod.setCop(idx2(LinCod.getOperando(), LinCod.getForm()));
                     encontrado=true;
                 }//Fin si es IDX2
             }
