@@ -97,26 +97,33 @@ public class Salvacion {
         }
         return postbyte;
     }
-    
+    //Metodo para calcular bostbyte de Directo y extendido...
     static String FormDirExt(String opr, String sourceform,int size, int calcular, String tipo){
-        String aux = " ";
+        String aux = " ";//variables de apoyo
         String postbyte=" ";
-        String frmbase [] = sourceform.split(",");
-        Integer opraux = Parte_4.ConvertirADecimal(opr);
+        String frmbase [] = sourceform.split(",");//separador del String por estacios entre comas.
+        Integer opraux = Parte_4.ConvertirADecimal(opr); //convertimos a decimal
         if(opraux<256 && size==2 && calcular==1 && frmbase[1].equals("dd")&&tipo.equals("D")){
-            postbyte=frmbase[0];
-            frmbase[1]=Integer.toHexString(opraux).toUpperCase();
-            if(opraux<16){
-                frmbase[1]="0".concat(frmbase[1]);
-            }
+            //valida que sea de 8 bits, tenga 2 bits, 1 por calcular y que la forma sea 'dd' y el tipo 'D'.
+            postbyte=frmbase[0];//igualamos la variable postbyte a la pos 0 del array
+            frmbase[1]=Integer.toHexString(opraux).toUpperCase();//pasamos a hexadecimal la segunda posicion del array
+            if(opraux<16){//valida que el auxiliar sea menor que 16
+                frmbase[1]="0".concat(frmbase[1]);//concatena un 0 a la izquierda del String
+            }//fin segundo if
             postbyte=postbyte.concat(" ").concat(frmbase[1]);
-        } 
+            //concatena la posicion 0, o el bit calculado, con el bit recien calculado, el que faltaba.
+            //quedan 2 bits que son los totales en el directo
+        } //Caso Extendido...
         else if(opraux>255 && size==3 && calcular==2 && frmbase[1].equals("hh") && frmbase[2].equals("ll")&&tipo.equals("E")){
-            aux=Parte_4.validarDireccion(opr);
+            //valida que sea de 16 bits, tenga 3 bits totales y 2 por calcular. 
+            //valida que tenga la forma base 'hh' 'll' y sea de tipo 'E'.
+            aux=Parte_4.validarDireccion(opr);//valida la direccion del opr y lo guarda en la variable aux
             postbyte=frmbase[0].concat(" ").concat(aux.substring(0, 2)).concat(" ").concat(aux.substring(2));
-        }       
+            //concatena las 3 partes del string, la 0 que estaba calculada y la 1 y 2 recien calculadas.
+        }//fin else if    
+        
         return postbyte;
-    }
+    }//fin de metodo DirExt
     
     static String calculoRR(String registro){
          switch(registro){
