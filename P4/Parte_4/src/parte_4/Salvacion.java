@@ -125,35 +125,37 @@ public class Salvacion {
         return postbyte;
     }//fin de metodo DirExt
     
+    //Metodo para analizar vaor de rr en IDX
     static String calculoRR(String registro){
-         switch(registro){
-            case "X":
-                if(registro.equals("X")){
-                registro = "00";
+         switch(registro){//swittch de desicion
+            case "X"://caso X = 00
+                if(registro.equals("X")){//valida si registro = X
+                registro = "00";//asigna valor 00
              }
+            break;//quebra y siguiente...
+            case "Y"://caso Y 01
+                if(registro.equals("Y")){//valida si registro = Y
+                registro = "01";//asigna valor 01
+                }//quebra y siguiente...
             break;
-            case "Y":
-                if(registro.equals("Y")){
-                registro = "01";
-                }
+            case "SP"://caso 10
+                if(registro.equals("SP")){// valida igualdad a SP
+                registro = "10";//valor = 10
+                }//...
             break;
-            case "SP":
-                if(registro.equals("SP")){
-                registro = "10";
-                }
-            break;
-            case "PC":
-                if(registro.equals("PC")){
-                registro = "11";
-                }
+            case "PC": //caso 11
+                if(registro.equals("PC")){//valida igualdad a PC
+                registro = "11";//valor = 11
+                }//.
 
             break;    
         }// fin switch rr
         return registro;
-    }
+    }//fin de metodo RR
     
+    //Metodo para pasar de decimal a Binario
     public static String decimalABinario(int numeroDecimal) {
-        if (numeroDecimal < 0 || numeroDecimal > 15) {
+        if (numeroDecimal < 0 || numeroDecimal > 15) {//valida que este entre el 0 -15
             return "Error"; // El número debe estar en el rango de 0 a 15 para representarse en 4 bits
         }
         StringBuilder resultado = new StringBuilder();
@@ -162,10 +164,11 @@ public class Salvacion {
             resultado.append(bit);
         }
         return resultado.toString();
-    }
+    }//fin metodo Decimal a binario
     
+    //calcular complemento2 (c2)binario
     public static String calcularComplementoDos(String numeroBinario) {
-        int longitud = numeroBinario.length();
+        int longitud = numeroBinario.length();//toma valor del ultimo numero de izq. a derecha
         StringBuilder complemento = new StringBuilder();
 
         // Invertir los bits del número
@@ -183,11 +186,11 @@ public class Salvacion {
             } else if (bit == '0' && carry == 1) {
                 complemento.setCharAt(i, '1');
                 carry = 0;
-            }
-        }
+            }//fin del else if 
+        }//termina de hacer las sumas
 
         return complemento.toString();
-    }
+    }//fin de metodo para comlemento 2
     
     static String idxIncrement(String opr, String sourceform){
         String xb=" ", postbyte=" ";
