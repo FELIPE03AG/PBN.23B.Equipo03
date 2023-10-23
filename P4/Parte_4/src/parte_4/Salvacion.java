@@ -325,45 +325,11 @@ static String idx2(String opr, String sourceform) {
     if (frmbase[1].equals("xb") && frmbase[2].equals("ee") && frmbase[3].equals("ff")) {
         postbyte = frmbase[0].concat(" ");
         String operando[] = opr.split(",");
-        xb = "111".concat(calculoRR(operando[1])).concat("01");
-
-        int valorAbsoluto = Math.abs(Integer.parseInt(operando[0]));
-        ee = Integer.toHexString(valorAbsoluto);
-
-        ff=Integer.toBinaryString(Integer.parseInt(operando[0].substring(1)));
-        if(ff.length()>4){ 
-        switch (ff.length()) {
-            case 5:
-                ff="000".concat(ff);
-                break;
-            case 6:
-                ff="00".concat(ff);
-                break;
-            case 7:
-                ff="0".concat(ff);
-                break;
-            default:
-                break;
-            }
-        if(ee.length()>4){ 
-        switch (ee.length()) {
-            case 5:
-                ee="000".concat(ee);
-                break;
-            case 6:
-                ee="00".concat(ee);
-                break;
-            case 7:
-                ee="0".concat(ee);
-                break;
-            default:
-                break;
-            }
-        }
-        }
-
-        ee = ee.toUpperCase();
-        ff = Integer.toHexString(valorAbsoluto);
+        xb = "111".concat(calculoRR(operando[1])).concat("010");
+        ee=Parte_4.validarDireccion(operando[0]);
+        System.out.println(ee);
+        ff=ee.substring(2, 4);
+        ee=ee.substring(0, 2);
     }
 
     postbyte = postbyte + Integer.toHexString(Parte_4.binarioADecimal(xb)) + " " + ee + " " + ff;
