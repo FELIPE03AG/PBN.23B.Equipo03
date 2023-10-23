@@ -1,8 +1,6 @@
 TIPO,        VALOR,       ETQ,         CODOP,       OPER 
 DIR_INIC,        0000,       NULL,       ORG,       $0,       
-CONTLOC,       0000,       NULL,       STAB,       -8,Y,       
-CONTLOC,       0002,       NULL,       LDAA,       ,X,       
-CONTLOC,       0004,       NULL,       LDAA,       15,X,       
-CONTLOC,       0006,       NULL,       ADDA,       -13,SP,       
-CONTLOC,       0008,       NULL,       BITA,       -4,PC,       
-CONTLOC,       000A,       ET1,       END,       NULL,       
+CONTLOC,       0000,       NULL,       LDAA,       255,X,       
+CONTLOC,       0003,       NULL,       LDAA,       -256,X,       
+CONTLOC,       0006,       NULL,       LDAA,       -18,X,       
+CONTLOC,       0009,       ET1,       END,       NULL,       

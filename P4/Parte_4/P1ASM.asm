@@ -1,7 +1,5 @@
 	ORG	0
-	STAB	-8,y
-	LDAA	,x
-	LDAA	15,x
-	ADDA	-13,SP
-	BITA	-4,PC
+	LDAA	255,X
+	LDAA	-256,X
+	LDAA	-18,X
 Et1	END

@@ -276,6 +276,48 @@ public class Salvacion {
         return postbyte.toUpperCase();
     }
     
+    static String idx1(String opr, String sourceform){
+        String postbyte=" ", xb=" ", ff=" ";
+        String frmbase [] = sourceform.split(",");
+        if(frmbase[1].equals("xb") && frmbase[2].equals("ff")){
+            postbyte=frmbase[0].concat(" ");
+            String operando[] = opr.split(",");
+            xb="111".concat(calculoRR(operando[1])).concat("00");
+            if(operando[0].startsWith("-")){
+                xb=xb.concat("1");
+                if(operando[0].equals("-256")){
+                    ff="00";
+                }
+                else{
+                    ff=Integer.toBinaryString(Integer.parseInt(operando[0].substring(1)));
+                    if(ff.length()>4){
+                        switch (ff.length()) {
+                            case 5:
+                                ff="000".concat(ff);
+                                break;
+                            case 6:
+                                ff="00".concat(ff);
+                                break;
+                            case 7:
+                                ff="0".concat(ff);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    ff=calcularComplementoDos(ff);
+                    ff=Integer.toHexString(Parte_4.binarioADecimal(ff));
+                }
+            }
+            else{
+                xb=xb.concat("0");
+                ff=Integer.toHexString(Integer.parseInt(operando[0]));
+            }
+        }
+        postbyte = postbyte.concat(Integer.toHexString(Parte_4.binarioADecimal(xb))).concat(" "+ff);
+        return postbyte.toUpperCase();
+    }
+    
     static void IdentificarADDR(Linea LinCod,NodoSalvacion AUX){
         if(LinCod.getOperando().equals(" ")){//Primer caso no hay operando
             if(AUX.Operando.equals("-")){//La estructura de operando que coincide
@@ -345,6 +387,8 @@ public class Salvacion {
                     LinCod.setADDR("IDX1");
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
                     LinCod.setSize(AUX.byteTotal+" bytes");
+                    LinCod.setForm(AUX.SourceForm);
+                    LinCod.setCop(idx1(LinCod.getOperando(), LinCod.getForm()));
                     encontrado=true;
                 }//Validar operando con de IDX
             }
