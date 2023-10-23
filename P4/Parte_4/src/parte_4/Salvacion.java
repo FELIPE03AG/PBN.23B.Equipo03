@@ -154,7 +154,6 @@ public class Salvacion {
             int bit = (numeroDecimal >> i) & 1; // Obtén el i-ésimo bit del número
             resultado.append(bit);
         }
-        System.out.println("VALOR EN BINARIO "+resultado.toString());
         return resultado.toString();
     }
     
@@ -192,7 +191,7 @@ public class Salvacion {
         if(frmbase[1].equals("xb")){
             postbyte=frmbase[0].concat(" ");
         } 
-        else if(frmbase[1].equals("xb")){
+        else if(frmbase[2].equals("xb")){
             postbyte=frmbase[0].concat(" ").concat(frmbase[1].concat(" "));
         }
         
@@ -224,7 +223,7 @@ public class Salvacion {
         if(frmbase[1].equals("xb")){
             postbyte=frmbase[0].concat(" ");
         } 
-        else if(frmbase[1].equals("xb")){
+        else if(frmbase[2].equals("xb")){
             postbyte=frmbase[0].concat(" ").concat(frmbase[1].concat(" "));
         }
         
@@ -240,6 +239,40 @@ public class Salvacion {
             xb=xb.concat("10");
         }
         postbyte = postbyte.concat(Integer.toHexString(Parte_4.binarioADecimal(xb)));
+        return postbyte.toUpperCase();
+    }
+    
+    static String idx5b (String opr, String sourceform){
+        String postbyte=" ", xb=" ";
+        int valor=0;
+        String frmbase [] = sourceform.split(",");
+        if(frmbase[1].equals("xb")){
+            postbyte=frmbase[0].concat(" ");
+        } 
+        else if(frmbase[2].equals("xb")){
+            postbyte=frmbase[0].concat(" ").concat(frmbase[1].concat(" "));
+        }
+        if(opr.startsWith(",")){
+            opr="0".concat(opr);
+        }
+        String operando[] = opr.split(",");
+        xb=calculoRR(operando[1]).concat("0");
+        valor=Integer.parseInt(operando[0]);
+        if(valor==16){
+            xb=xb.concat("10000");
+        }
+        else if(valor<0){
+            valor=valor*-1;
+            xb=xb.concat("1").concat(calcularComplementoDos(decimalABinario(valor)));
+        }
+        else{
+            xb=xb.concat("0").concat(decimalABinario(valor));
+        }
+        xb=Integer.toHexString(Parte_4.binarioADecimal(xb));
+        if(xb.length()==1){
+            xb="0".concat(xb);
+        }
+        postbyte = postbyte.concat(xb);
         return postbyte.toUpperCase();
     }
     
@@ -296,8 +329,11 @@ public class Salvacion {
                     if(LinCod.getADDR().equals("IDX(pre-inc)")){
                         LinCod.setCop(idxIncrement(LinCod.getOperando(), LinCod.getForm()));
                     }
-                    if(LinCod.getADDR().equals("IDX(acc)")){
+                    else if(LinCod.getADDR().equals("IDX(acc)")){
                         LinCod.setCop(idxAcc(LinCod.getOperando(), LinCod.getForm()));
+                    }
+                    else{
+                        LinCod.setCop(idx5b(LinCod.getOperando(), LinCod.getForm()));
                     }
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
                     LinCod.setSize(AUX.byteTotal+" bytes");

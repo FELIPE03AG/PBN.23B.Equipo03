@@ -2,4 +2,6 @@
 	STAB	-8,y
 	LDAA	,x
 	LDAA	15,x
+	ADDA	-13,SP
+	BITA	-4,PC
 Et1	END
