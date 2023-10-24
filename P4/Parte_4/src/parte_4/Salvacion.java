@@ -239,29 +239,34 @@ public class Salvacion {
         return postbyte.toUpperCase();
     }//postbyte del idx increment
     
+    //metodo para calcular postbyte de los IDX forma Acc
     static String idxAcc(String opr, String sourceform){
-        String postbyte=" ", xb="111";
-        String frmbase [] = sourceform.split(",");
-        if(frmbase[1].equals("xb")){
-            postbyte=frmbase[0].concat(" ");
-        } 
-        else if(frmbase[2].equals("xb")){
+        String postbyte=" ", xb="111";//valor de los 3 primeros bits de la forma 111rr1aa
+        String frmbase [] = sourceform.split(",");//separa por comas los bits
+        if(frmbase[1].equals("xb")){//valida que el segundo espacio sea igual a xb
+            postbyte=frmbase[0].concat(" ");//iguala postbyte a la forms concatenada a un espacio a la derecha
+        }//fin del if 
+        else if(frmbase[2].equals("xb")){//valida si el form = "xb"
             postbyte=frmbase[0].concat(" ").concat(frmbase[1].concat(" "));
-        }
+            //concatena la primera parte con la segunda entre espacios y lo guarda en la variable postbyte
+        }//fin de else if
         
-        String operando[] = opr.split(",");
-        xb=xb.concat(calculoRR(operando[1]).concat("1"));
-        if(operando[0].equals("A")){
-            xb=xb.concat("00");
+        String operando[] = opr.split(",");//array operando separado por comas
+        xb=xb.concat(calculoRR(operando[1]).concat("1"));//valora a xb como...
+        //xb, concatenado a el valor de RR, concatenado a 1.
+        if(operando[0].equals("A")){//si operando = A
+            xb=xb.concat("00"); //los ultimos 2 bites son 00
         }
-        else if(operando[0].equals("B")){
-            xb=xb.concat("01");
+        else if(operando[0].equals("B")){//si operando = B
+            xb=xb.concat("01");//ultimos 2 bits son 01
         }
-        else if (operando[0].equals("D")){
-            xb=xb.concat("10");
+        else if (operando[0].equals("D")){//si operando = C
+            xb=xb.concat("10");//ultimos 2 bits son 10
         }
         postbyte = postbyte.concat(Integer.toHexString(Parte_4.binarioADecimal(xb)));
+        //da el valor a postbyte de postbyte concatenado a xb y lo convierte a Hexadecimal
         return postbyte.toUpperCase();
+        //retorna el valor de postbyte hexadecimal y lo convierte a mayusculas.
     }
     
     /**
