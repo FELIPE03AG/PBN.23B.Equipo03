@@ -1,13 +1,4 @@
 	ORG	0
-	ABA
-	BGND
-	LDAA	#$55
-	LDX	#$1234
-	LDY	#%110111
-	LDAA	$055
-	LDAA	85
-	LDX	$20
-	ldaa	@777
-	ldaa 	$ffff
-	LAA	$38
+uno	DC.B	"abcd"
+dos	DC.B	%1010,@12,1,$a
 	END

@@ -11,7 +11,7 @@ public class Tabla extends javax.swing.JFrame {
     
     //METODO PARA LLENAR LA TABLA
     void Llenado(){
-        for (Linea auxiliar : Parte_4.LineasCodigo) {
+        for (Linea auxiliar : Parte_4.LineasASM) {
             diseño.addRow(new Object[]{auxiliar.getConloc(),auxiliar.getEtiqueta(),auxiliar.getCodop(),auxiliar.getOperando(),auxiliar.getADDR(),
                                         auxiliar.getSize(),auxiliar.getPorCalcular(), auxiliar.getForm(), auxiliar.getCop()});
         }

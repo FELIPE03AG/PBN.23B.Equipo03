@@ -1,1 +1,3 @@
 TIPO            Si       Ti            
+RELATIVA       UNO       0000       
+RELATIVA       DOS       0004       

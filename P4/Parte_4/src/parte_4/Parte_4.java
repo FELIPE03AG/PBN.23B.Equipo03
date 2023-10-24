@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class Parte_4 {
     static Linea NewLinCod=null; //Para guardar en una lista las lineas del codigo
     static boolean Comentario = false;//Variable que indica si la linea es un comentario
-    static ArrayList <Linea> LineasCodigo = new ArrayList<>();
+    static ArrayList <Linea> LineasASM = new ArrayList<>();
     static boolean org = false;
     
 //**************************************************************** PARTE 1 *******************************************************
@@ -78,6 +78,33 @@ public class Parte_4 {
         return Coment;
     }//Fin validacion comentario
     
+    static String operandoDC(String opr){
+        String operando = " ";//operando de forma correcta para directivas DC
+        if(opr.contains(",")){//Si el operando tiene conas
+            String valores [] = opr.split(",");//Separa el operando por cada valor 
+            for(int i=0;i<valores.length;i++){//para recorrer todos los valores
+                if(!(valores[i].startsWith("\"") && valores[i].endsWith("\""))){ //Si no esta entre comillas
+                    valores[i]=valores[i].toUpperCase(); //Convierte en mayusculas el operando si esta en base hexa
+                }//Fin no esta entre comillas el valor
+                if(i==0){
+                        operando=valores[i];//Guarda el primer valor en el operando
+                    }//fin es el primer valor
+                    else{
+                        operando=operando.concat(",").concat(valores[i]);//concatena cada valor con lo anterios con una coma enmedio
+                }//fin else agregar valor
+            }//Fin for
+        }//Fin es mas de un valor
+        else{
+            if(!(opr.startsWith("\"") && opr.endsWith("\""))){
+                operando=opr.toUpperCase();//Pasar a mayusculas (aplica solo si esta en base hexa)
+            }//Fin no esta entre comillas
+            else{
+                operando=opr;
+            }
+        }//fin es un solo valor
+        return operando;
+    }//fin opernados DC
+    
     //METODO PARA LEER EL ASM
     static void Leer(){
         ArrayList <String> Etiquetas = new ArrayList<>();//Guardara todas las etiquetas encontradas previamente
@@ -125,7 +152,12 @@ public class Parte_4 {
                         if(validarCodop(campos[1])){
                             NewLinCod.setCodop(campos[1].toUpperCase());
                             if(campos.length==3){//Si hay siguiente bloque debe ser el operando
-                                NewLinCod.setOperando(campos[2].toUpperCase()); 
+                                if(NewLinCod.getCodop().contains("DC.")){//Si la directiva es DC.
+                                    NewLinCod.setOperando(operandoDC(campos[2]));//no todo el opernado se debe hacer mayusculas
+                                }//fin if es DC.
+                                else{//El operando se debe pasar a mayusculas
+                                    NewLinCod.setOperando(campos[2].toUpperCase()); 
+                                }//fin no es DC.
                                 if(NewLinCod.getCodop().equals("ORG")){
                                     if(NewLinCod.getEtiqueta().equals(" ") && !org){
                                         if(ConvertirADecimal(NewLinCod.getOperando())!=-1){
@@ -155,7 +187,7 @@ public class Parte_4 {
                                 }
                             }
                             if(NewLinCod!=null){
-                                LineasCodigo.add(NewLinCod);
+                                LineasASM.add(NewLinCod);
                             }
                         }//Fin CODOP correcto
                         else{
@@ -180,8 +212,8 @@ public class Parte_4 {
             }//Fin del while
             
             //Si el end no existe en el archivo
-            int indiceUltimoElemento = LineasCodigo.size() - 1;
-            if(cursorActual==auxArchivo.length() && (!LineasCodigo.get(indiceUltimoElemento).getCodop().equals("END"))){
+            int indiceUltimoElemento = LineasASM.size() - 1;
+            if(cursorActual==auxArchivo.length() && (!LineasASM.get(indiceUltimoElemento).getCodop().equals("END"))){
                 System.out.println("END NO LOCALIZADO");
             }
             if(!org){
@@ -487,10 +519,10 @@ public class Parte_4 {
     
     public static void main(String[] args) {
         Leer();//Llamo el metodo
-        if(LineasCodigo.size()!=0){
-            Salvacion.BuscarCodop(LineasCodigo);
-            MetodosP3.LlenarList(LineasCodigo);
-            MetodosP3.LlenarTabsim(LineasCodigo);
+        if(LineasASM.size()!=0){
+            Salvacion.BuscarCodop(LineasASM);
+            MetodosP3.LlenarList(LineasASM);
+            MetodosP3.LlenarTabsim(LineasASM);
             new Tabla().setVisible(true);
         }
         
