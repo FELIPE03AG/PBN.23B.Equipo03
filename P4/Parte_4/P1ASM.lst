@@ -1,5 +1,7 @@
 TIPO,        VALOR,       ETQ,         CODOP,       OPER 
 DIR_INIC,        0000,       NULL,       ORG,       $0,       
 CONTLOC,       0000,       UNO,       DC.B,       "abcd",       
-CONTLOC,       0004,       DOS,       DC.B,       %1010,@12,1,$A,       
-CONTLOC,       0008,       NULL,       END,       NULL,       
+CONTLOC,       0004,       DOS,       DC.B,       %1010,@12,"a",$A,       
+CONTLOC,       0008,       NULL,       DC.B,       "a","b","c",       
+CONTLOC,       000B,       NULL,       DC.W,       $B,       
+CONTLOC,       000D,       NULL,       END,       NULL,       

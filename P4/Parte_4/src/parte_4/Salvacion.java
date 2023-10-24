@@ -574,10 +574,11 @@ public class Salvacion {
                                     mayor255=true;
                                 }//Fin if es mayor de 255
                             }//Fin el operando es un valor en alguna base
-                            else if(partOpr[i].startsWith("\"")&&LinCod.getOperando().endsWith("\"")){//Si empieza y termina con comillas
+                            else if(partOpr[i].startsWith("\"")&&partOpr[i].endsWith("\"")){//Si empieza y termina con comillas
                                 tam=tam+partOpr[i].substring(1, partOpr[i].length()-1).length();
                             }//Fin el valor esta en ascci
                             else{
+                                System.out.println("entra con "+partOpr[i]);
                                 oprBien=false;
                             }//Fin el operando tiene algun error
                         }//Fin for
