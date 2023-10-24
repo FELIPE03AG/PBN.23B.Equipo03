@@ -103,24 +103,24 @@ public class Parte_4 {
                     if(campos.length<=3 && campos.length>1){//If para validacion de solo 4 bloques no mas
                         if(!(campos[0].equals(""))){
                             if(campos[0].endsWith(":")){
-                                campos[0]=campos[0].substring(0, campos[0].length()-1);
-                            }
+                                campos[0]=campos[0].substring(0, campos[0].length()-1);//quitar los ultimos dos puntos del final
+                            }//Fin la etiqueta tiene dos puntos al final
                             if(validarEtiq(campos[0])){
-                                etqRepetida=false;
-                                for(String Etiqueta : Etiquetas){
+                                etqRepetida=false;//inicializo la variable en false
+                                for(String Etiqueta : Etiquetas){//Recorro todo el array que guarda todas las etiquetas
                                     if(Etiqueta.equals(campos[0].toUpperCase())){
-                                        etqRepetida=true;
-                                    }
-                                }
-                                if(!etqRepetida){
+                                        etqRepetida=true;//Se vuelve true si hay una coincidencia con el arreglo y la etiqueta actual
+                                    }//Fin si son iguales
+                                }//Fin for revisar etiquetas
+                                if(!etqRepetida){//Si no se habia puesto ya esa etiqueta se puede arreglar
                                     NewLinCod.setEtiqueta(campos[0].toUpperCase());//Guardar etiqueta en una nueva linea de la lista
                                     Etiquetas.add(campos[0].toUpperCase());
-                                }
-                            }
+                                }//Fin no esta repetida la etiqueta
+                            }//fin el bloque es una etiqueta
                             else{
                                 NewLinCod.setEtiqueta("ERROR");//Guardar el error de la etiqueta 
                                 System.out.println("ERROR Formato Etiqueta en: "+campos[0]);
-                            }
+                            }//Fin no esta bien el formato de la etiqueta
                         }//Busco una etiqueta
                         if(validarCodop(campos[1])){
                             NewLinCod.setCodop(campos[1].toUpperCase());

@@ -104,11 +104,11 @@ public class Salvacion {
         String frmbase [] = sourceform.split(",");//separador del String por estacios entre comas.
         Integer opraux = Parte_4.ConvertirADecimal(opr); //convertimos a decimal
         if(opraux<256 && size==2 && calcular==1 && frmbase[1].equals("dd")&&tipo.equals("D")){
-            //valida que sea de 8 bits, tenga 2 bits, 1 por calcular y que la forma sea 'dd' y el tipo 'D'.
-            postbyte=frmbase[0];//igualamos la variable postbyte a la pos 0 del array
-            frmbase[1]=Integer.toHexString(opraux).toUpperCase();//pasamos a hexadecimal la segunda posicion del array
+            //valida que sea de 8 bits, tenga 2 bits, 1 por calcular y que la forma sea 'dd' y el tipo 'D' (para directos)
+            postbyte=frmbase[0];//Se guarda el valor calculado del postbyte
+            frmbase[1]=Integer.toHexString(opraux).toUpperCase();//pasamos a hexadecimal el valor del operando
             if(opraux<16){//valida que el auxiliar sea menor que 16
-                frmbase[1]="0".concat(frmbase[1]);//concatena un 0 a la izquierda del String
+                frmbase[1]="0".concat(frmbase[1]);//completa a un byte
             }//fin segundo if
             postbyte=postbyte.concat(" ").concat(frmbase[1]);
             //concatena la posicion 0, o el bit calculado, con el bit recien calculado, el que faltaba.
@@ -328,7 +328,7 @@ public class Salvacion {
         return postbyte.toUpperCase();
     }
     
-static String idx2(String opr, String sourceform) {
+    static String idx2(String opr, String sourceform) {
     String postbyte = " ", xb = " ", ee = " ", ff = " ";
     String frmbase[] = sourceform.split(",");
     
@@ -549,26 +549,26 @@ static String idx2(String opr, String sourceform) {
                 boolean oprBien=true,mayor255=false;
                 if(!(LinCod.getOperando().equals(" "))){ 
                     if(LinCod.getOperando().contains(",")){ // Si el operando contiene comas, hay múltiples valores
-                        String [] partOpr = LinCod.getOperando().split(",");
+                        String [] partOpr = LinCod.getOperando().split(",");//Separar por valores
                         auxtam=partOpr.length;
-                        for(int i=0; i<auxtam; i++){
-                            if(Parte_4.ConvertirADecimal(partOpr[i])!=-1){
-                               tam++;
-                               if(Parte_4.ConvertirADecimal(partOpr[i])>255){
+                        for(int i=0; i<auxtam; i++){//para revisar cada valor
+                            if(Parte_4.ConvertirADecimal(partOpr[i])!=-1){ //Si el operando esta bien
+                               tam++;//Numero de valores para calcular el peso en memoria
+                               if(Parte_4.ConvertirADecimal(partOpr[i])>255){ //Validar si estaria fuera de rango en un .b
                                     mayor255=true;
-                                }
-                            }
-                            else if(partOpr[i].startsWith("\"")&&LinCod.getOperando().endsWith("\"")){
+                                }//Fin if es mayor de 255
+                            }//Fin el operando es un valor en alguna base
+                            else if(partOpr[i].startsWith("\"")&&LinCod.getOperando().endsWith("\"")){//Si empieza y termina con comillas
                                 tam=tam+partOpr[i].substring(1, partOpr[i].length()-1).length();
-                            }
+                            }//Fin el valor esta en ascci
                             else{
                                 oprBien=false;
-                            } 
-                        }
-                    }
+                            }//Fin el operando tiene algun error
+                        }//Fin for
+                    }//Fin contiene comas
                     else if(LinCod.getOperando().startsWith("\"")&&LinCod.getOperando().endsWith("\"")){  // Si el operando está entre comillas, es una cadena
-                        tam=LinCod.getOperando().substring(1, LinCod.getOperando().length()-1).length();
-                    }
+                        tam=LinCod.getOperando().substring(1, LinCod.getOperando().length()-1).length();//el tamaño es igual al numero de caracteres entre las comillas
+                    }//Fin, esta en codigo ascci
                     
                     if(tamPala.equals("B")){
                         if(tam!=0){ // Si el tamaño de la palabra es en bytes
@@ -580,7 +580,7 @@ static String idx2(String opr, String sourceform) {
                                 LinCod.setADDR("ERROR");
                                 System.out.println("OPR fuera de rango en: "+LinCod.getEtiqueta()+" "+LinCod.getCodop()+" "+LinCod.getOperando());
                             }
-                        }
+                        }//Fin, hay mas de un valor en el operando
                         else{
                             if(Parte_4.ConvertirADecimal(LinCod.getOperando())!=-1 && Parte_4.ConvertirADecimal(LinCod.getOperando())<255){
                                 LinCod.setSize("1 bytes");
@@ -590,8 +590,8 @@ static String idx2(String opr, String sourceform) {
                                 LinCod.setADDR("ERROR");
                                 System.out.println("OPR fuera de rango en: "+LinCod.getEtiqueta()+" "+LinCod.getCodop()+" "+LinCod.getOperando());
                             }
-                        }
-                    }
+                        }//Fin es un solo valor
+                    }//Fin es de tamaño B
                     else if(tamPala.equals("W")){
                         if(tam!=0){ // Si el tamaño de la palabra es en palabras (2 bytes por palabra)
                             LinCod.setSize(String.valueOf(tam*2)+" bytes");
@@ -607,7 +607,7 @@ static String idx2(String opr, String sourceform) {
                                 System.out.println("OPR fuera de rango en: "+LinCod.getEtiqueta()+" "+LinCod.getCodop()+" "+LinCod.getOperando());
                             }
                         }
-                    }
+                    }//Fin es de tamaño w
                     else{
                         LinCod.setADDR("ERROR");
                         System.out.println("ADDR no aceptado en: "+LinCod.getEtiqueta()+" "+LinCod.getCodop()+" "+LinCod.getOperando()+ " porque el tamano de la palabra es incorrecto");

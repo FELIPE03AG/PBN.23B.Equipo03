@@ -1,3 +1,13 @@
 	ORG	0
-	LDAA	31483,x
-Et1	END
+	ABA
+	BGND
+	LDAA	#$55
+	LDX	#$1234
+	LDY	#%110111
+	LDAA	$055
+	LDAA	85
+	LDX	$20
+	ldaa	@777
+	ldaa 	$ffff
+	LAA	$38
+	END
