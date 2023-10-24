@@ -338,23 +338,23 @@ public class Salvacion {
         return postbyte.toUpperCase();
     }
     
-    static String idx2(String opr, String sourceform) {
-    String postbyte = " ", xb = " ", ee = " ", ff = " ";
-    String frmbase[] = sourceform.split(",");
+    static String idx2(String opr, String sourceform) {//Inicia idx2
+    String postbyte = " ", xb = " ", ee = " ", ff = " ";//Inicializa las variables postbyte, xb, ee y ff, todas en blanco
+    String frmbase[] = sourceform.split(",");//Divide el sourceform con comas
     
-    if (frmbase[1].equals("xb") && frmbase[2].equals("ee") && frmbase[3].equals("ff")) {
-        postbyte = frmbase[0].concat(" ");
-        String operando[] = opr.split(",");
-        xb = "111".concat(calculoRR(operando[1])).concat("010");
-        ee=Parte_4.validarDireccion(operando[0]);
-        System.out.println(ee);
-        ff=ee.substring(2, 4);
-        ee=ee.substring(0, 2);
-    }
+    if (frmbase[1].equals("xb") && frmbase[2].equals("ee") && frmbase[3].equals("ff")) {// Verifica si el formato de origen coincide con "xb,ee,ff"
+        postbyte = frmbase[0].concat(" ");//Combina el primer elemento de "frmbase" con un espacio y lo asigna a "postbyte"
+        String operando[] = opr.split(",");//Divide el operando con comas
+        xb = "111".concat(calculoRR(operando[1])).concat("010");// Crea una cadena "xb" que consta de "111" seguido del resultado de "calculoRR(operando[1])" y "010"
+        ee=Parte_4.validarDireccion(operando[0]);//Llama a la función "validarDireccion" de Parte_4 con el primer componente del operando
+        System.out.println(ee);//Imprime la variable "ee"
+        ff=ee.substring(2, 4);//Extrae los caracteres de "ee" desde la posición 2 hasta la 3
+        ee=ee.substring(0, 2);//Extrae los caracteres de "ee" desde la posición 0 hasta la 1
+    }//Fin de if
 
-    postbyte = postbyte + Integer.toHexString(Parte_4.binarioADecimal(xb)) + " " + ee + " " + ff;
-    return postbyte.toUpperCase();
-}
+    postbyte = postbyte + Integer.toHexString(Parte_4.binarioADecimal(xb)) + " " + ee + " " + ff;//Convierte la parte "xb" en formato binario a decimal y luego a hexadecimal, y concatena el valor en hexadecimal de "xb", "ee" y "ff"
+    return postbyte.toUpperCase();//Convierte la cadena resultante a mayúsculas y la devuelve como resultado
+}//Termina idx2
 
     static void IdentificarADDR(Linea LinCod,NodoSalvacion AUX){
         if(LinCod.getOperando().equals(" ")){//Primer caso no hay operando
@@ -394,10 +394,10 @@ public class Salvacion {
         else if(LinCod.getOperando().startsWith("[")){//Si comienza de esta forma el operando
             if(AUX.Operando.equals("[oprx16,xysp]")){//Si estructura en la salvacion debe coincidir con esta
                 if(Parte_4.Idx2C(LinCod.getOperando())){//Evalua que el operando
-                    LinCod.setADDR("[IDX2]");
-                    LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
-                    LinCod.setSize(AUX.byteTotal+" bytes");
-                    encontrado=true;
+                    LinCod.setADDR("[IDX2]");//Establece la dirección de memoria como "[IDX2]".
+                    LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");//Establece la cantidad de bytes por calcular.
+                    LinCod.setSize(AUX.byteTotal+" bytes");//Establece el tamaño total en bytes.
+                    encontrado=true;//Marca que se ha encontrado una coincidencia.
                 }
             }//Fin si es [IDX2]
         }    
