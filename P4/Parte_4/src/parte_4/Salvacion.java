@@ -203,39 +203,41 @@ public class Salvacion {
     }//fin de metodo para comlemento 2
     
     static String idxIncrement(String opr, String sourceform){
-        String xb=" ", postbyte=" ";
-        char signo=' ';
-        int valor =0;
-        String frmbase [] = sourceform.split(",");
+        String xb=" ", postbyte=" ";//Variables auxiliares para guardar los valores
+        char signo=' ';//Indica que signo tiene
+        int valor =0;//Guarda el valor del operando
         
-        if(frmbase[1].equals("xb")){
-            postbyte=frmbase[0].concat(" ");
-        } 
-        else if(frmbase[2].equals("xb")){
-            postbyte=frmbase[0].concat(" ").concat(frmbase[1].concat(" "));
-        }
+        String frmbase [] = sourceform.split(",");//Separo el souceforme por byte
+        if(frmbase[1].equals("xb")){//si el segundo byte del postbyte corresponde al xb
+            postbyte=frmbase[0].concat(" ");//guardar el valor del byte calculado y un espacio despues
+        }//Fin segundo byte xb
+        else if(frmbase[2].equals("xb")){//Si es el tercero
+            postbyte=frmbase[0].concat(" ").concat(frmbase[1].concat(" "));//guardo el valor de los dos calculados con espacios entre si
+        }//fin el tercer byte corresponde a xb
         
-        String operando[] = opr.split(",");
-        if (operando[1].startsWith("+") || operando[1].startsWith("-")) {
-            xb = "10";
-            signo = operando[1].charAt(0);
-            operando[1] = operando[1].substring(1);
-        } else if (operando[1].endsWith("+") || operando[1].endsWith("-")) {
-            xb = "11";
-            signo = operando[1].charAt(operando[1].length() - 1);
-            operando[1] = operando[1].substring(0, operando[1].length() - 1);
-        }
-        xb = calculoRR(operando[1]).concat(xb);      
-        valor = Integer.parseInt(operando[0]);
-        if (signo == '+') {
-            valor = valor - 1;
-            xb = xb.concat(decimalABinario(valor));
-        } else if (signo == '-') {
-            xb = xb.concat(calcularComplementoDos(decimalABinario(valor)));//Concatena xb con ComplementoDos en binario
-        }
-        postbyte = postbyte.concat(Integer.toHexString(Parte_4.binarioADecimal(xb)));
+        String operando[] = opr.split(",");//Separo el operando: valor,registro
+        if (operando[1].startsWith("+") || operando[1].startsWith("-")) {//si es pre
+            xb = "10";//10 corresponde a 1p de la tabla 4
+            signo = operando[1].charAt(0); //Guardo el signo que tiene
+            operando[1] = operando[1].substring(1); //obtengo el registro sin signo
+        }//fin es pre
+        else if (operando[1].endsWith("+") || operando[1].endsWith("-")) {//si termina con signo el registro
+            xb = "11";//11 corresponde a 1p es 1 cuando es post (tabla 4)
+            signo = operando[1].charAt(operando[1].length() - 1);//obtengo el signo
+            operando[1] = operando[1].substring(0, operando[1].length() - 1);//obtengo el registro sin signo
+        }//fin es post
+        xb = calculoRR(operando[1]).concat(xb);//calculo el rr del valor binario y ya tengo rr1p de la tabla 4     
+        valor = Integer.parseInt(operando[0]);//guardo el valor absoluto del operando
+        if (signo == '+') {//Si es positivo
+            valor = valor - 1; //Restar 1 al valor del operando
+            xb = xb.concat(decimalABinario(valor));//agrego el valor en binario a xb para ya tener rr1pnnnn
+        }//fin positivo
+        else if (signo == '-') {//si es negativo
+            xb = xb.concat(calcularComplementoDos(decimalABinario(valor)));//Concatena xb con ComplementoDos en binario, obteniendo ya la forma rr1pnnnn
+        }//fin negativo
+        postbyte = postbyte.concat(Integer.toHexString(Parte_4.binarioADecimal(xb)));//obtengo el postbyte con lo calculado y el binario obtenido en hexadecimal
         return postbyte.toUpperCase();
-    }
+    }//postbyte del idx increment
     
     static String idxAcc(String opr, String sourceform){
         String postbyte=" ", xb="111";
@@ -303,19 +305,19 @@ public class Salvacion {
     }
     
     static String idx1(String opr, String sourceform){
-        String postbyte=" ", xb=" ", ff=" ";
-        String frmbase [] = sourceform.split(",");
-        if(frmbase[1].equals("xb") && frmbase[2].equals("ff")){
-            postbyte=frmbase[0].concat(" ");
-            String operando[] = opr.split(",");
-            xb="111".concat(calculoRR(operando[1])).concat("00");
-            if(operando[0].startsWith("-")){
-                xb=xb.concat("1");
+        String postbyte=" ", xb=" ", ff=" ";//auxiliares para calcular el postbyte
+        String frmbase [] = sourceform.split(",");//separa el source form por byte
+        if(frmbase[1].equals("xb") && frmbase[2].equals("ff")){//si la forma si es la correcta
+            postbyte=frmbase[0].concat(" ");//Guarda el byte ya calculado
+            String operando[] = opr.split(",");//se separa el opernado valor,registro
+            xb="111".concat(calculoRR(operando[1])).concat("00");//Obtengo 111rr0z de la tabla 4
+            if(operando[0].startsWith("-")){//Si es negativo
+                xb=xb.concat("1");//obtener s ahora tengo completo 111rr0zs
                 if(operando[0].equals("-256")){
-                    ff="00";
-                }
+                    ff="00";//es el byte correspondiente
+                }//Para -256 calcular directo el ff
                 else{
-                    ff=Integer.toBinaryString(Integer.parseInt(operando[0].substring(1)));
+                    ff=Integer.toBinaryString(Integer.parseInt(operando[0].substring(1)));//Calcular valor en binario y guardarlo en ff
                     if(ff.length()>4){
                         switch (ff.length()) {
                             case 5:
@@ -330,19 +332,22 @@ public class Salvacion {
                             default:
                                 break;
                         }
-                    }
+                    }//Fin completar a byte
                     ff=calcularComplementoDos(ff);//Calcula el ComplmentoDos de ff
-                    ff=Integer.toHexString(Parte_4.binarioADecimal(ff));
-                }
-            }
+                    ff=Integer.toHexString(Parte_4.binarioADecimal(ff));//pasa el complemento a hexadecimal
+                }//fin es negativo pero no 256
+            }//fin el valor es negativo
             else{
-                xb=xb.concat("0");
-                ff=Integer.toHexString(Integer.parseInt(operando[0]));
-            }
+                xb=xb.concat("0");//corresponde a s de 111rr0zs
+                ff=Integer.toHexString(Integer.parseInt(operando[0]));//Lo pasa directamente a hexadecimal
+            }//fin es positivo
+        }//fin souce form correspondiente 
+        if(ff.length()!=2){
+            ff="0".concat(ff);
         }
         postbyte = postbyte.concat(Integer.toHexString(Parte_4.binarioADecimal(xb))).concat(" "+ff);
         return postbyte.toUpperCase();
-    }
+    }//fin postbye idx1
     
     static String idx2(String opr, String sourceform) {//Inicia idx2
     String postbyte = " ", xb = "", ee = " ", ff = " ";//Inicializa las variables postbyte, xb, ee y ff, todas en blanco
