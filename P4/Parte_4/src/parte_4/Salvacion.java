@@ -92,17 +92,17 @@ public class Salvacion {
         String aux=" ";
         String postbyte=" ";
         String frmbase [] = sourceform.split(",");                            //Este arreglo sirve para guardar la forma base separada
-        Integer opraux = Parte_4.ConvertirADecimal(opr);
+        Integer opraux = Parte_4.ConvertirADecimal(opr);                      //Convierte el operando a decimal para trabajar mejor con el
         if(opraux<256 && size==2 && calcular==1 && frmbase[1].equals("ii")){  //Verifica que sea un IMM de 8bits
             postbyte=frmbase[0];                                              
-            frmbase[1]=Integer.toHexString(opraux).toUpperCase();
-            if(opraux<16){
-                frmbase[1]="0".concat(frmbase[1]);
+            frmbase[1]=Integer.toHexString(opraux).toUpperCase();             //Convierte el operando a hexadecimal
+            if(opraux<16){                                                    //Verifica que el operando sea menor a 16
+                frmbase[1]="0".concat(frmbase[1]);                            //si es menor a 16 lo concatena con un 0 para completarlo
             }
             postbyte=postbyte.concat(" ").concat(frmbase[1]);                 //guarda la forma postbyte ya calculada
         }
         else if(size==3 && calcular==2 && frmbase[1].equals("jj")&& frmbase[2].equals("kk")){   //Verifica que sea un IMM de 16 bits
-            aux=Parte_4.validarDireccion(opr);
+            aux=Parte_4.validarDireccion(opr);                               
             postbyte=frmbase[0].concat(" ").concat(aux.substring(0, 2)).concat(" ").concat(aux.substring(2)); //guarda la forma postbyte ya calculada
         }
         return postbyte;                                                    //retorna el valor ya calculado
@@ -225,7 +225,7 @@ public class Salvacion {
             signo = operando[1].charAt(operando[1].length() - 1);
             operando[1] = operando[1].substring(0, operando[1].length() - 1);
         }
-        xb = calculoRR(operando[1]).concat(xb);
+        xb = calculoRR(operando[1]).concat(xb);      
         valor = Integer.parseInt(operando[0]);
         if (signo == '+') {
             valor = valor - 1;
@@ -262,26 +262,32 @@ public class Salvacion {
         return postbyte.toUpperCase();
     }
     
+    /**
+     * Esta funcion sirve para calcular la forma postbyte de un idx5b
+     * @param opr Este es el operando del codop
+     * @param sourceform Esta es la forma base del codop
+     * @return Devuelve la forma calculada del idx5b
+     */
     static String idx5b (String opr, String sourceform){
         String postbyte=" ", xb=" ";
         int valor=0;
-        String frmbase [] = sourceform.split(",");
-        if(frmbase[1].equals("xb")){
-            postbyte=frmbase[0].concat(" ");
+        String frmbase [] = sourceform.split(",");                    //Guarda en este arreglo la forma base separada
+        if(frmbase[1].equals("xb")){                                  //Identifica en la forma base el conjunto de bits xb
+            postbyte=frmbase[0].concat(" ");                          //Quita el xb y guarda ensa parte en el postbyte
         } 
-        else if(frmbase[2].equals("xb")){
+        else if(frmbase[2].equals("xb")){                             //si el xb esta en la segunda posicion lo quita tambien
             postbyte=frmbase[0].concat(" ").concat(frmbase[1].concat(" "));
         }
         if(opr.startsWith(",")){
             opr="0".concat(opr);
         }
         String operando[] = opr.split(",");
-        xb=calculoRR(operando[1]).concat("0");
-        valor=Integer.parseInt(operando[0]);
-        if(valor==16){
-            xb=xb.concat("10000");
+        xb=calculoRR(operando[1]).concat("0");                           //realiza el calculo de xb con la funcion calculoRR
+        valor=Integer.parseInt(operando[0]);                             //Convierte el valor a entero
+        if(valor==16){                                                   //Verifica si el valo es igual a 16
+            xb=xb.concat("10000");                                       //si es asi concatena eso
         }
-        else if(valor<0){
+        else if(valor<0){                                        //Si el valor es menor a 0 se le resta para la forma calculada
             valor=valor*-1;
             xb=xb.concat("1").concat(calcularComplementoDos(decimalABinario(valor)));//Se agrega un 1 antes del ComplementoDos en binario
         }
@@ -293,7 +299,7 @@ public class Salvacion {
             xb="0".concat(xb);
         }
         postbyte = postbyte.concat(xb);
-        return postbyte.toUpperCase();
+        return postbyte.toUpperCase();                        //retorna la forma postbye y ecribe todo en mayusculas
     }
     
     static String idx1(String opr, String sourceform){
