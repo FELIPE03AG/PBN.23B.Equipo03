@@ -231,7 +231,7 @@ public class Salvacion {
             valor = valor - 1;
             xb = xb.concat(decimalABinario(valor));
         } else if (signo == '-') {
-            xb = xb.concat(calcularComplementoDos(decimalABinario(valor)));
+            xb = xb.concat(calcularComplementoDos(decimalABinario(valor)));//Concatena xb con ComplementoDos en binario
         }
         postbyte = postbyte.concat(Integer.toHexString(Parte_4.binarioADecimal(xb)));
         return postbyte.toUpperCase();
@@ -283,12 +283,12 @@ public class Salvacion {
         }
         else if(valor<0){
             valor=valor*-1;
-            xb=xb.concat("1").concat(calcularComplementoDos(decimalABinario(valor)));
+            xb=xb.concat("1").concat(calcularComplementoDos(decimalABinario(valor)));//Se agrega un 1 antes del ComplementoDos en binario
         }
         else{
-            xb=xb.concat("0").concat(decimalABinario(valor));
+            xb=xb.concat("0").concat(decimalABinario(valor));//Se concatena '0' y la representación en binario del valor.
         }
-        xb=Integer.toHexString(Parte_4.binarioADecimal(xb));
+        xb=Integer.toHexString(Parte_4.binarioADecimal(xb));// Se convierte el valor de xb (binario) a hexadecimal
         if(xb.length()==1){
             xb="0".concat(xb);
         }
@@ -325,7 +325,7 @@ public class Salvacion {
                                 break;
                         }
                     }
-                    ff=calcularComplementoDos(ff);
+                    ff=calcularComplementoDos(ff);//Calcula el ComplmentoDos de ff
                     ff=Integer.toHexString(Parte_4.binarioADecimal(ff));
                 }
             }
@@ -339,7 +339,7 @@ public class Salvacion {
     }
     
     static String idx2(String opr, String sourceform) {//Inicia idx2
-    String postbyte = " ", xb = " ", ee = " ", ff = " ";//Inicializa las variables postbyte, xb, ee y ff, todas en blanco
+    String postbyte = " ", xb = "", ee = " ", ff = " ";//Inicializa las variables postbyte, xb, ee y ff, todas en blanco
     String frmbase[] = sourceform.split(",");//Divide el sourceform con comas
     
     if (frmbase[1].equals("xb") && frmbase[2].equals("ee") && frmbase[3].equals("ff")) {// Verifica si el formato de origen coincide con "xb,ee,ff"
