@@ -78,24 +78,34 @@ public class Salvacion {
         }//Fin for
     }//Fin leer y buscar en salvacion
     
+    
+    /**
+     * \Esta funcion sirve para calcular la forma postbyte de un CODOP IMM
+     * 
+     * @param opr  Este es el operando del codop
+     * @param sourceform esta es la forma base
+     * @param size este es el tamano sin calcular
+     * @param calcular este es el tamano ya calculado
+     * @return Retorna el valor postbyte del IMM
+     */
     static String FormIMM(String opr, String sourceform,int size, int calcular){
         String aux=" ";
         String postbyte=" ";
-        String frmbase [] = sourceform.split(",");
+        String frmbase [] = sourceform.split(",");                            //Este arreglo sirve para guardar la forma base separada
         Integer opraux = Parte_4.ConvertirADecimal(opr);
-        if(opraux<256 && size==2 && calcular==1 && frmbase[1].equals("ii")){
-            postbyte=frmbase[0];
+        if(opraux<256 && size==2 && calcular==1 && frmbase[1].equals("ii")){  //Verifica que sea un IMM de 8bits
+            postbyte=frmbase[0];                                              
             frmbase[1]=Integer.toHexString(opraux).toUpperCase();
             if(opraux<16){
                 frmbase[1]="0".concat(frmbase[1]);
             }
-            postbyte=postbyte.concat(" ").concat(frmbase[1]);
+            postbyte=postbyte.concat(" ").concat(frmbase[1]);                 //guarda la forma postbyte ya calculada
         }
-        else if(size==3 && calcular==2 && frmbase[1].equals("jj")&& frmbase[2].equals("kk")){
+        else if(size==3 && calcular==2 && frmbase[1].equals("jj")&& frmbase[2].equals("kk")){   //Verifica que sea un IMM de 16 bits
             aux=Parte_4.validarDireccion(opr);
-            postbyte=frmbase[0].concat(" ").concat(aux.substring(0, 2)).concat(" ").concat(aux.substring(2));
+            postbyte=frmbase[0].concat(" ").concat(aux.substring(0, 2)).concat(" ").concat(aux.substring(2)); //guarda la forma postbyte ya calculada
         }
-        return postbyte;
+        return postbyte;                                                    //retorna el valor ya calculado
     }
     //Metodo para calcular bostbyte de Directo y extendido...
     static String FormDirExt(String opr, String sourceform,int size, int calcular, String tipo){
@@ -351,8 +361,8 @@ public class Salvacion {
             if(AUX.Operando.equals("-")){//La estructura de operando que coincide
                 LinCod.setADDR("INH");//ADDR correspondiente
                 LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
-                LinCod.setForm(AUX.SourceForm);
-                LinCod.setCop(AUX.SourceForm);
+                LinCod.setForm(AUX.SourceForm);        //guarda la forma base en el arreglo
+                LinCod.setCop(AUX.SourceForm);         //guarda la forma calculada en el arreglo
                 LinCod.setSize(AUX.byteTotal+" bytes");
                 encontrado=true;//Ya lo encontro, puede terminar la busquerda
             }//Fin es inh
