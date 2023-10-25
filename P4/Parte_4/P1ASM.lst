@@ -1,4 +1,9 @@
 TIPO,        VALOR,       ETQ,         CODOP,       OPER 
 DIR_INIC,        0000,       NULL,       ORG,       $0,       
-CONTLOC,       0000,       UNO,       LDAA,       -253,X,       
-CONTLOC,       0003,       NULL,       END,       NULL,       
+CONTLOC,       0000,       NULL,       LDAA,       $055,       
+CONTLOC,       0002,       NULL,       LDAA,       85,       
+CONTLOC,       0004,       NULL,       LDX,       $20,       
+CONTLOC,       0006,       NULL,       LDAA,       @777,       
+CONTLOC,       0009,       NULL,       LDAA,       $FFFF,       
+CONTLOC,       000C,       NULL,       LDAA,       $38,       
+CONTLOC,       000E,       NULL,       END,       NULL,       

@@ -108,12 +108,12 @@ public class Salvacion {
         return postbyte;                                                    //retorna el valor ya calculado
     }
     //Metodo para calcular bostbyte de Directo y extendido...
-    static String FormDirExt(String opr, String sourceform,int size, int calcular, String tipo){
+    static String FormDirExt(String opr, String sourceform,int size, int calcular){
         String aux = " ";//variables de apoyo
         String postbyte=" ";
         String frmbase [] = sourceform.split(",");//separador del String por estacios entre comas.
         Integer opraux = Parte_4.ConvertirADecimal(opr); //convertimos a decimal
-        if(opraux<256 && size==2 && calcular==1 && frmbase[1].equals("dd")&&tipo.equals("D")){
+        if(opraux<256 && size==2 && calcular==1 && frmbase[1].equals("dd")){
             //valida que sea de 8 bits, tenga 2 bits, 1 por calcular y que la forma sea 'dd' y el tipo 'D' (para directos)
             postbyte=frmbase[0];//Se guarda el valor calculado del postbyte
             frmbase[1]=Integer.toHexString(opraux).toUpperCase();//pasamos a hexadecimal el valor del operando
@@ -124,14 +124,13 @@ public class Salvacion {
             //concatena la posicion 0, o el bit calculado, con el bit recien calculado, el que faltaba.
             //quedan 2 bits que son los totales en el directo
         } //Caso Extendido...
-        else if(opraux>255 && size==3 && calcular==2 && frmbase[1].equals("hh") && frmbase[2].equals("ll")&&tipo.equals("E")){
+        else if(opraux>255 && size==3 && calcular==2 && frmbase[1].equals("hh") && frmbase[2].equals("ll")){
             //valida que sea de 16 bits, tenga 3 bits totales y 2 por calcular. 
             //valida que tenga la forma base 'hh' 'll' y sea de tipo 'E'.
             aux=Parte_4.validarDireccion(opr);//valida la direccion del opr y lo guarda en la variable aux
             postbyte=frmbase[0].concat(" ").concat(aux.substring(0, 2)).concat(" ").concat(aux.substring(2));
             //concatena las 3 partes del string, la 0 que estaba calculada y la 1 y 2 recien calculadas.
         }//fin else if    
-        
         return postbyte;
     }//fin de metodo DirExt
     
@@ -465,7 +464,7 @@ public class Salvacion {
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
                     LinCod.setSize(AUX.byteTotal+" bytes");
                     LinCod.setForm(AUX.SourceForm);
-                    LinCod.setCop(FormDirExt(LinCod.getOperando(),AUX.SourceForm,Integer.parseInt(AUX.byteTotal),Integer.parseInt(AUX.byteCalcular), "D"));
+                    LinCod.setCop(FormDirExt(LinCod.getOperando(),AUX.SourceForm,Integer.parseInt(AUX.byteTotal),Integer.parseInt(AUX.byteCalcular)));
                     encontrado=true;
             }//Fin es DIR
             else if(AUX.Operando.equals("opr16a")){//Estructura de EXT
@@ -474,7 +473,7 @@ public class Salvacion {
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
                     LinCod.setSize(AUX.byteTotal+" bytes");
                     LinCod.setForm(AUX.SourceForm);
-                    LinCod.setCop(FormDirExt(LinCod.getOperando(),AUX.SourceForm,Integer.parseInt(AUX.byteTotal),Integer.parseInt(AUX.byteCalcular), "E"));
+                    LinCod.setCop(FormDirExt(LinCod.getOperando(),AUX.SourceForm,Integer.parseInt(AUX.byteTotal),Integer.parseInt(AUX.byteCalcular)));
                     encontrado=true;
                }
             }//Fin es EXT

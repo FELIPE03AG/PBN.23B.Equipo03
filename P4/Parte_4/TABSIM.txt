@@ -1,2 +1,1 @@
 TIPO            Si       Ti            
-RELATIVA       UNO       0000       
