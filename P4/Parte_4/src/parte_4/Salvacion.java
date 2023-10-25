@@ -322,21 +322,6 @@ public class Salvacion {
                 }//Para -256 calcular directo el ff
                 else{
                     ff=Integer.toBinaryString(Integer.parseInt(operando[0].substring(1)));//Calcular valor en binario y guardarlo en ff
-                    if(ff.length()>4){
-                        switch (ff.length()) {
-                            case 5:
-                                ff="000".concat(ff);
-                                break;
-                            case 6:
-                                ff="00".concat(ff);
-                                break;
-                            case 7:
-                                ff="0".concat(ff);
-                                break;
-                            default:
-                                break;
-                        }
-                    }//Fin completar a byte
                     ff=calcularComplementoDos(ff);//Calcula el ComplmentoDos de ff
                     ff=Integer.toHexString(Parte_4.binarioADecimal(ff));//pasa el complemento a hexadecimal
                 }//fin es negativo pero no 256
