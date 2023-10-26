@@ -2,4 +2,7 @@
 	LDAA	31483,x
 	LDAA	[10,X]
 	LDAA	[31483,X]
+	JMP 	[D,PC]
+	ADCA	[D,X]
+	ADCB	[D,SP]
 	END

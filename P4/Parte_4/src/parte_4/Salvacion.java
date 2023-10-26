@@ -347,11 +347,9 @@ public class Salvacion {
             String operando[] = opr.split(",");//Divide el operando con comas
           
             if(operando[0].startsWith("[")){
-                System.out.println("SI ENTRO");
                 operando[0] = operando[0].substring(1);
                 operando[1]=operando[1].substring(0, operando[1].length()-1);
                 xb = "111".concat(calculoRR(operando[1])).concat("011");//Para calculo de "xb" de [idx2]
-                System.out.println("XB "+xb);
             }
             else{
                 xb = "111".concat(calculoRR(operando[1])).concat("010");// Crea una cadena "xb" que consta de "111" seguido del resultado de "calculoRR(operando[1])" y "010"
@@ -393,13 +391,22 @@ public class Salvacion {
         else if(LinCod.getOperando().startsWith("[D")){//Si comienza de esta forma el operando
             if(AUX.Operando.equals("[D,xysp]")){//Si estructura en la salvacion debe coincidir con esta
                 if(Parte_4.IdxD(LinCod.getOperando())){//Valido que este bien el operando
-                    LinCod.setADDR("[D,IDX]");
-                    LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
-                    LinCod.setSize(AUX.byteTotal+" bytes");
-                    encontrado=true;
-                }
+                    LinCod.setADDR("[D,IDX]"); //Se identifica el modo de direccionamiento
+                    LinCod.setPorCalcular(AUX.byteCalcular+ " bytes"); //Guarda la cantidad de bytes que faltan de calcular
+                    LinCod.setSize(AUX.byteTotal+" bytes");//Guarda los bytes totales
+                    encontrado=true;//Activo la bandera
+                    LinCod.setForm(AUX.SourceForm);//Guarda el source form
+                    String operando[]=LinCod.getOperando().split(",");//Separo el operando -> D,registro
+                    //CALCULO DEL BYTE DE LA FORMA 111rr111, de la tabla 4
+                    String bin="111".concat(calculoRR(operando[1].substring(0, operando[1].length()-1))).concat("111");
+                    bin= Integer.toHexString(Parte_4.binarioADecimal(bin)).toUpperCase();//calculo el hexadecimal del valor
+                    if(bin.length()==1){
+                        bin="0".concat(bin);//Completa a byte
+                    }//Fin si hace falta completar el byte
+                    LinCod.setCop(AUX.SourceForm.substring(0, 2).concat(" ").concat(bin));
+                }//Si es de la forma [D,IDX]
             }//Fin si es [D,IDX]
-        }   
+        }//Fin comienza con [D   
         else if(LinCod.getOperando().startsWith("[")){//Si comienza de esta forma el operando
             if(AUX.Operando.equals("[oprx16,xysp]")){//Si estructura en la salvacion debe coincidir con esta
                 if(Parte_4.Idx2C(LinCod.getOperando())){//Evalua que el operando
