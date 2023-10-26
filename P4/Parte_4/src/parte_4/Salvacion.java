@@ -373,6 +373,23 @@ public class Salvacion {
         
     }//fin metodo resta hexadecimal
     
+    static String rel8bits(String conloc, String conloc2){
+        String postbyte = " ";
+        String direccion[] = conloc.split(",");
+        if(direccion[1].equals("rr")){
+            postbyte = direccion[0].concat(" ");
+        }
+        //en proceso ....
+        //obra sin terminar...
+        
+       
+        
+        
+        
+        return postbyte; 
+        
+    }//fin del metodo rel 8 bits
+    
     
 
     static void IdentificarADDR(Linea LinCod,NodoSalvacion AUX){
