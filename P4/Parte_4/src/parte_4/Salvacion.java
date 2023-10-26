@@ -339,22 +339,31 @@ public class Salvacion {
     }//fin postbye idx1
     
     static String idx2(String opr, String sourceform) {//Inicia idx2
-    String postbyte = " ", xb = "", ee = " ", ff = " ";//Inicializa las variables postbyte, xb, ee y ff, todas en blanco
-    String frmbase[] = sourceform.split(",");//Divide el sourceform con comas
-    
-    if (frmbase[1].equals("xb") && frmbase[2].equals("ee") && frmbase[3].equals("ff")) {// Verifica si el formato de origen coincide con "xb,ee,ff"
-        postbyte = frmbase[0].concat(" ");//Combina el primer elemento de "frmbase" con un espacio y lo asigna a "postbyte"
-        String operando[] = opr.split(",");//Divide el operando con comas
-        xb = "111".concat(calculoRR(operando[1])).concat("010");// Crea una cadena "xb" que consta de "111" seguido del resultado de "calculoRR(operando[1])" y "010"
-        ee=Parte_4.validarDireccion(operando[0]);//Llama a la función "validarDireccion" de Parte_4 con el primer componente del operando
-        System.out.println(ee);//Imprime la variable "ee"
-        ff=ee.substring(2, 4);//Extrae los caracteres de "ee" desde la posición 2 hasta la 3
-        ee=ee.substring(0, 2);//Extrae los caracteres de "ee" desde la posición 0 hasta la 1
-    }//Fin de if
+        String postbyte = " ", xb = "", ee = " ", ff = " ";//Inicializa las variables postbyte, xb, ee y ff, todas en blanco
+        String frmbase[] = sourceform.split(",");//Divide el sourceform con comas
 
-    postbyte = postbyte + Integer.toHexString(Parte_4.binarioADecimal(xb)) + " " + ee + " " + ff;//Convierte la parte "xb" en formato binario a decimal y luego a hexadecimal, y concatena el valor en hexadecimal de "xb", "ee" y "ff"
-    return postbyte.toUpperCase();//Convierte la cadena resultante a mayúsculas y la devuelve como resultado
-}//Termina idx2
+        if (frmbase[1].equals("xb") && frmbase[2].equals("ee") && frmbase[3].equals("ff")) {// Verifica si el formato de origen coincide con "xb,ee,ff"
+            postbyte = frmbase[0].concat(" ");//Combina el primer elemento de "frmbase" con un espacio y lo asigna a "postbyte"
+            String operando[] = opr.split(",");//Divide el operando con comas
+          
+            if(operando[0].startsWith("[")){
+                System.out.println("SI ENTRO");
+                operando[0] = operando[0].substring(1);
+                operando[1]=operando[1].substring(0, operando[1].length()-1);
+                xb = "111".concat(calculoRR(operando[1])).concat("011");//Para calculo de "xb" de [idx2]
+                System.out.println("XB "+xb);
+            }
+            else{
+                xb = "111".concat(calculoRR(operando[1])).concat("010");// Crea una cadena "xb" que consta de "111" seguido del resultado de "calculoRR(operando[1])" y "010"
+            }
+            ee = Parte_4.validarDireccion(operando[0]);//Llama a la función "validarDireccion" de Parte_4 con el primer componente del operando
+            ff = ee.substring(2, 4);//Extrae los caracteres de "ee" desde la posición 2 hasta la 3
+            ee = ee.substring(0, 2);//Extrae los caracteres de "ee" desde la posición 0 hasta la 1
+        }//Fin de if
+
+        postbyte = postbyte + Integer.toHexString(Parte_4.binarioADecimal(xb)) + " " + ee + " " + ff;//Convierte la parte "xb" en formato binario a decimal y luego a hexadecimal, y concatena el valor en hexadecimal de "xb", "ee" y "ff"
+        return postbyte.toUpperCase();//Convierte la cadena resultante a mayúsculas y la devuelve como resultado
+    }//Termina idx2
 
     static void IdentificarADDR(Linea LinCod,NodoSalvacion AUX){
         if(LinCod.getOperando().equals(" ")){//Primer caso no hay operando
@@ -398,6 +407,8 @@ public class Salvacion {
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");//Establece la cantidad de bytes por calcular.
                     LinCod.setSize(AUX.byteTotal+" bytes");//Establece el tamaño total en bytes.
                     encontrado=true;//Marca que se ha encontrado una coincidencia.
+                    LinCod.setForm(AUX.SourceForm);
+                    LinCod.setCop(idx2(LinCod.getOperando(), LinCod.getForm()));
                 }
             }//Fin si es [IDX2]
         }    
