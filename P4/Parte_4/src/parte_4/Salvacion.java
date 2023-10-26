@@ -362,6 +362,18 @@ public class Salvacion {
         postbyte = postbyte + Integer.toHexString(Parte_4.binarioADecimal(xb)) + " " + ee + " " + ff;//Convierte la parte "xb" en formato binario a decimal y luego a hexadecimal, y concatena el valor en hexadecimal de "xb", "ee" y "ff"
         return postbyte.toUpperCase();//Convierte la cadena resultante a mayúsculas y la devuelve como resultado
     }//Termina idx2
+    
+    //metodo resta hexadecimal
+    static String restaHex(String conloc, String conloc2){
+       int valor1 = Integer.parseInt(conloc, 16);
+       int valor2 = Integer.parseInt(conloc2, 16);
+       int res = valor1 - valor2;
+       String resta = Integer.toHexString(res).toUpperCase();
+       return resta;
+        
+    }//fin metodo resta hexadecimal
+    
+    
 
     static void IdentificarADDR(Linea LinCod,NodoSalvacion AUX){
         if(LinCod.getOperando().equals(" ")){//Primer caso no hay operando
