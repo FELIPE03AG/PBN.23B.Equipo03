@@ -382,10 +382,10 @@ public class Salvacion {
         //en proceso ....
         //obra sin terminar...
         
+        
        
         
-        
-        
+       
         return postbyte; 
         
     }//fin del metodo rel 8 bits
