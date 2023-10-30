@@ -12,9 +12,16 @@ public class Linea {
     private String porCalcular;// Almacena información por calcular o procesar.
     private String form;// Almacena la forma
     private String cop;// Almacena el cop
+    private String rtArch;
     
+    public String getRtArch(){
+        return rtArch;
+    }
     
-
+    public void setRtArch(String x){
+        this.rtArch = x;
+    }
+    
     public Linea(String conloc, String etiqueta, String codop, String operando, String ADDR) {
         this.conloc = conloc;
         this.etiqueta = etiqueta;
