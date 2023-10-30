@@ -362,35 +362,6 @@ public class Salvacion {
         postbyte = postbyte + Integer.toHexString(Parte_4.binarioADecimal(xb)) + " " + ee + " " + ff;//Convierte la parte "xb" en formato binario a decimal y luego a hexadecimal, y concatena el valor en hexadecimal de "xb", "ee" y "ff"
         return postbyte.toUpperCase();//Convierte la cadena resultante a mayúsculas y la devuelve como resultado
     }//Termina idx2
-    
-    //metodo resta hexadecimal
-    static String restaHex(String conloc, String conloc2){
-       int valor1 = Integer.parseInt(conloc, 16);
-       int valor2 = Integer.parseInt(conloc2, 16);
-       int res = valor1 - valor2;
-       String resta = Integer.toHexString(res).toUpperCase();
-       return resta;
-        
-    }//fin metodo resta hexadecimal
-    
-    static String rel8bits(String conloc, String conloc2){
-        String postbyte = " ";
-        String direccion[] = conloc.split(",");
-        if(direccion[1].equals("rr")){
-            postbyte = direccion[0].concat(" ");
-        }
-        //en proceso ....
-        //obra sin terminar...
-        
-        
-       
-        
-       
-        return postbyte; 
-        
-    }//fin del metodo rel 8 bits
-    
-    
 
     static void IdentificarADDR(Linea LinCod,NodoSalvacion AUX){
         if(LinCod.getOperando().equals(" ")){//Primer caso no hay operando
@@ -527,6 +498,7 @@ public class Salvacion {
                     LinCod.setADDR("REL (8b)");
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
                     LinCod.setSize(AUX.byteTotal+" bytes");
+                    LinCod.setForm(AUX.SourceForm);
                     encontrado=true;
                 }//Fin si coincide con una etiqueta
             }//Fin es rel8
@@ -535,6 +507,7 @@ public class Salvacion {
                     LinCod.setADDR("REL (16b)");
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
                     LinCod.setSize(AUX.byteTotal+" bytes");
+                    LinCod.setForm(AUX.SourceForm);
                     encontrado=true;
                 }//Fin si existe la etiqueta
             }//Fin es rel16
@@ -549,6 +522,7 @@ public class Salvacion {
                             LinCod.setADDR("REL (9b)");
                             LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
                             LinCod.setSize(AUX.byteTotal+" bytes");
+                            LinCod.setForm(AUX.SourceForm);
                             encontrado=true;
                         }//Fin parte dos con etiqueta valida
                     }//Fin estructura del primer bloque

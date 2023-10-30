@@ -565,8 +565,9 @@ public class Parte_4 {
         Leer();//Llamo el metodo
         if(LineasASM.size()!=0){
             Salvacion.BuscarCodop(LineasASM);
-            MetodosP3.LlenarList(LineasASM);
-            MetodosP3.LlenarTabsim(LineasASM);
+            Conloc.LlenarList(LineasASM);
+            Conloc.LlenarTabsim(LineasASM);
+            CalculoREL.buscarRels();
             new Tabla().setVisible(true);
         }
         

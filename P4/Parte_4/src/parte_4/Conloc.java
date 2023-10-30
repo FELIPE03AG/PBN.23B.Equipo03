@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
-public class MetodosP3 {
+public class Conloc {
     static File archivo = new File("P1ASM.lst");
     static File archivo2 = new File("TABSIM.txt");
+    static ArrayList <Tabsim> etiquetas = new ArrayList<>();
+    static Tabsim etq;
     
     static void CrearArchivoList(){ 
         try {
@@ -148,19 +150,25 @@ public class MetodosP3 {
         try{ // try para el proceso
             RandomAccessFile auxArchivo = new RandomAccessFile("TABSIM.txt","rw"); //Encuentro el archivo y accedo para leer y escribir
             for(Linea auxiliar : AuxLineasCodigo){ //bucle for each para escribir el txt
+                etq=new Tabsim(" "," "," ");
                 auxArchivo.seek(auxArchivo.length()); //Seek posiciona el puntero donde escribir, length es para decirle donde esta el final
                 if(!(auxiliar.getEtiqueta().equals(" ")) && !(auxiliar.getADDR().equals("ERROR")) && !(auxiliar.getConloc().equals(" "))){
                      //en la anterior linea  comprueba si los valores de etiqueta y ADDR
                      //del objeto Linea son diferentes de " " y "ERROR", para seguir con la validacion
                     if(auxiliar.getCodop().equals("EQU")){//analiza si el CODOP es igual a EQU
                         auxArchivo.writeBytes("ABSOLUTA       ");// aqui valida que sea Absoluta si y solo si es de forma EQU
+                        etq.tipo="ABSOLUTA";
                     }//fin del segundo if
                     else{//si no es EQU(absoluta),entonces...
                         auxArchivo.writeBytes("RELATIVA       "); //es relativa, por que es de forma ORG
+                        etq.tipo="RELATIVA";
                     }//fin del else
                     auxArchivo.writeBytes(auxiliar.getEtiqueta()+"       "); // escribe la etiqueta en txt
+                    etq.setSi(auxiliar.getEtiqueta());
                     auxArchivo.writeBytes(auxiliar.getConloc()+"       "); // escribe el CONTLOC en el txt
+                    etq.setTi(auxiliar.getConloc());
                     auxArchivo.writeBytes("\n"); //hace el salto de linea para la siguiente instruccion...
+                    etiquetas.add(etq);
                 }//fin del primer if todo bien con la linea del asm            
             } //fin del bucle for
                 
