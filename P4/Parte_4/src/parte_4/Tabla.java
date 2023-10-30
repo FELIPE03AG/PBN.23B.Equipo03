@@ -8,12 +8,21 @@ import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import static parte_4.Parte_4.LineasASM;
 
 
 public class Tabla extends javax.swing.JFrame {
     DefaultTableModel diseño=new DefaultTableModel();
     static JFileChooser explorador = new JFileChooser();
-    static String dirtmp = "";
+    private static String dirtmp = ".//P1ASM.asm";
+    
+    public String getRt(){
+        return dirtmp;
+    }
+    
+    public void setRt(String x){
+        this.dirtmp = x;
+    }
     
     //METODO PARA LLENAR LA TABLA
     void Llenado(){
@@ -23,7 +32,7 @@ public class Tabla extends javax.swing.JFrame {
         }
     }
     
-    static void nuevoAsm(){
+    public static void nuevoAsm(){
         try{
             explorador.addChoosableFileFilter(new FileNameExtensionFilter("Ensamblador", "asm"));
             explorador.showOpenDialog(null);//ventana de diálogo esta inicializada en null
@@ -138,8 +147,15 @@ public class Tabla extends javax.swing.JFrame {
 
     private void btnArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArchivoActionPerformed
         nuevoAsm();
-        initComponents();
-        //Llenado();
+        new Tabla().setVisible(false);
+        Parte_4.Leer();
+        if(LineasASM.size()!=0){
+            Salvacion.BuscarCodop(LineasASM);
+            Conloc.LlenarList(LineasASM);
+            Conloc.LlenarTabsim(LineasASM);
+            CalculoREL.buscarRels();
+            new Tabla().setVisible(true);
+        }
     }//GEN-LAST:event_btnArchivoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

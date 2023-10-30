@@ -10,6 +10,7 @@
 package parte_4;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -26,6 +27,8 @@ public class Parte_4 {
     static boolean Comentario = false;//Variable que indica si la linea es un comentario
     static ArrayList <Linea> LineasASM = new ArrayList<>();
     static boolean org = false;
+    static Tabla rta = new Tabla();
+    
     
 //**************************************************************** PARTE 1 *******************************************************
     //METODO PARA EVALUAR ETIQUETA
@@ -114,10 +117,13 @@ public class Parte_4 {
     
     //METODO PARA LEER EL ASM
     static void Leer(){
+        
         ArrayList <String> Etiquetas = new ArrayList<>();//Guardara todas las etiquetas encontradas previamente
         boolean etqRepetida=false;//Indica si la etiqueta que se quiere agregar ya existe
         try{
-            RandomAccessFile auxArchivo = new RandomAccessFile("P1ASM.asm","r");//r es para solo leer el archivo
+            System.out.println(rta.getRt());
+            File file = new File(rta.getRt());
+            RandomAccessFile auxArchivo = new RandomAccessFile(file,"r");//r es para solo leer el archivo
             long cursorActual;//Para saber donde estamos en el asm
             cursorActual = auxArchivo.getFilePointer();//Puntero en el archivo
             FileReader leerArchivo = new FileReader("P1ASM.asm");//leo el archivo
@@ -563,6 +569,8 @@ public class Parte_4 {
     
     public static void main(String[] args) {
         Leer();//Llamo el metodo
+        
+        
         if(LineasASM.size()!=0){
             Salvacion.BuscarCodop(LineasASM);
             Conloc.LlenarList(LineasASM);
