@@ -8,22 +8,11 @@ import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import static parte_4.Parte_4.LineasASM;
 
 
 public class Tabla extends javax.swing.JFrame {
     DefaultTableModel diseño=new DefaultTableModel();
-    static JFileChooser explorador = new JFileChooser();
-    private static String dirtmp = ".//P1ASM.asm";
-    
-    public String getRt(){
-        return dirtmp;
-    }
-    
-    public void setRt(String x){
-        this.dirtmp = x;
-    }
-    
+    String rutaArchivo = " ";
     //METODO PARA LLENAR LA TABLA
     void Llenado(){
         for (Linea auxiliar : Parte_4.LineasASM) {
@@ -32,20 +21,26 @@ public class Tabla extends javax.swing.JFrame {
         }
     }
     
-    public static void nuevoAsm(){
-        try{
-            explorador.addChoosableFileFilter(new FileNameExtensionFilter("Ensamblador", "asm"));
-            explorador.showOpenDialog(null);//ventana de diálogo esta inicializada en null
-            File auxFile;
-            auxFile = explorador.getSelectedFile();
-            dirtmp = auxFile.getAbsolutePath();
-            
-            
-        }catch(Exception ex){
-            JOptionPane.showMessageDialog(null,"Error al abrir el archivo","Advertencia",JOptionPane.WARNING_MESSAGE);
-        }
+    public static String chooseFile() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Elige el asm");
 
-    }
+        // Filtro para buscar solo ciertas extenciones, en este caso que sean .asm
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto (*.asm)", "asm");
+        fileChooser.setFileFilter(filter);//Se guarda el archivo elegido
+
+        int returnValue = fileChooser.showOpenDialog(null); // Abre el cuadro de dialogo para seleccionar
+
+        if (returnValue == JFileChooser.APPROVE_OPTION) {//Si el archivo es valido
+            String selectedFile = fileChooser.getSelectedFile().getAbsolutePath();//Guarda la direccion del archivo
+            return selectedFile;//Retorna la direccion del archivo
+        } else if (returnValue == JFileChooser.CANCEL_OPTION) {// Si se cancela la sellecion
+            JOptionPane.showMessageDialog(null, "No ha seleccionado ningún archivo", "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        } else {
+            return null; // Otros casos
+        }
+    }//Fin seleccionar el archivo
     
     public Tabla() {
         initComponents();
@@ -54,7 +49,7 @@ public class Tabla extends javax.swing.JFrame {
         TablaCod.setModel(diseño);
         Llenado();
         
-         // Centrar todas las celdas de la tabla
+        // Centrar todas las celdas de la tabla
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
         for (int i = 0; i < TablaCod.getColumnCount(); i++) {
@@ -146,15 +141,17 @@ public class Tabla extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArchivoActionPerformed
-        nuevoAsm();
-        new Tabla().setVisible(false);
-        Parte_4.Leer();
-        if(LineasASM.size()!=0){
-            Salvacion.BuscarCodop(LineasASM);
-            Conloc.LlenarList(LineasASM);
-            Conloc.LlenarTabsim(LineasASM);
-            CalculoREL.buscarRels();
-            new Tabla().setVisible(true);
+        rutaArchivo=chooseFile();
+        if(rutaArchivo!=null){
+            Parte_4.Leer(rutaArchivo);//Llamo el metodo
+            if (Parte_4.LineasASM.size() != 0) {
+                Salvacion.BuscarCodop(Parte_4.LineasASM);
+                Conloc.LlenarList(Parte_4.LineasASM);
+                Conloc.LlenarTabsim(Parte_4.LineasASM);
+                CalculoREL.buscarRels();
+                this.dispose();
+                new Tabla().setVisible(true);
+            }
         }
     }//GEN-LAST:event_btnArchivoActionPerformed
 

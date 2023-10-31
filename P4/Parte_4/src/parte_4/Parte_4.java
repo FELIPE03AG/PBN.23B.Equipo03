@@ -27,7 +27,6 @@ public class Parte_4 {
     static boolean Comentario = false;//Variable que indica si la linea es un comentario
     static ArrayList <Linea> LineasASM = new ArrayList<>();
     static boolean org = false;
-    static Tabla rta = new Tabla();
     
     
 //**************************************************************** PARTE 1 *******************************************************
@@ -116,14 +115,20 @@ public class Parte_4 {
     }//fin opernados DC
     
     //METODO PARA LEER EL ASM
-    static void Leer(){
-        
+    static void Leer(String rutaArchivo){
         ArrayList <String> Etiquetas = new ArrayList<>();//Guardara todas las etiquetas encontradas previamente
         boolean etqRepetida=false;//Indica si la etiqueta que se quiere agregar ya existe
         try{
-            System.out.println(rta.getRt());
-            File file = new File(rta.getRt());
-            RandomAccessFile auxArchivo = new RandomAccessFile(file,"r");//r es para solo leer el archivo
+            if(!(rutaArchivo.equals(" "))){
+                File file = new File(rutaArchivo);
+                LineasASM.clear();
+                Conloc.etiquetas.clear();
+                org = false;
+            }
+            else{
+                rutaArchivo="P1ASM.asm";
+            }
+            RandomAccessFile auxArchivo = new RandomAccessFile(rutaArchivo,"r");//r es para solo leer el archivo
             long cursorActual;//Para saber donde estamos en el asm
             cursorActual = auxArchivo.getFilePointer();//Puntero en el archivo
             FileReader leerArchivo = new FileReader("P1ASM.asm");//leo el archivo
@@ -568,9 +573,7 @@ public class Parte_4 {
     }//fin del metodo Idx2C
     
     public static void main(String[] args) {
-        Leer();//Llamo el metodo
-        
-        
+        Leer(" ");//Llamo el metodo
         if(LineasASM.size()!=0){
             Salvacion.BuscarCodop(LineasASM);
             Conloc.LlenarList(LineasASM);
@@ -578,6 +581,5 @@ public class Parte_4 {
             CalculoREL.buscarRels();
             new Tabla().setVisible(true);
         }
-        
     }   
 }
