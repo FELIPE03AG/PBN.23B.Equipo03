@@ -31,10 +31,10 @@ public class CalculoREL {
     }//fin metodo resta hexadecimal
     
     // Función para completar un número binario a 8 bits (un byte)
-    public static String completarBinarioAByte(String binario) {
+    public static String completarBinarioAByte(String binario,int cantidadbits) {
         int longitud = binario.length(); // Obtiene la longitud del número binario
         if (longitud < 8) {
-            int cantidadCeros = 8 - longitud; // Calcula cuántos ceros se deben agregar al principio
+            int cantidadCeros = cantidadbits - longitud; // Calcula cuántos ceros se deben agregar al principio
             StringBuilder ceros = new StringBuilder();
             for (int i = 0; i < cantidadCeros; i++) {
                 ceros.append("0"); // Agrega ceros al principio del número binario
@@ -91,7 +91,7 @@ public class CalculoREL {
                 resta = ori - dest;//restar el destino al origen
                 if (resta < 129) {//validacion del rango del salto negativo
                     rr = decimalABinario(resta);//Paso de decimal a binario el resultado de la resta
-                    rr = completarBinarioAByte(rr);//lo completa a byte
+                    rr = completarBinarioAByte(rr,8);//lo completa a byte
                     rr = Salvacion.calcularComplementoDos(rr);//calcula el complemento a 2
                     rr = Integer.toHexString(Parte_4.ConvertirADecimal("%".concat(rr))).toUpperCase();//guarda el resultado en hexadecimal
                 }//fin rango valido
@@ -142,7 +142,7 @@ public class CalculoREL {
                 resta = ori - dest;//restar el destino al origen
                 if (resta < 32769) {//validacion del rango del salto negativo
                     rr = decimalABinario(resta);//Paso de decimal a binario el resultado de la resta
-                    rr = completarBinarioAByte(rr);//lo completa a byte
+                    rr = completarBinarioAByte(rr,16);//lo completa a byte
                     rr = Salvacion.calcularComplementoDos(rr);//calcula el complemento a 2
                     rr = Integer.toHexString(Parte_4.ConvertirADecimal("%".concat(rr))).toUpperCase();//guarda el resultado en hexadecimal
                 }//fin rango valido
@@ -242,7 +242,7 @@ public class CalculoREL {
                 resta = ori - dest;//restar el destino al origen
                 if (resta < 32769) {//validacion del rango del salto negativo
                     rr = decimalABinario(resta);//Paso de decimal a binario el resultado de la resta
-                    rr = completarBinarioAByte(rr);//lo completa a byte
+                    rr = completarBinarioAByte(rr,16);//lo completa a byte
                     rr = Salvacion.calcularComplementoDos(rr);//calcula el complemento a 2
                     rr = Integer.toHexString(Parte_4.ConvertirADecimal("%".concat(rr))).toUpperCase();//guarda el resultado en hexadecimal
                 }    

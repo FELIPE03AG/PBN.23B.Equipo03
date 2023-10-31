@@ -1,4 +1,10 @@
-	ORG	0
-JUMP	LDAA	5,Y
+	ORG	$215
+ini:	ANDB	[D,Y]
+jump:	LDAA	5,y
+	LDAA	[45,PC]
+	ADDA	-3,SP
+	STAA	,X
+	CPY	5,Y-
 	IBNE	A,JUMP
+	LBRA	INI
 	END
