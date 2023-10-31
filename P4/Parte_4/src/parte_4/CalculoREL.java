@@ -188,28 +188,29 @@ public class CalculoREL {
 
             while (cursorActual!=auxArchivo.length()) {
                 lecturaLinea = auxArchivo.readLine();//leo la linea
-                cursorActual = auxArchivo.getFilePointer();
-                String[] campos = lecturaLinea.split("\\s+");
-                if (campos.length == 4) {
-                    String instruccion = campos[0];
-                    String tipo = campos[1];
-                    String relativo = campos[2];
+                cursorActual = auxArchivo.getFilePointer(); //Se posiciona el puntero para la lectura
+                String[] campos = lecturaLinea.split("\\s+"); //Se separa la linia por bloques
+                if (campos.length == 4) {//Debo tener 4 campos o bloques
+                    String instruccion = campos[0]; //Guarda la intruccion de la linea
+                    String tipo = campos[1];//Guarda el registro que corresponde
+                    String relativo = campos[2];//Guarda si es positivo o negativo
+                    //Busca una coincidencia exacta entre la linea de la tabla y la intruccion
                     if (instruccion.equals(codop)) {
                         if (tipo.equals(registro)) {
                             if (relativo.equals(salto)) {
-                                lb = campos[3].trim();
-                                cursorActual=auxArchivo.length();
+                                lb = campos[3].trim();//Si todo concuerda, guarda el lb
+                                cursorActual=auxArchivo.length();//Para salir del while una vez que se encuentre
                             }
                         }
-                    }
-                }
-            }
+                    }//fin inicio de coincidencia
+                }//Fin si son 4 bloques
+            }//fin while
             tablaFile.close();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
         return lb;
-    }
+    }//fin calcular lb
     
     static public void postbRel9(Linea relativo, String origen){
         String postbyte = " ";//Variable que guarda el postbyte de la instruccion
@@ -275,9 +276,9 @@ public class CalculoREL {
                     break;
             }//fin switch
             rr = " ".concat(rr.substring(2, 4));
-        }
+        }//fin si se tiene una posicion como destino
          relativo.setCop(postbyte.concat(lb).concat(rr));
-    }
+    }// fin calculo del postbyte del los relativos de 9bits
     
     static void buscarRels(){//Metodo para identificar rels y calcular su postbyte
         for(Linea asm:Parte_4.LineasASM){//for para recorrer todas las intrucciones
@@ -289,7 +290,7 @@ public class CalculoREL {
             }//fin rel16b
             else if(asm.getADDR().equals("REL (9b)")){
                 postbRel9(asm, Conloc.sumarHexadecimal(asm.getConloc(), 3));
-            }
+            }//fin rel9
         }//fin for asm
     }//Fin buscar rels
 }//Fin de la clase
