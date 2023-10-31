@@ -241,7 +241,7 @@ public class CalculoREL {
             if (ori > dest) {//Si origen es mayor que el destino
                 salto="Negativo";
                 resta = ori - dest;//restar el destino al origen
-                if (resta < 32769) {//validacion del rango del salto negativo
+                if (resta < 257) {//validacion del rango del salto negativo
                     rr = decimalABinario(resta);//Paso de decimal a binario el resultado de la resta
                     rr = completarBinarioAByte(rr,16);//lo completa a byte
                     rr = Salvacion.calcularComplementoDos(rr);//calcula el complemento a 2
@@ -251,7 +251,7 @@ public class CalculoREL {
             else if (dest > ori) {//o si el destino es mayor al origen
                 salto = "Positivo";
                 resta = dest - ori;//Hace la resta correspondiente 
-                if (resta < 65535) {//valida el rango del salto positivo
+                if (resta < 256) {//valida el rango del salto positivo
                     rr = Integer.toHexString(resta).toUpperCase();//guarda el resultado en hexadecimal
                 }//fin rango correcto
             }//fin destino mayor al origen
