@@ -15,12 +15,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import static parte_4.Salvacion.IdentificacionDirectivas;
-import static parte_4.Salvacion.IdentificarADDR;
-import static parte_4.Salvacion.Separarform;
-import static parte_4.Salvacion.auxSalvacion;
-import static parte_4.Salvacion.coincidencias;
-import static parte_4.Salvacion.encontrado;
 
 public class Parte_4 {
     static Linea NewLinCod=null; //Para guardar en una lista las lineas del codigo
@@ -245,44 +239,7 @@ public class Parte_4 {
         }
     }
     
-    static String calcularTabla6() {
-    try {
-        RandomAccessFile tablaFile = new RandomAccessFile("Tabla-A_6.txt", "r");
-        String lineaTabla;
-        boolean encontrado = false;
-        long originalPointer = tablaFile.getFilePointer(); 
-
-        while ((lineaTabla = tablaFile.readLine()) != null) {
-            String[] campos = lineaTabla.split("\\s+");
-
-            if (campos.length == 4) {
-                String instruccion = campos[0];
-                String tipo = campos[1];
-                String relativo = campos[2];
-                String lb = campos[3].trim();
-
-                if (NewLinCod.getCodop().equals(instruccion) && NewLinCod.getOperando().equals(tipo) && "Positivo".equals(relativo)) {
-                    encontrado = true;
-                    tablaFile.seek(originalPointer); 
-                    return lb;
-                }
-            }
-            originalPointer = tablaFile.getFilePointer();
-        }
-
-        tablaFile.seek(originalPointer); 
-        if (!encontrado) {
-            return "No se encontró una coincidencia";
-        }
-
-        tablaFile.close();
-    } catch (IOException ex) {
-        ex.printStackTrace();
-    }
-
-    return "No se encontró una coincidencia";
-}
-//******************************************************************** PARTE 2 *************************************************
+//******************************************************************** CALCULOS *************************************************
         
     //METODO DE APOYO PARA PASAR DE OCTAL A DECIMAL...
     public static int octalADecimal(int octal) {//Este metodo lo usaremos para validar que no pase de los bits permitidos

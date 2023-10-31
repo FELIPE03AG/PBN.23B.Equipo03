@@ -1,5 +1,9 @@
 package parte_4;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
 public class CalculoREL {
     static boolean absoluta = false;
     
@@ -58,7 +62,7 @@ public class CalculoREL {
         return binario.toString();
     }//fin decimal a binario
     
-    public static void postREL(Linea relativo, String origen){
+    public static void postREL8(Linea relativo, String origen){
         String postbyte = " ";//Variable que guarda el postbyte de la instruccion
         String rr = " ";//Variable que guarda la parte que calculamos
         String destino=" ";//Direccion a la que va el brinco
@@ -153,19 +157,19 @@ public class CalculoREL {
                 rr = "0000";
             }
             switch (rr.length()) {
-            //fin no es un byte
-            case 1:
-            //si no es menos de un byte
-                rr = "000".concat(rr);//completa a expresion en byte
-            break;
-            case 2:
-                rr = "00".concat(rr);//completa a expresion en byte
-            break;
-            case 3:
-                rr = "0".concat(rr);//completa a expresion en byte
-            break;
-            default:
-            break;
+                //fin no es un byte
+                case 1:
+                    //si no es menos de un byte
+                    rr = "000".concat(rr);//completa a expresion en byte
+                    break;
+                case 2:
+                    rr = "00".concat(rr);//completa a expresion en byte
+                    break;
+                case 3:
+                    rr = "0".concat(rr);//completa a expresion en byte
+                    break;
+                default:
+                    break;
             }//fin switch
         }//fin direccion valida
         rr = rr.substring(0, 2).concat(" ").concat(rr.substring(2, 4));//divide por byte
@@ -173,14 +177,119 @@ public class CalculoREL {
         relativo.setCop(postbyte);//guardo el postbyte completo en los datos de la instruccion
     }//Fin postbyte de lo rel 16
     
+    static String calcularlb(String registro, String codop, String salto) {
+        String lb = " ";
+        try {
+            RandomAccessFile auxArchivo = new RandomAccessFile("TablaA6.txt","r");//r es para solo leer el archivo
+            long cursorActual;//Para saber donde estamos en el asm
+            cursorActual = auxArchivo.getFilePointer();//Puntero en el archivo
+            FileReader tablaFile = new FileReader("TablaA6.txt");//leo el archivo
+            String lecturaLinea; //Guarda cada linea
+
+            while (cursorActual!=auxArchivo.length()) {
+                lecturaLinea = auxArchivo.readLine();//leo la linea
+                cursorActual = auxArchivo.getFilePointer();
+                String[] campos = lecturaLinea.split("\\s+");
+                if (campos.length == 4) {
+                    String instruccion = campos[0];
+                    String tipo = campos[1];
+                    String relativo = campos[2];
+                    if (instruccion.equals(codop)) {
+                        if (tipo.equals(registro)) {
+                            if (relativo.equals(salto)) {
+                                lb = campos[3].trim();
+                                cursorActual=auxArchivo.length();
+                            }
+                        }
+                    }
+                }
+            }
+            tablaFile.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return lb;
+    }
+    
+    static public void postbRel9(Linea relativo, String origen){
+        String postbyte = " ";//Variable que guarda el postbyte de la instruccion
+        String rr = " ", lb=" ", salto=" ";//Variable que guarda la parte que calculamos
+        String destino=" ";//Direccion a la que va el brinco
+        int ori, dest,resta;//Variables auxiliares para la resta de direcciones
+        boolean destinoExist=false; //Variable que verifica que el destino existe
+       
+        String operandos[]=relativo.getOperando().split(",");
+        destino=conlocEtq(operandos[1]);//Se guarda la direccion de destino
+        if (absoluta){//Si es absoluta revisa que si exista una instruccion en esa posicion
+            for(Linea existe:Parte_4.LineasASM){
+                if(existe.getConloc().equals(destino)){
+                    destinoExist=true;//enciende la bandera
+                }//fin si existe esa direccion con una instruccion
+            }//fin for, buscar la direccion
+            if(!destinoExist){
+                destino=" ";//limpia el destino
+            }//Fin no existe
+            absoluta=false;//reinicia la bandera
+        }//fin es absoluta
+        
+        String frmbase [] = relativo.getForm().split(",");//separa el frmbase en calculado y por calcular
+        if (!(destino.equals(" "))) {//si existe una direccion de memoria
+            postbyte = frmbase[0].concat(" ");
+            ori = Parte_4.ConvertirADecimal("$".concat(origen));//guarda el valor decimal del origen
+            dest = Parte_4.ConvertirADecimal("$".concat(destino));//guarda el valor decimal del destino
+            if (ori > dest) {//Si origen es mayor que el destino
+                salto="Negativo";
+                resta = ori - dest;//restar el destino al origen
+                if (resta < 32769) {//validacion del rango del salto negativo
+                    rr = decimalABinario(resta);//Paso de decimal a binario el resultado de la resta
+                    rr = completarBinarioAByte(rr);//lo completa a byte
+                    rr = Salvacion.calcularComplementoDos(rr);//calcula el complemento a 2
+                    rr = Integer.toHexString(Parte_4.ConvertirADecimal("%".concat(rr))).toUpperCase();//guarda el resultado en hexadecimal
+                }    
+            } 
+            else if (dest > ori) {//o si el destino es mayor al origen
+                salto = "Positivo";
+                resta = dest - ori;//Hace la resta correspondiente 
+                if (resta < 65535) {//valida el rango del salto positivo
+                    rr = Integer.toHexString(resta).toUpperCase();//guarda el resultado en hexadecimal
+                }//fin rango correcto
+            }//fin destino mayor al origen
+            else if (dest == ori) {
+                salto = "Positivo";
+                rr="0000";
+            }
+            lb = calcularlb(operandos[0], relativo.getCodop(), salto);
+            switch (rr.length()) {
+                //fin no es un byte
+                case 1:
+                    //si no es menos de un byte
+                    rr = "000".concat(rr);//completa a expresion en byte
+                    break;
+                case 2:
+                    rr = "00".concat(rr);//completa a expresion en byte
+                    break;
+                case 3:
+                    rr = "0".concat(rr);//completa a expresion en byte
+                    break;
+                default:
+                    break;
+            }//fin switch
+            rr = " ".concat(rr.substring(2, 4));
+        }
+         relativo.setCop(postbyte.concat(lb).concat(rr));
+    }
+    
     static void buscarRels(){//Metodo para identificar rels y calcular su postbyte
         for(Linea asm:Parte_4.LineasASM){//for para recorrer todas las intrucciones
             if(asm.getADDR().equals("REL (8b)")){//si es relativa de 8b
-                postREL(asm, Conloc.sumarHexadecimal(asm.getConloc(), 2));//calcula su postbyte
+                postREL8(asm, Conloc.sumarHexadecimal(asm.getConloc(), 2));//calcula su postbyte
             }//fin relativo de 8b
             else if(asm.getADDR().equals("REL (16b)")){//Si es relativo de 16b
                 postREL16(asm, Conloc.sumarHexadecimal(asm.getConloc(), 4));//calcula su postbyte
             }//fin rel16b
+            else if(asm.getADDR().equals("REL (9b)")){
+                postbRel9(asm, Conloc.sumarHexadecimal(asm.getConloc(), 3));
+            }
         }//fin for asm
     }//Fin buscar rels
 }//Fin de la clase
