@@ -229,10 +229,12 @@ public class Parte_4 {
                 NewLinCod=null;
             }//Fin del while
             
+            if(!LineasASM.isEmpty()){
             //Si el end no existe en el archivo
-            int indiceUltimoElemento = LineasASM.size() - 1;
-            if(cursorActual==auxArchivo.length() && (!LineasASM.get(indiceUltimoElemento).getCodop().equals("END"))){
-                System.out.println("END NO LOCALIZADO");
+                int indiceUltimoElemento = LineasASM.size() - 1;
+                if(cursorActual==auxArchivo.length() && (!LineasASM.get(indiceUltimoElemento).getCodop().equals("END"))){
+                    System.out.println("END NO LOCALIZADO");
+                }
             }
             if(!org){
                 System.out.println("ORG NO LOCALIZADO, el programa no podra funcionar correctamente");

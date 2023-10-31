@@ -149,9 +149,9 @@ public class Tabla extends javax.swing.JFrame {
                 Conloc.LlenarList(Parte_4.LineasASM);
                 Conloc.LlenarTabsim(Parte_4.LineasASM);
                 CalculoREL.buscarRels();
-                this.dispose();
-                new Tabla().setVisible(true);
             }
+            this.dispose();
+            new Tabla().setVisible(true);
         }
     }//GEN-LAST:event_btnArchivoActionPerformed
 
