@@ -71,6 +71,7 @@ public class Conloc {
                             auxArchivo.writeBytes(valor+",       ");//escribe el valor en 2 bytes y sin $ en el .lst, el espacio es para organizar
                         }//fin de segundo if
                         else{
+                            Parte_4.Errores.add("NO SE PUEDE CALCULAR EL CONLOC PORQUE OPR DE ORG ES INCORRECTO");//manda error por fallas en estructura de org
                             System.out.println("NO SE PUEDE CALCULAR EL CONLOC PORQUE OPR DE ORG ES INCORRECTO"); //manda error por fallas en estructura de org
                         }//fin del else
                     }//fin es el codop es org
@@ -110,6 +111,7 @@ public class Conloc {
                 }//Fin no es una linea con error
             }//fin ciclo for
         }catch(IOException ex){
+            Parte_4.Errores.add("ERROR");
             System.out.println("ERROR");
             ex.printStackTrace();
         }//fin catch
@@ -140,6 +142,7 @@ public class Conloc {
         } catch (IOException ex) {
             ex.printStackTrace(); //escribe en consola
             System.out.println("No se ha creado el archivo");//en caso de error no crea nada y manda aviso
+            Parte_4.Errores.add("No se ha creado el archivo");//en caso de error no crea nada y manda aviso
         }
     }// fin metodo crear tabsim
     
@@ -173,6 +176,7 @@ public class Conloc {
             } //fin del bucle for
                 
         }catch(IOException ex){ //catch por si no es valido el proceso
+            Parte_4.Errores.add("ERROR");
             System.out.println("ERROR");//imprimer error
             ex.printStackTrace();//imprime en la consola
         }//fin catch

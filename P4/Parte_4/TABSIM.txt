@@ -1,3 +1,5 @@
 TIPO            Si       Ti            
-RELATIVA       INI       0215       
-RELATIVA       JUMP       0217       
+RELATIVA       ET1       4040       
+RELATIVA       DOS       4041       
+RELATIVA       TRES       4045       
+RELATIVA       UNO       4055       

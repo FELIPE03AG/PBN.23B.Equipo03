@@ -2,12 +2,16 @@ package parte_4;
 
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import parte_4.Parte_4;
 
 
 public class Tabla extends javax.swing.JFrame {
@@ -20,7 +24,7 @@ public class Tabla extends javax.swing.JFrame {
                                         auxiliar.getSize(),auxiliar.getPorCalcular(), auxiliar.getForm(), auxiliar.getCop()});
         }
     }
-    
+
     public static String chooseFile() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Elige el asm");
@@ -56,6 +60,7 @@ public class Tabla extends javax.swing.JFrame {
             TablaCod.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -67,6 +72,7 @@ public class Tabla extends javax.swing.JFrame {
         TablaCod = new javax.swing.JTable();
         btnArchivo = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        LabelErrores = new javax.swing.JLabel();
 
         jButton1.setText("jButton1");
 
@@ -105,6 +111,8 @@ public class Tabla extends javax.swing.JFrame {
 
         jLabel1.setText("Abrir archivo distinto -->");
 
+        LabelErrores.setText("Errores");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -115,6 +123,9 @@ public class Tabla extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnArchivo)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(LabelErrores)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -123,7 +134,9 @@ public class Tabla extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnArchivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(LabelErrores))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -143,7 +156,10 @@ public class Tabla extends javax.swing.JFrame {
     private void btnArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArchivoActionPerformed
         rutaArchivo=chooseFile();
         if(rutaArchivo!=null){
-            Parte_4.Leer(rutaArchivo);//Llamo el metodo
+        Parte_4.LineasASM.clear();
+        diseño.setRowCount(0);
+        Parte_4.Leer(rutaArchivo);
+        
             if (Parte_4.LineasASM.size() != 0) {
                 Salvacion.BuscarCodop(Parte_4.LineasASM);
                 Conloc.LlenarList(Parte_4.LineasASM);
@@ -156,6 +172,7 @@ public class Tabla extends javax.swing.JFrame {
     }//GEN-LAST:event_btnArchivoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel LabelErrores;
     private javax.swing.JTable TablaCod;
     private javax.swing.JButton btnArchivo;
     private javax.swing.JButton jButton1;

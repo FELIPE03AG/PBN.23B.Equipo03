@@ -52,6 +52,10 @@
                   <Component id="btnArchivo" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <Component id="LabelErrores" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -62,7 +66,9 @@
                       <Component id="btnArchivo" alignment="3" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="475" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="453" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="LabelErrores" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -121,6 +127,11 @@
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
             <Property name="text" type="java.lang.String" value="Abrir archivo distinto --&gt;"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="LabelErrores">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Errores"/>
           </Properties>
         </Component>
       </SubComponents>

@@ -21,7 +21,11 @@ public class Parte_4 {
     static boolean Comentario = false;//Variable que indica si la linea es un comentario
     static ArrayList <Linea> LineasASM = new ArrayList<>();
     static boolean org = false;
+    static ArrayList <String> Errores = new ArrayList<>();
     
+    public static ArrayList<String> obtenerErrores() {
+    return Errores;
+}
     
 //**************************************************************** PARTE 1 *******************************************************
     //METODO PARA EVALUAR ETIQUETA
@@ -158,7 +162,7 @@ public class Parte_4 {
                             }//fin el bloque es una etiqueta
                             else{
                                 NewLinCod.setEtiqueta("ERROR");//Guardar el error de la etiqueta 
-                                System.out.println("ERROR Formato Etiqueta en: "+campos[0]);
+                                Errores.add("ERROR Formato Etiqueta en: " +campos[0]);
                             }//Fin no esta bien el formato de la etiqueta
                         }//Busco una etiqueta
                         if(validarCodop(campos[1])){
@@ -179,12 +183,12 @@ public class Parte_4 {
                                             org=true;
                                         }
                                         else{
-                                            System.out.println("ERROR CON EL OPERANDO DEL ORG, se ignorara esa linea");
+                                            Errores.add("ERROR CON EL OPERANDO DEL ORG, se ignorara esa linea");
                                             NewLinCod=null;
                                         }
                                     }
                                     else{
-                                        System.out.println("ERROR CON EL ORG, ya existe o tiene etiqueta, se ignorara esa linea");
+                                        Errores.add("ERROR CON EL ORG, ya existe o tiene etiqueta, se ignora esa linea");
                                         NewLinCod=null;
                                     }
                                 }
@@ -194,30 +198,30 @@ public class Parte_4 {
                                     cursorActual=auxArchivo.length();//Para salir del archivo
                                 }
                                 else{
-                                    System.out.println("EL END NO DEBE DE LLEVAR OPERANDO, el operando no se tomara en cuenta");
+                                    Errores.add("EL END NO DEBE DE LLEVAR OPERANDO, el operando no se tomara en cuenta");
                                     NewLinCod.setOperando(" ");
                                 }
                             }
                             if(NewLinCod!=null){
                                 LineasASM.add(NewLinCod);
-                            }
+                            } 
                         }//Fin CODOP correcto
                         else{
-                            System.out.println("ERROR "+campos[1]+" no es un CODOP");
+                            Errores.add("ERROR "+campos[1]+" no es un CODOP");
                         }//Fin error con codigo de operacion
                     }//Fin no mas de 3 bloques
                     else{
                         if(campos.length>3){
-                            System.out.println("ERROR hay mas de 3 bloques en la linea");
+                            Errores.add("ERROR hay mas de 3 bloques en la linea");
                         }
                     }                   
                 }//Fin if: no es un comentario, es una linea de codigo
                 else{
                     if (Comentario (lecturaLinea)){
-                        System.out.println("COMENTARIO CON EXCESO DE CARACTERES");
+                        Errores.add("COMENTARIO CON EXCESO DE CARACTERES");
                     }//Fin comentario incorrecto
                     else {
-                        System.out.println("COMENTARIO");
+                        Errores.add("COMENTARIO");
                     }//Fin comentario correcto
                 }//Fin else no es linea de codigo, es un comentario
                 NewLinCod=null;
