@@ -198,11 +198,11 @@ public class Tabla extends javax.swing.JFrame {
                 Salvacion.BuscarCodop(Parte_4.LineasASM);
                 Conloc.LlenarList(Parte_4.LineasASM);
                 Conloc.LlenarTabsim(Parte_4.LineasASM);
+                Parte_4.Errores.clear();
                 CalculoREL.buscarRels();
             }
             this.dispose();
             new Tabla().setVisible(true);
-            Parte_4.Errores.clear();
         }
     }//GEN-LAST:event_btnArchivoActionPerformed
 
