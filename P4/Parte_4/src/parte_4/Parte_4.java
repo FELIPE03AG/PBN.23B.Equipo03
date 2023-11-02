@@ -232,7 +232,6 @@ public class Parte_4 {
             //Si el end no existe en el archivo
                 int indiceUltimoElemento = LineasASM.size() - 1;
                 if(cursorActual==auxArchivo.length() && (!LineasASM.get(indiceUltimoElemento).getCodop().equals("END"))){
-                    System.out.println("END NO LOCALIZADO");
                     Errores.add("END NO LOCALIZADO");
                 }
             }

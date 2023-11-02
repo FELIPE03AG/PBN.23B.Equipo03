@@ -55,6 +55,7 @@ public class Tabla extends javax.swing.JFrame {
         diseño.setColumnIdentifiers(titulo);
         TablaCod.setModel(diseño);
         Llenado();
+        Errores.setEditable(false);
         mostrarEnJTextArea();
         // Centrar todas las celdas de la tabla
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
