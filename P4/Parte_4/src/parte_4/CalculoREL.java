@@ -257,24 +257,12 @@ public class CalculoREL {
             }//fin destino mayor al origen
             else if (dest == ori) {
                 salto = "Positivo";
-                rr="0000";
+                rr="00";
             }
             lb = calcularlb(operandos[0], relativo.getCodop(), salto);
-            switch (rr.length()) {
-                //fin no es un byte
-                case 1:
-                    //si no es menos de un byte
-                    rr = "000".concat(rr);//completa a expresion en byte
-                    break;
-                case 2:
-                    rr = "00".concat(rr);//completa a expresion en byte
-                    break;
-                case 3:
-                    rr = "0".concat(rr);//completa a expresion en byte
-                    break;
-                default:
-                    break;
-            }//fin switch
+            if (rr.length() == 1) {//si no es menos de un byte
+                rr = "0".concat(rr);//completa a expresion en byte
+            }//fin no es un byte
             rr = " ".concat(rr.substring(2, 4));
         }//fin si se tiene una posicion como destino
          relativo.setCop(postbyte.concat(lb).concat(rr));
