@@ -1,7 +1,30 @@
-	ORG	$1010
-	NOPD
-	INXD	
-Et1:	ADCADC	#3
-Tres:	EQU	%111
-Uno:	DS.NN	37
+; comentario número 1 =Programación=
+	ORG 	$4040
+Et1:    SWI
+dos:    EORA 	,x
+	EORA 	@5
+Tres:	EORA 	%111
+	EORA	$6
+	EORA	300
+	EORA	$FFF
+	EORA	#5
+	EORA    #@5
+	EORA	#1500
+	EORA	1,X
+Uno:	EORA	255,X
+	EORA	32768,X
+	EORA 	1,+PC
+	EORA	A,X
+	EORA 	254,X
+	EORA 	64444,X
+	EORA	[1,X]
+	EORA	[6444,X]
+	EORA	[D,X]
+	BLT	Uno
+	LBLT	Uno
+	IBNE	A,Uno
+	zzzz a
+; comentario número 2 ¡Bajo!
+;comentario número 3 -Nivel-
+	END
 	

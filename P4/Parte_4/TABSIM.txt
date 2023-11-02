@@ -1,2 +1,5 @@
 TIPO            Si       Ti            
-ABSOLUTA       TRES       0007       
+RELATIVA       ET1       4040       
+RELATIVA       DOS       4041       
+RELATIVA       TRES       4045       
+RELATIVA       UNO       4055       

@@ -437,40 +437,38 @@ public class Parte_4 {
                     Operando="0".concat(Operando);
                 }
                 String partes[]=Operando.split(",");  //Esta funcion separa y guarda valores si hay una ',' entre estos
-                if(partes[0].matches(".*\\d.*")){     //Esta funcion verifica si en la primer parte del operando hay un digito
-                    int valor=Integer.parseInt(partes[0]); //Siendo que la primer parte del operando en un digito se manda a guardar en valor como entero
-                    if(partes[1].equals("X") || partes[1].equals("Y") ||
-                       partes[1].equals("SP") || partes[1].equals("PC")){ //Aqui verifica si la segunda parte del operando coincide con eso
-                            if(valor>-17 && valor<=15){                   //Se mira que el valor (primera parte del operando) este entre los limites
-                                idx="IDX(5b)";                            // Si es asi se declara como este tipo de indexado
-                            }
-                            else{
-                                idx="0";                                  //si no marca error
-                            }
+                if (partes.length == 2) {
+                if (partes[0].matches(".*\\d.*")) {     //Esta funcion verifica si en la primer parte del operando hay un digito
+                    int valor = Integer.parseInt(partes[0]); //Siendo que la primer parte del operando en un digito se manda a guardar en valor como entero
+
+                    if (partes[1].equals("X") || partes[1].equals("Y")
+                            || partes[1].equals("SP") || partes[1].equals("PC")) { //Aqui verifica si la segunda parte del operando coincide con eso
+                        if (valor > -17 && valor <= 15) {                   //Se mira que el valor (primera parte del operando) este entre los limites
+                            idx = "IDX(5b)";                            // Si es asi se declara como este tipo de indexado
+                        } else {
+                            idx = "0";                                  //si no marca error
+                        }
+                    } else if ((partes[1].startsWith("+") || partes[1].startsWith("-") || partes[1].endsWith("+")
+                            || partes[1].endsWith("-")) && (partes[1].contains("X")
+                            || partes[1].contains("Y") || partes[1].contains("SP"))) { //Aqui verifica si la segunda parte del operando coincide con eso
+                        if (valor > 0 && valor < 9) {                    //Se mira que el valor (primera parte del operando) este entre los limites
+                            idx = "IDX(pre-inc)";                    // Si es asi se declara como este tipo de indexado
+                        } else {
+                            idx = "0";                               //si no marca error
+                        }
+                    } else {
+                        idx = "0"; //Si tenia alguna coincidencia con algunos de los otros requerimientos pero no cumple todo correctamente marca error
                     }
-                    else if((partes[1].startsWith("+") || partes[1].startsWith("-") || partes[1].endsWith("+") ||
-                             partes[1].endsWith("-"))&& (partes[1].contains("X") ||
-                             partes[1].contains("Y") || partes[1].contains("SP")) ){ //Aqui verifica si la segunda parte del operando coincide con eso
-                                if(valor>0 && valor<9){                    //Se mira que el valor (primera parte del operando) este entre los limites
-                                    idx="IDX(pre-inc)";                    // Si es asi se declara como este tipo de indexado
-                                }
-                                else{
-                                    idx="0";                               //si no marca error
-                                }
+
+                } else if (partes[0].equals("A") || partes[0].equals("B") || partes[0].equals("D")) {
+                    if (partes[1].equals("X") || partes[1].equals("Y")
+                            || partes[1].equals("SP") || partes[1].equals("PC")) { //Aqui valida que tanto la primera parte como la segunda tenga coincidencias con estos parametros
+                        idx = "IDX(acc)";
                     }
-                    else{
-                        idx="0"; //Si tenia alguna coincidencia con algunos de los otros requerimientos pero no cumple todo correctamente marca error
-                    }
+                } else {
+                    idx = "0";   //Si no cumple con ninguna de todas las condiciones marca error
                 }
-                else if(partes[0].equals("A")||partes[0].equals("B")||partes[0].equals("D")){
-                    if(partes[1].equals("X") || partes[1].equals("Y") ||
-                        partes[1].equals("SP") || partes[1].equals("PC")){ //Aqui valida que tanto la primera parte como la segunda tenga coincidencias con estos parametros
-                            idx="IDX(acc)";
-                    }
-                }
-                else{
-                    idx="0";   //Si no cumple con ninguna de todas las condiciones marca error
-                }
+            }
         }
             return idx;  //retorna el tipo de indexado que sea
     }//Fin metodo para IDX
@@ -481,11 +479,13 @@ public class Parte_4 {
         String partes[]=Operando.split(",");           //separa el operando en dos partes
         if(partes[0].matches(".*\\d.*")){              //mira que la primera parte del operando sean unicamente digitos
             int valor=Integer.parseInt(partes[0]);     //si la primera parte del operando es un digito la convierte en entero
-            if(partes[1].equals("X") || partes[1].equals("Y") ||
-               partes[1].equals("SP") || partes[1].equals("PC")){   //Mira que la segunda parte tenga coincidencias con estas condiciones
-                    if((valor>-257 && valor<-16)||(valor>15 && valor<256)){ //Verifica que la primera parte del operando se encuentre entre estos limites
-                        idx1=true;                    //retorna un verdadero validando que si es este tipo de direccionamiento
+            if (partes.length == 2) {
+                if (partes[1].equals("X") || partes[1].equals("Y")
+                        || partes[1].equals("SP") || partes[1].equals("PC")) {   //Mira que la segunda parte tenga coincidencias con estas condiciones
+                    if ((valor > -257 && valor < -16) || (valor > 15 && valor < 256)) { //Verifica que la primera parte del operando se encuentre entre estos limites
+                        idx1 = true;                    //retorna un verdadero validando que si es este tipo de direccionamiento
                     }
+                }
             }
         }
         return idx1;                                  //retorna un booleano para verificar si es IDX1 o no
@@ -494,14 +494,16 @@ public class Parte_4 {
     //METODO PARA ADDR IDX2
     static boolean IDX2(String Operando){
         boolean idx2=false;                          //esta es la bandera que retorna si es cierto que es ese tipo de direccionamiento o no
-        String partes[]=Operando.split(",");         //separa el operando en dos partes
-        if(partes[0].matches(".*\\d.*")){            //mira que la primera parte del operando sean unicamente digitos
-            int valor=Integer.parseInt(partes[0]);
-            if(partes[1].equals("X") || partes[1].equals("Y") ||
-               partes[1].equals("SP") || partes[1].equals("PC")){ //Mira que la segunda parte tenga coincidencias con estas condiciones
-                    if(valor>255 && valor<65536){    //Verifica que la primera parte del operando se encuentre entre estos limites
-                        idx2=true;                   //retorna un verdadero validando que si es este tipo de direccionamiento
+        String partes[] = Operando.split(",");
+        if (partes.length == 2) {
+            if (partes[0].matches(".*\\d.*")) {            //mira que la primera parte del operando sean unicamente digitos
+                int valor = Integer.parseInt(partes[0]);
+                if (partes[1].equals("X") || partes[1].equals("Y")
+                        || partes[1].equals("SP") || partes[1].equals("PC")) { //Mira que la segunda parte tenga coincidencias con estas condiciones
+                    if (valor > 255 && valor < 65536) {    //Verifica que la primera parte del operando se encuentre entre estos limites
+                        idx2 = true;                   //retorna un verdadero validando que si es este tipo de direccionamiento
                     }
+                }
             }
         }
         return idx2;                                 //retorna un booleano para verificar si es IDX2 o no
@@ -511,6 +513,7 @@ public class Parte_4 {
     static boolean IdxD(String Operando){
         boolean idx=false;                          //esta es la bandera que retorna si es cierto que es ese tipo de direccionamiento o no
         String partes[]=Operando.split(",");        //separa el operando en dos partes
+        if(partes.length==2){
             if(partes[0].equals("[D")){             //Verifica que la primera parte del operando sea esta
                 if(partes[1].equals("X]") || partes[1].equals("Y]") ||
                    partes[1].equals("SP]") || partes[1].equals("PC]")){ //Mira que la segunda parte tenga coincidencias con estas condiciones
@@ -520,19 +523,22 @@ public class Parte_4 {
                     idx=false;                      //retorna un falso validando que no es este tipo de direccionamiento
                 }
             }
+        }
             return idx;                             //retorna un booleano para verificar si es [D,IDX] o no
     }//fin del metodo IdxD
 
     //METODO PARA [IDX2]
     static boolean Idx2C(String Operando){
         boolean idx=false;                          //esta es la bandera que retorna si es cierto que es ese tipo de direccionamiento o no
-        String partes[]=Operando.split(",");        //separa el operando en dos partes
-        String valor = partes[0].substring(1);      //guarda la primera parte del operando      
-        if(valor.matches(".*\\d.*")){               //mira que la primera parte del operando sean unicamente digitos
-            int numero = Integer.parseInt(valor);   //comvierte a valor en un entero
-            if(numero<=65535 && (partes[1].equals("X]") || partes[1].equals("Y]") ||
-                                 partes[1].equals("SP]") || partes[1].equals("PC]"))){ //Mira que la segunda parte tenga coincidencias con estas condiciones
-                idx=true;                           //retorna un verdadero validando que si es este tipo de direccionamiento
+        String partes[] = Operando.split(",");        //separa el operando en dos partes
+        if (partes.length == 2) {
+            String valor = partes[0].substring(1);      //guarda la primera parte del operando      
+            if (valor.matches(".*\\d.*")) {               //mira que la primera parte del operando sean unicamente digitos
+                int numero = Integer.parseInt(valor);   //comvierte a valor en un entero
+                if (numero <= 65535 && (partes[1].equals("X]") || partes[1].equals("Y]")
+                        || partes[1].equals("SP]") || partes[1].equals("PC]"))) { //Mira que la segunda parte tenga coincidencias con estas condiciones
+                    idx = true;                           //retorna un verdadero validando que si es este tipo de direccionamiento
+                }
             }
         }
         return idx;                                 //retorna un booleano para verificar si es [IDX2] o no
