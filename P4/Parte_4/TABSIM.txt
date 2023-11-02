@@ -1,5 +1,1 @@
 TIPO            Si       Ti            
-RELATIVA       ET1       4040       
-RELATIVA       DOS       4041       
-RELATIVA       TRES       4045       
-RELATIVA       UNO       4055       

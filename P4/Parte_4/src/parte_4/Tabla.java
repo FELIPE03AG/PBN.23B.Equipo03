@@ -1,5 +1,6 @@
 package parte_4;
 
+import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -16,27 +17,38 @@ public class Tabla extends javax.swing.JFrame {
             diseño.addRow(new Object[]{auxiliar.getConloc(),auxiliar.getEtiqueta(),auxiliar.getCodop(),auxiliar.getOperando(),auxiliar.getADDR(),
                                         auxiliar.getSize(),auxiliar.getPorCalcular(), auxiliar.getForm(), auxiliar.getCop()});
         }
+    } //fin de metodo llenar 
+    
+    //metodo para elegir archivo
+   public static String chooseFile() {
+    JFileChooser fileChooser = new JFileChooser(); //variable para elegir
+    fileChooser.setDialogTitle("Elige el asm");
+
+    // Filtro para buscar solo ciertas extensiones, en este caso que sean .asm
+    FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto (*.asm)", "asm"); //busca solo asm
+    fileChooser.setFileFilter(filter); // Se aplica el filtro. si hay otra extencion la ignora
+
+    int returnValue = fileChooser.showOpenDialog(null); // Abre el cuadro de diálogo para seleccionar
+//pasa a hacer valida la eleccion...
+    if (returnValue == JFileChooser.APPROVE_OPTION) {//analiza si es un archivo asm
+        File selectedFile = fileChooser.getSelectedFile();//agarra la direccion
+        // Verificar si la extensión del archivo seleccionado es .asm
+        if (selectedFile.getName().toLowerCase().endsWith(".asm")) {//toma el nombre y lo pasa a minusculas
+            String selectedFilePath = selectedFile.getAbsolutePath(); // Guarda la dirección del archivo
+            return selectedFilePath; // Retorna la dirección del archivo
+        } else {//si no valida que es asm entonces...
+            JOptionPane.showMessageDialog(null, "Selecciona un archivo con la extensión .asm", "Error", JOptionPane.ERROR_MESSAGE);
+            //no lo toma y te manda notificacion en una notificacion emergente.
+            return null; // Si el archivo no tiene la extensión .asm, no se selecciona
+        }
+    } else if (returnValue == JFileChooser.CANCEL_OPTION) {//en caso de no seleccionar nada...
+        JOptionPane.showMessageDialog(null, "No has seleccionado ningún archivo", "Error", JOptionPane.ERROR_MESSAGE);
+        return null;
+        //manda la alerta de que no seleccionaste nada y se queda con el mismo archivo
+    } else {
+        return null; // Otros casos
     }
 
-    public static String chooseFile() {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Elige el asm");
-
-        // Filtro para buscar solo ciertas extenciones, en este caso que sean .asm
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto (*.asm)", "asm");
-        fileChooser.setFileFilter(filter);//Se guarda el archivo elegido
-
-        int returnValue = fileChooser.showOpenDialog(null); // Abre el cuadro de dialogo para seleccionar
-
-        if (returnValue == JFileChooser.APPROVE_OPTION) {//Si el archivo es valido
-            String selectedFile = fileChooser.getSelectedFile().getAbsolutePath();//Guarda la direccion del archivo
-            return selectedFile;//Retorna la direccion del archivo
-        } else if (returnValue == JFileChooser.CANCEL_OPTION) {// Si se cancela la sellecion
-            JOptionPane.showMessageDialog(null, "No ha seleccionado ningún archivo", "Error", JOptionPane.ERROR_MESSAGE);
-            return null;
-        } else {
-            return null; // Otros casos
-        }
     }//Fin seleccionar el archivo
     
     public static void mostrarEnJTextArea() {
@@ -190,6 +202,7 @@ public class Tabla extends javax.swing.JFrame {
             }
             this.dispose();
             new Tabla().setVisible(true);
+            Parte_4.Errores.clear();
         }
     }//GEN-LAST:event_btnArchivoActionPerformed
 
