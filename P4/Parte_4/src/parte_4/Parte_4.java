@@ -27,6 +27,7 @@ public class Parte_4 {
     return Errores;
 }
     
+    
 //**************************************************************** PARTE 1 *******************************************************
     //METODO PARA EVALUAR ETIQUETA
     static boolean validarEtiq(String etiqueta){
@@ -232,10 +233,12 @@ public class Parte_4 {
                 int indiceUltimoElemento = LineasASM.size() - 1;
                 if(cursorActual==auxArchivo.length() && (!LineasASM.get(indiceUltimoElemento).getCodop().equals("END"))){
                     System.out.println("END NO LOCALIZADO");
+                    Errores.add("END NO LOCALIZADO");
                 }
             }
             if(!org){
                 System.out.println("ORG NO LOCALIZADO, el programa no podra funcionar correctamente");
+                Errores.add("ORG NO LOCALIZADO, el programa no podra funcionar correctamente");
             }
             leerArchivo.close();
         }catch(IOException ex){

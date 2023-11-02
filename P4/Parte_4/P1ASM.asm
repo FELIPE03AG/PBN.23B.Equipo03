@@ -1,10 +1,7 @@
-	ORG	$215
-ini:	ANDB	[D,Y]
-jump:	LDAA	5,y
-	LDAA	[45,PC]
-	ADDA	-3,SP
-	STAA	,X
-	CPY	5,Y-
-	IBNE	A,JUMP
-	LBRA	INI
-	END
+	ORG	$1010
+	NOPD
+	INXD	
+Et1:	ADCADC	#3
+Tres:	EQU	%111
+Uno:	DS.NN	37
+	

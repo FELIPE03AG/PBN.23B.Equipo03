@@ -1,11 +1,3 @@
 TIPO,        VALOR,       ETQ,         CODOP,       OPER 
-DIR_INIC,        0215,       NULL,       ORG,       $215,       
-CONTLOC,       0215,       INI,       ANDB,       [D,Y],       
-CONTLOC,       0217,       JUMP,       LDAA,       5,Y,       
-CONTLOC,       0219,       NULL,       LDAA,       [45,PC],       
-CONTLOC,       021D,       NULL,       ADDA,       -3,SP,       
-CONTLOC,       021F,       NULL,       STAA,       ,X,       
-CONTLOC,       0221,       NULL,       CPY,       5,Y-,       
-CONTLOC,       0223,       NULL,       IBNE,       A,JUMP,       
-CONTLOC,       0226,       NULL,       LBRA,       INI,       
-CONTLOC,       022A,       NULL,       END,       NULL,       
+DIR_INIC,        1010,       NULL,       ORG,       $1010,       
+VALOR,          0007,       TRES,       EQU,       %111,       

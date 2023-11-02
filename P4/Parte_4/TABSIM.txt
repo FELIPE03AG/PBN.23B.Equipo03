@@ -1,3 +1,2 @@
 TIPO            Si       Ti            
-RELATIVA       INI       0215       
-RELATIVA       JUMP       0217       
+ABSOLUTA       TRES       0007       
