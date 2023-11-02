@@ -133,6 +133,7 @@ public class CalculoREL {
             absoluta=false;//reinicia la bandera
         }//fin es absoluta
         
+        
         String frmbase [] = relativo.getForm().split(",");//separa el frmbase en calculado y por calcular
         if (!(destino.equals(" "))) {//si existe una direccion de memoria
             postbyte = frmbase[0].concat(" ").concat(frmbase[1]);//guarda la parte que ya esta calculada
