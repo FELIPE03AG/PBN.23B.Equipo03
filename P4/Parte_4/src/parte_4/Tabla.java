@@ -1,17 +1,10 @@
 package parte_4;
 
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import parte_4.Parte_4;
 
 
 public class Tabla extends javax.swing.JFrame {
@@ -46,13 +39,23 @@ public class Tabla extends javax.swing.JFrame {
         }
     }//Fin seleccionar el archivo
     
+    public static void mostrarEnJTextArea() {
+        // Limpiamos el JTextArea antes de mostrar nuevos datos
+        Errores.setText("");
+
+        // Iteramos sobre el ArrayList y agregamos cada elemento al JTextArea
+        for (String elemento : Parte_4.Errores) {
+            Errores.append(elemento + "\n"); // Agregamos un salto de línea después de cada elemento
+        }
+    }
+    
     public Tabla() {
         initComponents();
         String[] titulo = new String[]{"CONLOC","ETQ","CODOP","OPR","ADDR","SIZE","POR CALCULAR","FORM","COP"};
         diseño.setColumnIdentifiers(titulo);
         TablaCod.setModel(diseño);
         Llenado();
-        
+        mostrarEnJTextArea();
         // Centrar todas las celdas de la tabla
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
@@ -73,7 +76,8 @@ public class Tabla extends javax.swing.JFrame {
         btnArchivo = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         LabelErrores = new javax.swing.JLabel();
-        fallas = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        Errores = new javax.swing.JTextArea();
 
         jButton1.setText("jButton1");
 
@@ -114,27 +118,30 @@ public class Tabla extends javax.swing.JFrame {
 
         LabelErrores.setText("Errores:");
 
-        fallas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fallasActionPerformed(evt);
-            }
-        });
+        Errores.setColumns(20);
+        Errores.setRows(5);
+        jScrollPane2.setViewportView(Errores);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnArchivo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(LabelErrores)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fallas, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2)
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(LabelErrores)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,11 +151,11 @@ public class Tabla extends javax.swing.JFrame {
                     .addComponent(btnArchivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(66, 66, 66)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelErrores)
-                    .addComponent(fallas, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(69, 69, 69))
+                .addGap(18, 18, 18)
+                .addComponent(LabelErrores)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -185,28 +192,18 @@ public class Tabla extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnArchivoActionPerformed
 
-    private void fallasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fallasActionPerformed
-        // TODO add your handling code here:
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String elemento : Parte_4.Errores) {
-            stringBuilder.append(elemento).append(", "); // Puedes usar un separador, como un espacio, si es necesario
-        }
-        String resultado = stringBuilder.toString();
-        
-        fallas.setText(resultado);
-    }//GEN-LAST:event_fallasActionPerformed
-
     
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private static javax.swing.JTextArea Errores;
     private javax.swing.JLabel LabelErrores;
     private javax.swing.JTable TablaCod;
     private javax.swing.JButton btnArchivo;
-    public javax.swing.JTextField fallas;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }
