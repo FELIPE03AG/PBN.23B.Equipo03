@@ -270,7 +270,7 @@ public class CalculoREL {
                 resta = ori - dest;//restar el destino al origen
                 if (resta < 257) {//validacion del rango del salto negativo
                     rr = decimalABinario(resta);//Paso de decimal a binario el resultado de la resta
-                    rr = completarBinarioAByte(rr,16);//lo completa a byte
+                    rr = completarBinarioAByte(rr,8);//lo completa a byte
                     rr = Salvacion.calcularComplementoDos(rr);//calcula el complemento a 2
                     rr = Integer.toHexString(Parte_4.ConvertirADecimal("%".concat(rr))).toUpperCase();//guarda el resultado en hexadecimal
                 }
@@ -301,7 +301,7 @@ public class CalculoREL {
                 if (rr.length() == 1) {//si no es menos de un byte
                     rr = "0".concat(rr);//completa a expresion en byte
                 }//fin no es un byte
-                rr = " ".concat(rr.substring(2, 4));
+                rr = " ".concat(rr);
                 relativo.setCop(postbyte.concat(lb).concat(rr));
             }
         }//fin direccion valida
