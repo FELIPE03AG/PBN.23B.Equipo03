@@ -95,22 +95,35 @@ public class CalculoREL {
                     rr = Salvacion.calcularComplementoDos(rr);//calcula el complemento a 2
                     rr = Integer.toHexString(Parte_4.ConvertirADecimal("%".concat(rr))).toUpperCase();//guarda el resultado en hexadecimal
                 }//fin rango valido
+                else {
+                    rr = null;
+                }
             } 
             else if (dest > ori) {//o si el destino es mayor al origen
                 resta = dest - ori;//Hace la resta correspondiente 
                 if (resta < 128) {//valida el rango del salto positivo
                     rr = Integer.toHexString(resta).toUpperCase();//guarda el resultado en hexadecimal
                 }//fin rango correcto
+                else {
+                    rr = null;
+                }
             }//fin destino mayor al origen
             else if(dest == ori){
                 rr="00";
             }
-            if (rr.length() == 1) {//si no es menos de un byte
-                rr = "0".concat(rr);//completa a expresion en byte
-            }//fin no es un byte
-            postbyte = postbyte.concat(" ").concat(rr);//Concatena lo que calculamos con lo que se tenia
+            
+            if (rr != null) {
+                if (rr.length() == 1) {//si no es menos de un byte
+                    rr = "0".concat(rr);//completa a expresion en byte
+                }//fin no es un byte
+                postbyte = postbyte.concat(" ").concat(rr);//Concatena lo que calculamos con lo que se tenia
+                relativo.setCop(postbyte);//guardo el postbyte completo en los datos de la instruccion
+            }
         }//fin direccion valida
-        relativo.setCop(postbyte);//guardo el postbyte completo en los datos de la instruccion
+        if(destino.equals(" ")||rr==null){
+            relativo.setCop("ERROR");
+            Parte_4.Errores.add("ERROR rango del salto de rel "+relativo.getCodop()+" "+relativo.getOperando());
+        }
     }//Fin postbyte de lo rel 8
     
     public static void postREL16(Linea relativo, String origen){
@@ -147,35 +160,48 @@ public class CalculoREL {
                     rr = Salvacion.calcularComplementoDos(rr);//calcula el complemento a 2
                     rr = Integer.toHexString(Parte_4.ConvertirADecimal("%".concat(rr))).toUpperCase();//guarda el resultado en hexadecimal
                 }//fin rango valido
+                else {
+                    rr = null;
+                }
             } 
             else if (dest > ori) {//o si el destino es mayor al origen
                 resta = dest - ori;//Hace la resta correspondiente 
                 if (resta < 65535) {//valida el rango del salto positivo
                     rr = Integer.toHexString(resta).toUpperCase();//guarda el resultado en hexadecimal
                 }//fin rango correcto
+                else {
+                    rr = null;
+                }
             }//fin destino mayor al origen
             else if (dest == ori) {
                 rr = "0000";
             }
-            switch (rr.length()) {
-                //fin no es un byte
-                case 1:
-                    //si no es menos de un byte
-                    rr = "000".concat(rr);//completa a expresion en byte
-                    break;
-                case 2:
-                    rr = "00".concat(rr);//completa a expresion en byte
-                    break;
-                case 3:
-                    rr = "0".concat(rr);//completa a expresion en byte
-                    break;
-                default:
-                    break;
-            }//fin switch
+            
+            if (rr != null) {
+                switch (rr.length()) {
+                    //fin no es un byte
+                    case 1:
+                        //si no es menos de un byte
+                        rr = "000".concat(rr);//completa a expresion en byte
+                        break;
+                    case 2:
+                        rr = "00".concat(rr);//completa a expresion en byte
+                        break;
+                    case 3:
+                        rr = "0".concat(rr);//completa a expresion en byte
+                        break;
+                    default:
+                        break;
+                }//fin switch
+                rr = rr.substring(0, 2).concat(" ").concat(rr.substring(2, 4));//divide por byte
+                postbyte = postbyte.concat(" ").concat(rr);//concatena lo calculado con lo que se tenia
+                relativo.setCop(postbyte);//guardo el postbyte completo en los datos de la instruccion
+            }
         }//fin direccion valida
-        rr = rr.substring(0, 2).concat(" ").concat(rr.substring(2, 4));//divide por byte
-        postbyte = postbyte.concat(" ").concat(rr);//concatena lo calculado con lo que se tenia
-        relativo.setCop(postbyte);//guardo el postbyte completo en los datos de la instruccion
+        if (destino.equals(" ") || rr == null) {
+            relativo.setCop("ERROR");
+            Parte_4.Errores.add("ERROR rango del salto de rel" + relativo.getCodop() + " " + relativo.getOperando());
+        }
     }//Fin postbyte de lo rel 16
     
     static String calcularlb(String registro, String codop, String salto) {
@@ -247,7 +273,10 @@ public class CalculoREL {
                     rr = completarBinarioAByte(rr,16);//lo completa a byte
                     rr = Salvacion.calcularComplementoDos(rr);//calcula el complemento a 2
                     rr = Integer.toHexString(Parte_4.ConvertirADecimal("%".concat(rr))).toUpperCase();//guarda el resultado en hexadecimal
-                }    
+                }
+                else {
+                    rr = null;
+                }
             } 
             else if (dest > ori) {//o si el destino es mayor al origen
                 salto = "Positivo";
@@ -255,18 +284,31 @@ public class CalculoREL {
                 if (resta < 256) {//valida el rango del salto positivo
                     rr = Integer.toHexString(resta).toUpperCase();//guarda el resultado en hexadecimal
                 }//fin rango correcto
+                else {
+                    rr = null;
+                }
             }//fin destino mayor al origen
             else if (dest == ori) {
                 salto = "Positivo";
                 rr="00";
             }
-            lb = calcularlb(operandos[0], relativo.getCodop(), salto);
-            if (rr.length() == 1) {//si no es menos de un byte
-                rr = "0".concat(rr);//completa a expresion en byte
-            }//fin no es un byte
-            rr = " ".concat(rr.substring(2, 4));
-        }//fin si se tiene una posicion como destino
-         relativo.setCop(postbyte.concat(lb).concat(rr));
+            else {
+                rr = null;
+            }
+
+            if (rr != null) {
+                lb = calcularlb(operandos[0], relativo.getCodop(), salto);
+                if (rr.length() == 1) {//si no es menos de un byte
+                    rr = "0".concat(rr);//completa a expresion en byte
+                }//fin no es un byte
+                rr = " ".concat(rr.substring(2, 4));
+                relativo.setCop(postbyte.concat(lb).concat(rr));
+            }
+        }//fin direccion valida
+        if(destino.equals(" ")||rr==null){
+            relativo.setCop("ERROR");
+            Parte_4.Errores.add("ERROR rango del salto de rel "+relativo.getCodop()+" "+relativo.getOperando());
+        }
     }// fin calculo del postbyte del los relativos de 9bits
     
     static void buscarRels(){//Metodo para identificar rels y calcular su postbyte
