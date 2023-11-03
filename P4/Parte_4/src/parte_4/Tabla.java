@@ -10,7 +10,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class Tabla extends javax.swing.JFrame {
     DefaultTableModel diseño=new DefaultTableModel();
-    String rutaArchivo = " ";
+    static String rutaArchivo = " ";
     //METODO PARA LLENAR LA TABLA
     void Llenado(){
         for (Linea auxiliar : Parte_4.LineasASM) {
@@ -91,6 +91,8 @@ public class Tabla extends javax.swing.JFrame {
         LabelErrores = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         Errores = new javax.swing.JTextArea();
+        Recargar = new javax.swing.JToggleButton();
+        jLabel2 = new javax.swing.JLabel();
 
         jButton1.setText("jButton1");
 
@@ -135,17 +137,20 @@ public class Tabla extends javax.swing.JFrame {
         Errores.setRows(5);
         jScrollPane2.setViewportView(Errores);
 
+        Recargar.setText("Recargar");
+        Recargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RecargarActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Archivo actual - >");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnArchivo)
-                .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,6 +160,18 @@ public class Tabla extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(LabelErrores)
                         .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnArchivo))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Recargar)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -168,7 +185,11 @@ public class Tabla extends javax.swing.JFrame {
                 .addComponent(LabelErrores)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Recargar)
+                    .addComponent(jLabel2))
+                .addGap(7, 7, 7))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -189,16 +210,13 @@ public class Tabla extends javax.swing.JFrame {
 
     private void btnArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArchivoActionPerformed
         rutaArchivo=chooseFile();
-        if(rutaArchivo!=null){
-        Parte_4.LineasASM.clear();
-        diseño.setRowCount(0);
-        Parte_4.Leer(rutaArchivo);
-        
+        if (rutaArchivo != null) {
+            Parte_4.LineasASM.clear();
+            Parte_4.Leer(rutaArchivo);
             if (Parte_4.LineasASM.size() != 0) {
                 Salvacion.BuscarCodop(Parte_4.LineasASM);
                 Conloc.LlenarList(Parte_4.LineasASM);
                 Conloc.LlenarTabsim(Parte_4.LineasASM);
-                Parte_4.Errores.clear();
                 CalculoREL.buscarRels();
             }
             this.dispose();
@@ -206,16 +224,35 @@ public class Tabla extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnArchivoActionPerformed
 
+    private void RecargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RecargarActionPerformed
+        if(rutaArchivo==null){
+            rutaArchivo=" ";
+        }
+        Parte_4.LineasASM.clear();
+        Parte_4.Leer(rutaArchivo);
+
+        if (Parte_4.LineasASM.size() != 0) {
+            Salvacion.BuscarCodop(Parte_4.LineasASM);
+            Conloc.LlenarList(Parte_4.LineasASM);
+            Conloc.LlenarTabsim(Parte_4.LineasASM);
+            CalculoREL.buscarRels();
+        }
+        this.dispose();
+        new Tabla().setVisible(true);
+    }//GEN-LAST:event_RecargarActionPerformed
+
     
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JTextArea Errores;
     private javax.swing.JLabel LabelErrores;
+    private javax.swing.JToggleButton Recargar;
     private javax.swing.JTable TablaCod;
     private javax.swing.JButton btnArchivo;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

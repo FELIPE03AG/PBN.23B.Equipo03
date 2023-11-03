@@ -117,12 +117,14 @@ public class Parte_4 {
     static void Leer(String rutaArchivo){
         ArrayList <String> Etiquetas = new ArrayList<>();//Guardara todas las etiquetas encontradas previamente
         boolean etqRepetida=false;//Indica si la etiqueta que se quiere agregar ya existe
+        //Reinicio de variables
+        Parte_4.Errores.clear();
+        LineasASM.clear();
+        Conloc.etiquetas.clear();
+        org = false;
         try{
             if(!(rutaArchivo.equals(" "))){
                 File file = new File(rutaArchivo);
-                LineasASM.clear();
-                Conloc.etiquetas.clear();
-                org = false;
             }
             else{
                 rutaArchivo="P1ASM.asm";
