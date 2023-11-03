@@ -175,7 +175,7 @@ public class Conloc {
                     etiquetas.add(etq);
                 }//fin del primer if todo bien con la linea del asm            
             } //fin del bucle for
-                
+            auxArchivo.close();
         }catch(IOException ex){ //catch por si no es valido el proceso
             Parte_4.Errores.add("ERROR");
             System.out.println("ERROR");//imprimer error
