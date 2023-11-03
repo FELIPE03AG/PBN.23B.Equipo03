@@ -7,7 +7,7 @@ ADCA	opr16a			EXT		B9hhll		2	3
 ADCA	oprx0_xysp		IDX		A9xb		1	2
 ADCA	oprx9,xysp		IDX1		A9xbff		2	3
 ADCA	oprx9,xysp		IDX2		A9xbeeff	3	4
-ADCA	[D,xysp]		[D,IDX]		A9 xb		1	2
+ADCA	[D,xysp]		[D,IDX]		A9xb		1	2
 ADCA	[oprx16,xysp]		[IDX2]		A9xbeeff	3	4
 ADCB	#opr8i			IMM		C9ii		1	2
 ADCB	opr8a			DIR		D9dd		1	2
@@ -51,7 +51,7 @@ ANDA	[D,xysp]		[D,IDX]		A4xb		1	2
 ANDA	[oprx16,xysp]		[IDX2]		A4xbeeff	3	4
 ANDB	#opr8i			IMM		C4ii		1	2
 ANDB	opr8a			DIR		D4dd		1	2
-ANDB	opr16a			EXT		F4ggll		2	3
+ANDB	opr16a			EXT		F4hhll		2	3
 ANDB	oprx0_xysp		IDX		E4xb		1	2
 ANDB	oprx9,xysp		IDX1		E4xbff		2	3
 ANDB	oprx16,xysp		IDX2		E4xbeeff	3	4
