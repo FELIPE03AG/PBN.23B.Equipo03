@@ -110,6 +110,7 @@ public class Conloc {
                     equ=false;//Para que siempre inicie considerando que la linea no es de un equ
                 }//Fin no es una linea con error
             }//fin ciclo for
+            auxArchivo.close();
         }catch(IOException ex){
             Parte_4.Errores.add("ERROR");
             System.out.println("ERROR");

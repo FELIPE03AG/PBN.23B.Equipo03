@@ -132,7 +132,7 @@ public class Parte_4 {
             RandomAccessFile auxArchivo = new RandomAccessFile(rutaArchivo,"r");//r es para solo leer el archivo
             long cursorActual;//Para saber donde estamos en el asm
             cursorActual = auxArchivo.getFilePointer();//Puntero en el archivo
-            FileReader leerArchivo = new FileReader("P1ASM.asm");//leo el archivo
+            FileReader leerArchivo = new FileReader(rutaArchivo);//leo el archivo
             String lecturaLinea; //Guarda cada linea
             
             //Aqui es donde empieza a leer por linea

@@ -232,6 +232,7 @@ public class Tabla extends javax.swing.JFrame {
         Parte_4.Leer(rutaArchivo);
 
         if (Parte_4.LineasASM.size() != 0) {
+            
             Salvacion.BuscarCodop(Parte_4.LineasASM);
             Conloc.LlenarList(Parte_4.LineasASM);
             Conloc.LlenarTabsim(Parte_4.LineasASM);
