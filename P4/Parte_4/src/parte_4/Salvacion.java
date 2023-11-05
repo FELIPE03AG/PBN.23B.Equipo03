@@ -474,12 +474,16 @@ public class Salvacion {
     static void IdentificacionDirectivas(Linea LinCod){ // Método para identificar las directivas
         String auxiliar = LinCod.getCodop();
         String tamPala = " ";
+        String postbyte=" ";
+        String postbyteAux = " ";
         if(auxiliar.contains(".")){  // Verificamos si el CODOP contiene un punto (.)
             String[] campos = auxiliar.split("\\.");
-            auxiliar=campos[0];
-            tamPala = campos[1];// Si contiene un punto, dividimos el CODOP y el tamaño de la palabra
+            if(campos.length==2){
+                auxiliar=campos[0];
+                tamPala = campos[1];// Si contiene un punto, dividimos el CODOP y el tamaño de la palabra
+                encontrado=true;
+            }
         } //fin de if
-        encontrado=true;
         switch(auxiliar){
             case "ORG": // Directiva ORG: Establece la dirección de inicio del programa
                 if(Parte_4.ConvertirADecimal(LinCod.getOperando())==-1){
@@ -488,10 +492,12 @@ public class Salvacion {
                 } 
                 else{
                     LinCod.setADDR("DIRECT");
+                    encontrado=true;
                 } //Fin de la directiva ORG
             break;
             case "END":  // Directiva END: Marca el final del programa
                 LinCod.setADDR("DIRECT");
+                encontrado=true;
             break; //Fin de la directiva END
             case "EQU":  // Directiva EQU: Asigna un valor constante a una etiqueta
                 if(LinCod.getEtiqueta().equals(" ") || Parte_4.ConvertirADecimal(LinCod.getOperando())==-1){  
@@ -506,6 +512,7 @@ public class Salvacion {
                 }
                 else{
                     LinCod.setADDR("DIRECT");
+                    encontrado=true;
                 }
             break; //fin de la directiva EQU
             case "DC": // Manejo de la directiva "DC" que define constantes o datos
@@ -540,6 +547,55 @@ public class Salvacion {
                             if(oprBien && !mayor255){
                                 LinCod.setSize(String.valueOf(tam)+" bytes");
                                 LinCod.setADDR("DIRECT");
+                                if(LinCod.getOperando().contains(",")){
+                                    String [] valores = LinCod.getOperando().split(",");//Separar por valores
+                                    for(int i=0;i<tam;i++){
+                                        if(valores[i].contains("\"")){
+                                            for(int j=1; j<valores[i].length()-1;j++){
+                                                int valorASCII = (int) valores[i].charAt(j);
+                                                postbyteAux= Integer.toHexString(valorASCII);
+                                                if(postbyteAux.length()==1){
+                                                    postbyteAux="0".concat(postbyteAux);
+                                                }
+                                                if(postbyte.equals(" ")){
+                                                    postbyte=postbyteAux;
+                                                }
+                                                else{
+                                                    postbyte=postbyte.concat(" ").concat(postbyteAux);
+                                                }
+                                            }
+                                        }//Fin es de codigo ascci
+                                        else{
+                                            postbyteAux=Integer.toHexString(Parte_4.ConvertirADecimal(valores[i])).toUpperCase();
+                                            if(postbyteAux.length()==1){
+                                                    postbyteAux="0".concat(postbyteAux);
+                                            }
+                                            if (postbyte.equals(" ")) {
+                                                postbyte = postbyteAux;
+                                            } else {
+                                                postbyte = postbyte.concat(" ").concat(postbyteAux);
+                                            }
+                                        }
+                                        LinCod.setCop(postbyte);
+                                    }
+                                }
+                                else {
+                                    if (LinCod.getOperando().contains("\"")) {
+                                        for (int j = 1; j < LinCod.getOperando().length() - 1; j++) {
+                                            int valorASCII = (int) LinCod.getOperando().charAt(j);
+                                            postbyteAux = Integer.toHexString(valorASCII);
+                                            if (postbyteAux.length() == 1) {
+                                                postbyteAux = "0".concat(postbyteAux);
+                                            }
+                                            if (postbyte.equals(" ")) {
+                                                postbyte = postbyteAux;
+                                            } else {
+                                                postbyte = postbyte.concat(" ").concat(postbyteAux);
+                                            }
+                                        }
+                                        LinCod.setCop(postbyte);
+                                    }
+                                }
                             }
                             else{
                                 LinCod.setADDR("ERROR");
@@ -547,9 +603,19 @@ public class Salvacion {
                             }
                         }//Fin, hay mas de un valor en el operando
                         else{
-                            if(Parte_4.ConvertirADecimal(LinCod.getOperando())!=-1 && Parte_4.ConvertirADecimal(LinCod.getOperando())<255){
+                            if (Parte_4.ConvertirADecimal(LinCod.getOperando()) != -1 && Parte_4.ConvertirADecimal(LinCod.getOperando()) < 255) {
                                 LinCod.setSize("1 bytes");
                                 LinCod.setADDR("DIRECT");
+                                postbyteAux = Integer.toHexString(Parte_4.ConvertirADecimal(LinCod.getOperando())).toUpperCase();
+                                if (postbyteAux.length() == 1) {
+                                    postbyteAux = "0".concat(postbyteAux);
+                                }
+                                if (postbyte.equals(" ")) {
+                                    postbyte = postbyteAux;
+                                } else {
+                                    postbyte = postbyte.concat(" ").concat(postbyteAux);
+                                }
+                                LinCod.setCop(postbyte);
                             }
                             else{
                                 LinCod.setADDR("ERROR");
@@ -559,15 +625,82 @@ public class Salvacion {
                     }//Fin es de tamaño B
                     else if(tamPala.equals("W")){
                         if(tam!=0){ // Si el tamaño de la palabra es en palabras (2 bytes por palabra)
-                            LinCod.setSize(String.valueOf(tam*2)+" bytes");
+                            LinCod.setSize(String.valueOf(tam * 2) + " bytes");
                             LinCod.setADDR("DIRECT");
-                        }
-                        else{ // Manejo de otros casos de tamaño de palabra no definidos
-                            if(Parte_4.ConvertirADecimal(LinCod.getOperando())!=-1){
+                            if (LinCod.getOperando().contains(",")) {
+                                String[] valores = LinCod.getOperando().split(",");//Separar por valores
+                                for (int i = 0; i < tam; i++) {
+                                    if (valores[i].contains("\"")) {
+                                        for (int j = 1; j < valores[i].length() - 1; j++) {
+                                            int valorASCII = (int) valores[i].charAt(j);
+                                            postbyteAux = Integer.toHexString(valorASCII);
+                                            if (postbyteAux.length()< 4) {
+                                                for(int m=postbyteAux.length();m<4;m++){
+                                                    postbyteAux = "0".concat(postbyteAux);
+                                                }
+                                            }
+                                            postbyteAux=postbyteAux.substring(0, 2).concat(" ").concat(postbyteAux.substring(2, 4));
+                                            if (postbyte.equals(" ")) {
+                                                postbyte = postbyteAux;
+                                            } else {
+                                                postbyte = postbyte.concat(" ").concat(postbyteAux);
+                                            }
+                                        }
+                                    }//Fin es de codigo ascci
+                                    else {
+                                        postbyteAux = Integer.toHexString(Parte_4.ConvertirADecimal(valores[i])).toUpperCase();
+                                        if (postbyteAux.length() < 4) {
+                                            for (int m = postbyteAux.length(); m < 4; m++) {
+                                                postbyteAux = "0".concat(postbyteAux);
+                                            }
+                                        }
+                                        postbyteAux=postbyteAux.substring(0, 2).concat(" ").concat(postbyteAux.substring(2, 4));
+                                        if (postbyte.equals(" ")) {
+                                            postbyte = postbyteAux;
+                                        } else {
+                                            postbyte = postbyte.concat(" ").concat(postbyteAux);
+                                        }
+                                    }
+                                    LinCod.setCop(postbyte);
+                                }
+                            } else {
+                                if (LinCod.getOperando().contains("\"")) {
+                                    for (int j = 1; j < LinCod.getOperando().length() - 1; j++) {
+                                        int valorASCII = (int) LinCod.getOperando().charAt(j);
+                                        postbyteAux = Integer.toHexString(valorASCII);
+                                        if (postbyteAux.length() < 4) {
+                                            for (int m = postbyteAux.length(); m < 4; m++) {
+                                                postbyteAux = "0".concat(postbyteAux);
+                                            }
+                                        }
+                                        postbyteAux=postbyteAux.substring(0, 2).concat(" ").concat(postbyteAux.substring(2, 4));
+                                        if (postbyte.equals(" ")) {
+                                            postbyte = postbyteAux;
+                                        } else {
+                                            postbyte = postbyte.concat(" ").concat(postbyteAux);
+                                        }
+                                    }
+                                    LinCod.setCop(postbyte);
+                                }
+                            }
+                        } else { // Manejo de otros casos de tamaño de palabra no definidos
+                            if (Parte_4.ConvertirADecimal(LinCod.getOperando()) != -1) {
                                 LinCod.setSize("2 bytes");
                                 LinCod.setADDR("DIRECT");
-                            }
-                            else{
+                                postbyteAux = Integer.toHexString(Parte_4.ConvertirADecimal(LinCod.getOperando())).toUpperCase();
+                                if (postbyteAux.length() < 4) {
+                                    for (int m = postbyteAux.length(); m < 4; m++) {
+                                        postbyteAux = "0".concat(postbyteAux);
+                                    }
+                                }
+                                postbyteAux = postbyteAux.substring(0, 2).concat(" ").concat(postbyteAux.substring(2, 4));
+                                if (postbyte.equals(" ")) {
+                                    postbyte = postbyteAux;
+                                } else {
+                                    postbyte = postbyte.concat(" ").concat(postbyteAux);
+                                }
+                                LinCod.setCop(postbyte);
+                            } else {
                                 LinCod.setADDR("ERROR");
                                 Parte_4.Errores.add("ERROR.  OPR fuera de rango en: "+LinCod.getEtiqueta()+" "+LinCod.getCodop()+" "+LinCod.getOperando());
                             }
@@ -589,10 +722,28 @@ public class Salvacion {
                     if(tamPala.equals("B")){
                         LinCod.setADDR("DIRECT");
                         LinCod.setSize(LinCod.getOperando()+" bytes");
+                        for(int i=0;i<Integer.parseInt(LinCod.getOperando());i++){
+                            if(postbyte.equals(" ")){
+                                postbyte="00";
+                            }
+                            else{
+                                postbyte=postbyte.concat(" 00");
+                            }
+                        }
+                        LinCod.setCop(postbyte);
                     }
                     else if(tamPala.equals("W")){ // Reserva espacio de memoria en palabras (2 bytes por palabra)
                         LinCod.setADDR("DIRECT");
                         LinCod.setSize(String.valueOf(Integer.parseInt(LinCod.getOperando())*2)+" bytes");
+                        for(int i=0;i<Integer.parseInt(LinCod.getOperando());i++){
+                            if(postbyte.equals(" ")){
+                                postbyte="00 00";
+                            }
+                            else{
+                                postbyte=postbyte.concat(" 00 00");
+                            }
+                        }
+                        LinCod.setCop(postbyte);
                     }
                     else{
                         LinCod.setADDR("ERROR");
