@@ -211,13 +211,10 @@ public class Tabla extends javax.swing.JFrame {
     private void btnArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArchivoActionPerformed
         rutaArchivo=chooseFile();
         if (rutaArchivo != null) {
-            Parte_4.LineasASM.clear();
-            Parte_4.Leer(rutaArchivo);
+            //Realizar de nuevo el proceso
+            Parte_4.Fase1(rutaArchivo);
             if (Parte_4.LineasASM.size() != 0) {
-                Salvacion.BuscarCodop(Parte_4.LineasASM);
-                Conloc.LlenarList(Parte_4.LineasASM);
-                Conloc.LlenarTabsim(Parte_4.LineasASM);
-                CalculoREL.buscarRels();
+                Fase2.buscarRels();
             }
             this.dispose();
             new Tabla().setVisible(true);
@@ -228,14 +225,10 @@ public class Tabla extends javax.swing.JFrame {
         if(rutaArchivo==null){
             rutaArchivo=" ";
         }
-        Parte_4.LineasASM.clear();
-        Parte_4.Leer(rutaArchivo);
-
+        //Realizar de nuevo el proceso
+        Parte_4.Fase1(rutaArchivo);
         if (Parte_4.LineasASM.size() != 0) {
-            Salvacion.BuscarCodop(Parte_4.LineasASM);
-            Conloc.LlenarList(Parte_4.LineasASM);
-            Conloc.LlenarTabsim(Parte_4.LineasASM);
-            CalculoREL.buscarRels();
+            Fase2.buscarRels();
         }
         this.dispose();
         new Tabla().setVisible(true);

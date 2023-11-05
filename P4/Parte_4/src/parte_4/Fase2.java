@@ -4,7 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-public class CalculoREL {
+public class Fase2 {
     static boolean absoluta = false;
     
     //Busqueda de direccion de la etiquta

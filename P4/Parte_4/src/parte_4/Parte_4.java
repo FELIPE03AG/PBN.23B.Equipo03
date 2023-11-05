@@ -114,14 +114,31 @@ public class Parte_4 {
     }//fin opernados DC
     
     //METODO PARA LEER EL ASM
-    static void Leer(String rutaArchivo){
+    static void Fase1(String rutaArchivo){
         ArrayList <String> Etiquetas = new ArrayList<>();//Guardara todas las etiquetas encontradas previamente
         boolean etqRepetida=false;//Indica si la etiqueta que se quiere agregar ya existe
-        //Reinicio de variables
+        
+        //Reinicio de variables o archivos auxiliares
+        if(Conloc.archivolst.exists()){
+            Conloc.archivolst.delete();
+        }//Fin eliminar list
+        if(Conloc.archivotabsim.exists()){
+            Conloc.archivotabsim.delete();
+        }//Fin  eliminacion de tabsin
+        Conloc.conloc=" ";
         Parte_4.Errores.clear();
         LineasASM.clear();
         Conloc.etiquetas.clear();
         org = false;
+        
+        //Creacion de archivos auxiliares
+        if(!(Conloc.archivolst.exists())){
+            Conloc.CrearArchivoList();
+        }
+        if(!(Conloc.archivotabsim.exists())){
+            Conloc.Creartabsim();
+        }
+        //Comienzo de 1er paso fase 1
         try{
             if(!(rutaArchivo.equals(" "))){
                 File file = new File(rutaArchivo);
@@ -207,6 +224,9 @@ public class Parte_4 {
                             }
                             if(NewLinCod!=null){
                                 LineasASM.add(NewLinCod);
+                                Salvacion.BuscarCodop(NewLinCod);
+                                Conloc.LlenarList(NewLinCod);
+                                Conloc.LlenarTabsim(NewLinCod);
                             } 
                         }//Fin CODOP correcto
                         else{
@@ -546,12 +566,9 @@ public class Parte_4 {
     }//fin del metodo Idx2C
     
     public static void main(String[] args) {
-        Leer(" ");//Llamo el metodo
+        Fase1(" ");//Llamo el metodo
         if(LineasASM.size()!=0){
-            Salvacion.BuscarCodop(LineasASM);
-            Conloc.LlenarList(LineasASM);
-            Conloc.LlenarTabsim(LineasASM);
-            CalculoREL.buscarRels();
+            Fase2.buscarRels();
             new Tabla().setVisible(true);
         }
     }   

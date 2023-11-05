@@ -25,86 +25,80 @@ public class Salvacion {
         return resultado;//Devuelve la cadena resultado con una coma cada dos digitos
     }//Fin de Separarform
     
-    static void BuscarCodop(ArrayList <Linea> AuxLineasCodigo){//Buscar es el codigo de operancion que se buscara en la salvacion
-        for(Linea auxiliar : AuxLineasCodigo){
-            String Buscar=auxiliar.getCodop();
-            try{
-                RandomAccessFile auxArchivo = new RandomAccessFile("Salvation_Tabop.txt","r");//r es para solo leer el archivo
-                long cursorActual;//Para saber donde estamos
-                cursorActual = auxArchivo.getFilePointer();//Puntero en el archivo
-                FileReader leerArchivo = new FileReader("Salvation_Tabop.txt");//leeo el archivo del exel en txt
-                String lecturaLinea;
-                encontrado=false;
-                coincidencias=0;
-                IdentificacionDirectivas(auxiliar);
-                //Aqui es donde empieza a leer por linea
-                   while(cursorActual!=auxArchivo.length() && encontrado==false){//mientras el lector no llegue al final del archivo
-                    lecturaLinea = auxArchivo.readLine();//leeo la linea
-                    cursorActual = auxArchivo.getFilePointer();
-                    String[] campos = lecturaLinea.split("\\s+");//Separamos el txt por tabuladores
-                    if(campos[0].equals(Buscar)){//En la primera palabra del txt estan los codop asi que si esa palabra es igual al CODOP buscado, lo encotnramos
-                        auxSalvacion = new NodoSalvacion(campos[0],campos[1],campos[2],Separarform(campos[3]),campos[4],campos[5]); // Crea un objeto "auxSalvacion" con los datos de la línea y los separa con luna coma cada dos digitos
-                        coincidencias++;//Incrementa el contador de coincidencias
-                        IdentificarADDR(auxiliar,auxSalvacion); // Llama a la función "IdentificarADDR"
-                    }//Fin comparacion con salvacion
-                }//Fin del while
-                if(!encontrado){
-                    if(coincidencias==0){
+    static void BuscarCodop(Linea auxiliar) {//Buscar es el codigo de operancion que se buscara en la salvacion
+        String Buscar = auxiliar.getCodop();
+        try {
+            RandomAccessFile auxArchivo = new RandomAccessFile("Salvation_Tabop.txt", "r");//r es para solo leer el archivo
+            long cursorActual;//Para saber donde estamos
+            cursorActual = auxArchivo.getFilePointer();//Puntero en el archivo
+            FileReader leerArchivo = new FileReader("Salvation_Tabop.txt");//leeo el archivo del exel en txt
+            String lecturaLinea;
+            encontrado = false;
+            coincidencias = 0;
+            IdentificacionDirectivas(auxiliar);
+            //Aqui es donde empieza a leer por linea
+            while (cursorActual != auxArchivo.length() && encontrado == false) {//mientras el lector no llegue al final del archivo
+                lecturaLinea = auxArchivo.readLine();//leeo la linea
+                cursorActual = auxArchivo.getFilePointer();
+                String[] campos = lecturaLinea.split("\\s+");//Separamos el txt por tabuladores
+                if (campos[0].equals(Buscar)) {//En la primera palabra del txt estan los codop asi que si esa palabra es igual al CODOP buscado, lo encotnramos
+                    auxSalvacion = new NodoSalvacion(campos[0], campos[1], campos[2], Separarform(campos[3]), campos[4], campos[5]); // Crea un objeto "auxSalvacion" con los datos de la línea y los separa con luna coma cada dos digitos
+                    coincidencias++;//Incrementa el contador de coincidencias
+                    IdentificarADDR(auxiliar, auxSalvacion); // Llama a la función "IdentificarADDR"
+                }//Fin comparacion con salvacion
+            }//Fin del while
+            if (!encontrado) {
+                if (coincidencias == 0) {
+                    auxiliar.setADDR("ERROR");
+                    Parte_4.Errores.add("ERROR. ADDR no aceptado en codop: " + auxiliar.getEtiqueta() + " " + auxiliar.getCodop() + " porque NO EXISTE");
+                } else if (coincidencias == 1 && (auxSalvacion.AddrMode.equals("REL") || auxSalvacion.AddrMode.equals("REL(9-bit)"))) {
+                    IdentificacionREL(auxiliar, auxSalvacion);
+                    if (!encontrado) {
                         auxiliar.setADDR("ERROR");
-                        Parte_4.Errores.add("ERROR. ADDR no aceptado en codop: "+auxiliar.getEtiqueta()+" "+ auxiliar.getCodop()+" porque NO EXISTE");
+                        Parte_4.Errores.add("ERROR.  OPR fuera de rango en linea: " + auxiliar.getEtiqueta() + " " + auxiliar.getCodop() + " " + auxiliar.getOperando());
                     }
-                    else if(coincidencias==1 && (auxSalvacion.AddrMode.equals("REL") || auxSalvacion.AddrMode.equals("REL(9-bit)"))) {
-                            IdentificacionREL(auxiliar,auxSalvacion);
-                            if(!encontrado){
-                                auxiliar.setADDR("ERROR");
-                                Parte_4.Errores.add("ERROR.  OPR fuera de rango en linea: "+auxiliar.getEtiqueta()+" "+ auxiliar.getCodop() + " " + auxiliar.getOperando());
-                            }
-                    }           
-                    else if(coincidencias>1){
-                        auxiliar.setADDR("ERROR");
-                        Parte_4.Errores.add("ERROR. OPR fuera de rango en linea: "+auxiliar.getEtiqueta()+" "+ auxiliar.getCodop() + " " + auxiliar.getOperando());
-                    }
-                    else{
-                        auxiliar.setADDR("ERROR");
-                        Parte_4.Errores.add("ERROR. ADDR no aceptado en codop: "+auxiliar.getEtiqueta()+" "+ auxiliar.getCodop()+" porque no cuenta para el proyecto");
-                    }
+                } else if (coincidencias > 1) {
+                    auxiliar.setADDR("ERROR");
+                    Parte_4.Errores.add("ERROR. OPR fuera de rango en linea: " + auxiliar.getEtiqueta() + " " + auxiliar.getCodop() + " " + auxiliar.getOperando());
+                } else {
+                    auxiliar.setADDR("ERROR");
+                    Parte_4.Errores.add("ERROR. ADDR no aceptado en codop: " + auxiliar.getEtiqueta() + " " + auxiliar.getCodop() + " porque no cuenta para el proyecto");
                 }
-                leerArchivo.close();
-            }catch(IOException ex){
-                ex.printStackTrace();
             }
-        }//Fin for
+            leerArchivo.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }//Fin leer y buscar en salvacion
-    
-    
+
     /**
      * \Esta funcion sirve para calcular la forma postbyte de un CODOP IMM
-     * 
-     * @param opr  Este es el operando del codop
+     *
+     * @param opr Este es el operando del codop
      * @param sourceform esta es la forma base
      * @param size este es el tamano sin calcular
      * @param calcular este es el tamano ya calculado
      * @return Retorna el valor postbyte del IMM
      */
-    static String FormIMM(String opr, String sourceform,int size, int calcular){
-        String aux=" ";
-        String postbyte=" ";
-        String frmbase [] = sourceform.split(",");                            //Este arreglo sirve para guardar la forma base separada
+    static String FormIMM(String opr, String sourceform, int size, int calcular) {
+        String aux = " ";
+        String postbyte = " ";
+        String frmbase[] = sourceform.split(",");                            //Este arreglo sirve para guardar la forma base separada
         Integer opraux = Parte_4.ConvertirADecimal(opr);                      //Convierte el operando a decimal para trabajar mejor con el
-        if(opraux<256 && size==2 && calcular==1 && frmbase[1].equals("ii")){  //Verifica que sea un IMM de 8bits
-            postbyte=frmbase[0];                                              
-            frmbase[1]=Integer.toHexString(opraux).toUpperCase();             //Convierte el operando a hexadecimal
-            if(opraux<16){                                                    //Verifica que el operando sea menor a 16
-                frmbase[1]="0".concat(frmbase[1]);                            //si es menor a 16 lo concatena con un 0 para completarlo
+        if (opraux < 256 && size == 2 && calcular == 1 && frmbase[1].equals("ii")) {  //Verifica que sea un IMM de 8bits
+            postbyte = frmbase[0];
+            frmbase[1] = Integer.toHexString(opraux).toUpperCase();             //Convierte el operando a hexadecimal
+            if (opraux < 16) {                                                    //Verifica que el operando sea menor a 16
+                frmbase[1] = "0".concat(frmbase[1]);                            //si es menor a 16 lo concatena con un 0 para completarlo
             }
-            postbyte=postbyte.concat(" ").concat(frmbase[1]);                 //guarda la forma postbyte ya calculada
-        }
-        else if(size==3 && calcular==2 && frmbase[1].equals("jj")&& frmbase[2].equals("kk")){   //Verifica que sea un IMM de 16 bits
-            aux=Parte_4.validarDireccion(opr);                               
-            postbyte=frmbase[0].concat(" ").concat(aux.substring(0, 2)).concat(" ").concat(aux.substring(2)); //guarda la forma postbyte ya calculada
+            postbyte = postbyte.concat(" ").concat(frmbase[1]);                 //guarda la forma postbyte ya calculada
+        } else if (size == 3 && calcular == 2 && frmbase[1].equals("jj") && frmbase[2].equals("kk")) {   //Verifica que sea un IMM de 16 bits
+            aux = Parte_4.validarDireccion(opr);
+            postbyte = frmbase[0].concat(" ").concat(aux.substring(0, 2)).concat(" ").concat(aux.substring(2)); //guarda la forma postbyte ya calculada
         }
         return postbyte;                                                    //retorna el valor ya calculado
     }
+    
     //Metodo para calcular bostbyte de Directo y extendido...
     static String FormDirExt(String opr, String sourceform,int size, int calcular){
         String aux = " ";//variables de apoyo
