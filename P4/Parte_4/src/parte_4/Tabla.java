@@ -214,7 +214,7 @@ public class Tabla extends javax.swing.JFrame {
             //Realizar de nuevo el proceso
             Parte_4.Fase1(rutaArchivo);
             if (Parte_4.LineasASM.size() != 0) {
-                Fase2.buscarRels();
+                Fase2.fase2();
             }
             this.dispose();
             new Tabla().setVisible(true);
@@ -228,7 +228,7 @@ public class Tabla extends javax.swing.JFrame {
         //Realizar de nuevo el proceso
         Parte_4.Fase1(rutaArchivo);
         if (Parte_4.LineasASM.size() != 0) {
-            Fase2.buscarRels();
+            Fase2.fase2();
         }
         this.dispose();
         new Tabla().setVisible(true);

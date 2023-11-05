@@ -1,5 +1,14 @@
 	ORG	0
-jump	LDAA	5,Y
-	IBNE	A,JUMP
+	ABA
+	BGND
+	LDAA	#$55
+	LDX	#$1234
+	LDY	#%1100111
+	LDAA	$055
+	LDAA	85
+	LDX	$20
+	ldaa	@777
+	ldaa 	$ffff
+	LDAA	$38
 	END
 	

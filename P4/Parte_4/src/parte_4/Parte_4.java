@@ -568,7 +568,7 @@ public class Parte_4 {
     public static void main(String[] args) {
         Fase1(" ");//Llamo el metodo
         if(LineasASM.size()!=0){
-            Fase2.buscarRels();
+            Fase2.fase2();
             new Tabla().setVisible(true);
         }
     }   

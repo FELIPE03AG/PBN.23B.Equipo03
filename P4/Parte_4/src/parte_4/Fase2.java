@@ -239,6 +239,61 @@ public class Fase2 {
         return lb;
     }//fin calcular lb
     
+    /**
+     * \Esta funcion sirve para calcular la forma postbyte de un CODOP IMM
+     *
+     * @param opr Este es el operando del codop
+     * @param sourceform esta es la forma base
+     * @param size este es el tamano sin calcular
+     * @param calcular este es el tamano ya calculado
+     * @return Retorna el valor postbyte del IMM
+     */
+    static String FormIMM(String opr, String sourceform, int size, int calcular) {
+        String aux = " ";
+        String postbyte = " ";
+        String frmbase[] = sourceform.split(",");                            //Este arreglo sirve para guardar la forma base separada
+        Integer opraux = Parte_4.ConvertirADecimal(opr);                      //Convierte el operando a decimal para trabajar mejor con el
+        if (opraux < 256 && size == 2 && calcular == 1 && frmbase[1].equals("ii")) {  //Verifica que sea un IMM de 8bits
+            postbyte = frmbase[0];
+            frmbase[1] = Integer.toHexString(opraux).toUpperCase();             //Convierte el operando a hexadecimal
+            if (opraux < 16) {                                                    //Verifica que el operando sea menor a 16
+                frmbase[1] = "0".concat(frmbase[1]);                            //si es menor a 16 lo concatena con un 0 para completarlo
+            }
+            postbyte = postbyte.concat(" ").concat(frmbase[1]);                 //guarda la forma postbyte ya calculada
+        } else if (size == 3 && calcular == 2 && frmbase[1].equals("jj") && frmbase[2].equals("kk")) {   //Verifica que sea un IMM de 16 bits
+            aux = Parte_4.validarDireccion(opr);
+            postbyte = frmbase[0].concat(" ").concat(aux.substring(0, 2)).concat(" ").concat(aux.substring(2)); //guarda la forma postbyte ya calculada
+        }
+        return postbyte;                                                    //retorna el valor ya calculado
+    }
+    
+    //Metodo para calcular bostbyte de Directo y extendido...
+    static String FormDirExt(String opr, String sourceform,int size, int calcular){
+        String aux = " ";//variables de apoyo
+        String postbyte=" ";
+        String frmbase [] = sourceform.split(",");//separador del String por estacios entre comas.
+        Integer opraux = Parte_4.ConvertirADecimal(opr); //convertimos a decimal
+        if(opraux<256 && size==2 && calcular==1 && frmbase[1].equals("dd")){
+            //valida que sea de 8 bits, tenga 2 bits, 1 por calcular y que la forma sea 'dd' y el tipo 'D' (para directos)
+            postbyte=frmbase[0];//Se guarda el valor calculado del postbyte
+            frmbase[1]=Integer.toHexString(opraux).toUpperCase();//pasamos a hexadecimal el valor del operando
+            if(opraux<16){//valida que el auxiliar sea menor que 16
+                frmbase[1]="0".concat(frmbase[1]);//completa a un byte
+            }//fin segundo if
+            postbyte=postbyte.concat(" ").concat(frmbase[1]);
+            //concatena la posicion 0, o el bit calculado, con el bit recien calculado, el que faltaba.
+            //quedan 2 bits que son los totales en el directo
+        } //Caso Extendido...
+        else if(opraux>255 && size==3 && calcular==2 && frmbase[1].equals("hh") && frmbase[2].equals("ll")){
+            //valida que sea de 16 bits, tenga 3 bits totales y 2 por calcular. 
+            //valida que tenga la forma base 'hh' 'll' y sea de tipo 'E'.
+            aux=Parte_4.validarDireccion(opr);//valida la direccion del opr y lo guarda en la variable aux
+            postbyte=frmbase[0].concat(" ").concat(aux.substring(0, 2)).concat(" ").concat(aux.substring(2));
+            //concatena las 3 partes del string, la 0 que estaba calculada y la 1 y 2 recien calculadas.
+        }//fin else if    
+        return postbyte;
+    }//fin de metodo DirExt
+    
     static public void postbRel9(Linea relativo, String origen){
         String postbyte = " ";//Variable que guarda el postbyte de la instruccion
         String rr = " ", lb=" ", salto=" ";//Variable que guarda la parte que calculamos
@@ -311,17 +366,37 @@ public class Fase2 {
         }
     }// fin calculo del postbyte del los relativos de 9bits
     
-    static void buscarRels(){//Metodo para identificar rels y calcular su postbyte
-        for(Linea asm:Parte_4.LineasASM){//for para recorrer todas las intrucciones
-            if(asm.getADDR().equals("REL (8b)")){//si es relativa de 8b
-                postREL8(asm, Conloc.sumarHexadecimal(asm.getConloc(), 2));//calcula su postbyte
-            }//fin relativo de 8b
-            else if(asm.getADDR().equals("REL (16b)")){//Si es relativo de 16b
-                postREL16(asm, Conloc.sumarHexadecimal(asm.getConloc(), 4));//calcula su postbyte
-            }//fin rel16b
-            else if(asm.getADDR().equals("REL (9b)")){
-                postbRel9(asm, Conloc.sumarHexadecimal(asm.getConloc(), 3));
-            }//fin rel9
+    static void fase2(){//Metodo para identificar rels y calcular su postbyte
+        for(Linea asm:Parte_4.LineasASM){ //for para recorrer todas las intrucciones
+            switch (asm.getADDR()) {
+            //CALCULO DEL POSTBYTE DE LOS rel 8
+                case "REL (8b)":
+                    //si es relativa de 8b
+                    postREL8(asm, Conloc.sumarHexadecimal(asm.getConloc(), 2));//calcula su postbyte
+                    break;
+            //CALCULO DEL POSTBYTE DE LOS rel 16 
+                case "REL (16b)":
+                    postREL16(asm, Conloc.sumarHexadecimal(asm.getConloc(), 4));//calcula su postbyte
+                    break;
+            //CALCULO DEL POSTBYTE DE LOS rel 9 
+                case "REL (9b)":
+                    postbRel9(asm, Conloc.sumarHexadecimal(asm.getConloc(), 3));
+                    break;
+            //CALCULO DEL POSTBYTE DE LOS IMM 
+                case "IMM":
+                    asm.setCop(FormIMM(asm.getOperando().substring(1),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
+                    break;
+            //CALCULO DEL POSTBYTE DE LOS DIRECTOS
+                case "DIR":
+                    asm.setCop(FormDirExt(asm.getOperando(),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
+                    break;
+            //CALCULO DEL POSTBYTE DE LOS EXTENDIDOS
+                case "EXT":
+                    asm.setCop(FormDirExt(asm.getOperando(),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
+                    break;
+                default:
+                    break;
+            }
         }//fin for asm
     }//Fin buscar rels
 }//Fin de la clase

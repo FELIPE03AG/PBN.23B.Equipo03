@@ -70,61 +70,6 @@ public class Salvacion {
             ex.printStackTrace();
         }
     }//Fin leer y buscar en salvacion
-
-    /**
-     * \Esta funcion sirve para calcular la forma postbyte de un CODOP IMM
-     *
-     * @param opr Este es el operando del codop
-     * @param sourceform esta es la forma base
-     * @param size este es el tamano sin calcular
-     * @param calcular este es el tamano ya calculado
-     * @return Retorna el valor postbyte del IMM
-     */
-    static String FormIMM(String opr, String sourceform, int size, int calcular) {
-        String aux = " ";
-        String postbyte = " ";
-        String frmbase[] = sourceform.split(",");                            //Este arreglo sirve para guardar la forma base separada
-        Integer opraux = Parte_4.ConvertirADecimal(opr);                      //Convierte el operando a decimal para trabajar mejor con el
-        if (opraux < 256 && size == 2 && calcular == 1 && frmbase[1].equals("ii")) {  //Verifica que sea un IMM de 8bits
-            postbyte = frmbase[0];
-            frmbase[1] = Integer.toHexString(opraux).toUpperCase();             //Convierte el operando a hexadecimal
-            if (opraux < 16) {                                                    //Verifica que el operando sea menor a 16
-                frmbase[1] = "0".concat(frmbase[1]);                            //si es menor a 16 lo concatena con un 0 para completarlo
-            }
-            postbyte = postbyte.concat(" ").concat(frmbase[1]);                 //guarda la forma postbyte ya calculada
-        } else if (size == 3 && calcular == 2 && frmbase[1].equals("jj") && frmbase[2].equals("kk")) {   //Verifica que sea un IMM de 16 bits
-            aux = Parte_4.validarDireccion(opr);
-            postbyte = frmbase[0].concat(" ").concat(aux.substring(0, 2)).concat(" ").concat(aux.substring(2)); //guarda la forma postbyte ya calculada
-        }
-        return postbyte;                                                    //retorna el valor ya calculado
-    }
-    
-    //Metodo para calcular bostbyte de Directo y extendido...
-    static String FormDirExt(String opr, String sourceform,int size, int calcular){
-        String aux = " ";//variables de apoyo
-        String postbyte=" ";
-        String frmbase [] = sourceform.split(",");//separador del String por estacios entre comas.
-        Integer opraux = Parte_4.ConvertirADecimal(opr); //convertimos a decimal
-        if(opraux<256 && size==2 && calcular==1 && frmbase[1].equals("dd")){
-            //valida que sea de 8 bits, tenga 2 bits, 1 por calcular y que la forma sea 'dd' y el tipo 'D' (para directos)
-            postbyte=frmbase[0];//Se guarda el valor calculado del postbyte
-            frmbase[1]=Integer.toHexString(opraux).toUpperCase();//pasamos a hexadecimal el valor del operando
-            if(opraux<16){//valida que el auxiliar sea menor que 16
-                frmbase[1]="0".concat(frmbase[1]);//completa a un byte
-            }//fin segundo if
-            postbyte=postbyte.concat(" ").concat(frmbase[1]);
-            //concatena la posicion 0, o el bit calculado, con el bit recien calculado, el que faltaba.
-            //quedan 2 bits que son los totales en el directo
-        } //Caso Extendido...
-        else if(opraux>255 && size==3 && calcular==2 && frmbase[1].equals("hh") && frmbase[2].equals("ll")){
-            //valida que sea de 16 bits, tenga 3 bits totales y 2 por calcular. 
-            //valida que tenga la forma base 'hh' 'll' y sea de tipo 'E'.
-            aux=Parte_4.validarDireccion(opr);//valida la direccion del opr y lo guarda en la variable aux
-            postbyte=frmbase[0].concat(" ").concat(aux.substring(0, 2)).concat(" ").concat(aux.substring(2));
-            //concatena las 3 partes del string, la 0 que estaba calculada y la 1 y 2 recien calculadas.
-        }//fin else if    
-        return postbyte;
-    }//fin de metodo DirExt
     
     //Metodo para analizar vaor de rr en IDX
     static String calculoRR(String registro){
@@ -372,9 +317,7 @@ public class Salvacion {
                     
                     LinCod.setADDR("IMM"); 
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
-                    
                     LinCod.setForm(AUX.SourceForm);
-                    LinCod.setCop(FormIMM(LinCod.getOperando().substring(1),AUX.SourceForm,Integer.parseInt(AUX.byteTotal),Integer.parseInt(AUX.byteCalcular)));
                     LinCod.setSize(AUX.byteTotal+" bytes");
                     encontrado=true;
                 }//Fin si es IMM
@@ -459,7 +402,6 @@ public class Salvacion {
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
                     LinCod.setSize(AUX.byteTotal+" bytes");
                     LinCod.setForm(AUX.SourceForm);
-                    LinCod.setCop(FormDirExt(LinCod.getOperando(),AUX.SourceForm,Integer.parseInt(AUX.byteTotal),Integer.parseInt(AUX.byteCalcular)));
                     encontrado=true;
             }//Fin es DIR
             else if(AUX.Operando.equals("opr16a")){//Estructura de EXT
@@ -468,7 +410,6 @@ public class Salvacion {
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
                     LinCod.setSize(AUX.byteTotal+" bytes");
                     LinCod.setForm(AUX.SourceForm);
-                    LinCod.setCop(FormDirExt(LinCod.getOperando(),AUX.SourceForm,Integer.parseInt(AUX.byteTotal),Integer.parseInt(AUX.byteCalcular)));
                     encontrado=true;
                }
             }//Fin es EXT
