@@ -367,6 +367,7 @@ public class Fase2 {
     }// fin calculo del postbyte del los relativos de 9bits
     
     static void fase2(){//Metodo para identificar rels y calcular su postbyte
+        String direccion;
         for(Linea asm:Parte_4.LineasASM){ //for para recorrer todas las intrucciones
             switch (asm.getADDR()) {
             //CALCULO DEL POSTBYTE DE LOS rel 8
@@ -388,7 +389,18 @@ public class Fase2 {
                     break;
             //CALCULO DEL POSTBYTE DE LOS DIRECTOS
                 case "DIR":
-                    asm.setCop(FormDirExt(asm.getOperando(),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
+                    if(Parte_4.validarEtiq(asm.getOperando())){
+                        direccion=conlocEtq(asm.getOperando());
+                        if(direccion.equals(" ")){
+                            asm.setCop("ERROR");
+                            Parte_4.Errores.add("ERROR etiqueta del operando no existe en "+asm.getCodop()+" "+asm.getOperando());
+                        }else{
+                            asm.setCop(FormDirExt("$".concat(direccion),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
+                        }
+                    }
+                    else{
+                        asm.setCop(FormDirExt(asm.getOperando(),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
+                    }
                     break;
             //CALCULO DEL POSTBYTE DE LOS EXTENDIDOS
                 case "EXT":

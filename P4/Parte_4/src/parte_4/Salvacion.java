@@ -415,6 +415,15 @@ public class Salvacion {
             }//Fin es EXT
         }//Fin es DIR o EXT
         else if(Parte_4.validarEtiq(LinCod.getOperando())){//EXT con etiqueta
+            if(AUX.Operando.equals("opr8a")){
+                if(Parte_4.ConvertirADecimal(Fase2.conlocEtq(AUX.Operando))<256){
+                    LinCod.setADDR("DIR");
+                    LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
+                    LinCod.setSize(AUX.byteTotal+" bytes");
+                    LinCod.setForm(AUX.SourceForm);
+                    encontrado=true;
+                }
+            }
             if(AUX.Operando.equals("opr16a")){//Estructura correspondiente
                 LinCod.setADDR("EXT");
                 LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
