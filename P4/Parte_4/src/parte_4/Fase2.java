@@ -415,8 +415,8 @@ public class Fase2 {
                         }
                     }
                     else{
-                    asm.setCop(FormDirExt(asm.getOperando(),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));            
-                                }
+                        asm.setCop(FormDirExt(asm.getOperando(),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));            
+                    }
                     break;
                 default:
                     break;
