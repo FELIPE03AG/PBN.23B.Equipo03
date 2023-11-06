@@ -1,2 +1,4 @@
 TIPO            Si       Ti            
-RELATIVA       JUMP       0000       
+ABSOLUTA       UNO       0030       
+ABSOLUTA       DOS       0505       
+ABSOLUTA       TRES       0120       

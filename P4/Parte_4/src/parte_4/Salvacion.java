@@ -424,7 +424,7 @@ public class Salvacion {
                     encontrado=true;
                 }
             }
-            if(AUX.Operando.equals("opr16a")){//Estructura correspondiente
+            else if(AUX.Operando.equals("opr16a")){//Estructura correspondiente
                 LinCod.setADDR("EXT");
                 LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
                 LinCod.setSize(AUX.byteTotal+" bytes");

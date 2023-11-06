@@ -1,5 +1,9 @@
 TIPO,        VALOR,       ETQ,         CODOP,       OPER 
-DIR_INIC,        0000,       NULL,       ORG,       $0,       
-CONTLOC,       0000,       JUMP,       LDAA,       5,Y,       
-CONTLOC,       0002,       NULL,       IBNE,       A,JUMP,       
-CONTLOC,       0005,       NULL,       END,       NULL,       
+DIR_INIC,        0100,       NULL,       ORG,       $100,       
+VALOR,          0030,       UNO,       EQU,       $30,       
+VALOR,          0505,       DOS,       EQU,       $505,       
+VALOR,          0120,       TRES,       EQU,       $120,       
+CONTLOC,       0100,       NULL,       LDX,       UNO,       
+CONTLOC,       0102,       NULL,       ADCA,       DOS,       
+CONTLOC,       0104,       NULL,       JSR,       TRES,       
+CONTLOC,       0106,       NULL,       END,       NULL,       

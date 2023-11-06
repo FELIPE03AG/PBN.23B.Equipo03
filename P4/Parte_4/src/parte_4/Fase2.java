@@ -412,16 +412,15 @@ public class Fase2 {
                         }else{
                              asm.setCop(FormDirExt("$".concat(direccion),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
                             
-                            //asm.setCop(FormDirExt("$".concat(direccion),asm.getForm(),Integer.parseInt(asm.getSize().substring(0,1),Integer.parseInt(asm.getPorCalcular().substring(0,1))));
                         }
-                        
-                        
                     }
+                    else{
                     asm.setCop(FormDirExt(asm.getOperando(),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));            
+                                }
                     break;
                 default:
                     break;
-            }
+                    }
         }//fin for asm
     }//Fin buscar rels
 }//Fin de la clase
