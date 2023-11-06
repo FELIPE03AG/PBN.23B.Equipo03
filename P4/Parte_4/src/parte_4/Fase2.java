@@ -404,7 +404,20 @@ public class Fase2 {
                     break;
             //CALCULO DEL POSTBYTE DE LOS EXTENDIDOS
                 case "EXT":
-                    asm.setCop(FormDirExt(asm.getOperando(),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
+                    if(Parte_4.validarEtiq(asm.getOperando())){
+                        direccion = conlocEtq(asm.getOperando());
+                        if(direccion.equals(" ")){
+                            asm.setCop("ERROR");
+                            Parte_4.Errores.add("ERROR etiqueta del operando no existe en "+ asm.getCodop()+ " "+asm.getOperando());
+                        }else{
+                             asm.setCop(FormDirExt("$".concat(direccion),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
+                            
+                            //asm.setCop(FormDirExt("$".concat(direccion),asm.getForm(),Integer.parseInt(asm.getSize().substring(0,1),Integer.parseInt(asm.getPorCalcular().substring(0,1))));
+                        }
+                        
+                        
+                    }
+                    asm.setCop(FormDirExt(asm.getOperando(),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));            
                     break;
                 default:
                     break;
