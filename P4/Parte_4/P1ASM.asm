@@ -6,8 +6,6 @@ lbl1	dc.b	"ABC"
 	ldx	uno
 et1	ldaa	dos
 	ldab	lbl1
-	LDAA	$120
-	LDAA	$30
 	end
 	
 	

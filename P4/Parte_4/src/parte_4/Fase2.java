@@ -401,37 +401,40 @@ public class Fase2 {
             //CALCULO DEL POSTBYTE DE LOS DIRECTOS
                 case "DIR":
                     if(Parte_4.validarEtiq(asm.getOperando())){
+                        String operando=asm.getOperando();
                         direccion=conlocEtq(asm.getOperando());
                         if(direccion.equals(" ")){
                             asm.setCop("ERROR");
                             Parte_4.Errores.add("ERROR etiqueta del operando no existe en "+asm.getCodop()+" "+asm.getOperando());
                         }else{
-                            asm.setCop(FormDirExt("$".concat(direccion),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
+                            asm.setOperando("$".concat(direccion));
+                            Salvacion.BuscarCodop(asm);
+                            asm.setCop(FormDirExt(asm.getOperando(),asm.getForm(),
+                                    Integer.parseInt(asm.getSize().substring(0, 1)),
+                                    Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
+                            asm.setOperando(operando);
+                            if (asm.getADDR().equals("EXT")) {
+                                int indiceObjetoActual = Parte_4.LineasASM.indexOf(asm);
+                                // Aumenta el 'conloc' de los objetos que siguen a 'asm' en la lista
+                                if (indiceObjetoActual != -1) {
+                                    for (int i = indiceObjetoActual+1; i < Parte_4.LineasASM.size(); i++) {
+                                        Linea objeto = Parte_4.LineasASM.get(i);
+                                        objeto.setConloc(Parte_4.validarDireccion("$".concat(Conloc.sumarHexadecimal(objeto.getConloc(), 1))));
+                                    }
+                                }
+                            }
                         }
-                    }
-                    else{
-                        asm.setCop(FormDirExt(asm.getOperando(),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
+                    } else {
+                        asm.setCop(FormDirExt(asm.getOperando(), asm.getForm(), Integer.parseInt(asm.getSize().substring(0, 1)), Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
                     }
                     break;
-            //CALCULO DEL POSTBYTE DE LOS EXTENDIDOS
+                //CALCULO DEL POSTBYTE DE LOS EXTENDIDOS
                 case "EXT":
-                    if(Parte_4.validarEtiq(asm.getOperando())){
-                        direccion = conlocEtq(asm.getOperando());
-                        if(direccion.equals(" ")){
-                            asm.setCop("ERROR");
-                            Parte_4.Errores.add("ERROR etiqueta del operando no existe en "+ asm.getCodop()+ " "+asm.getOperando());
-                        }else{
-                             asm.setCop(FormDirExt("$".concat(direccion),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
-                            
-                        }
-                    }
-                    else{
-                        asm.setCop(FormDirExt(asm.getOperando(),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));            
-                    }
+                    asm.setCop(FormDirExt(asm.getOperando(), asm.getForm(), Integer.parseInt(asm.getSize().substring(0, 1)), Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
                     break;
                 default:
                     break;
-                    }
+            }
         }//fin for asm
     }//Fin buscar rels
 }//Fin de la clase
