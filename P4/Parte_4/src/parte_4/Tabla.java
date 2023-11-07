@@ -15,7 +15,7 @@ public class Tabla extends javax.swing.JFrame {
     void Llenado(){
         for (Linea auxiliar : Parte_4.LineasASM) {
             diseño.addRow(new Object[]{auxiliar.getConloc(),auxiliar.getEtiqueta(),auxiliar.getCodop(),auxiliar.getOperando(),auxiliar.getADDR(),
-                                        auxiliar.getSize(),auxiliar.getPorCalcular(), auxiliar.getForm(), auxiliar.getCop()});
+                                        auxiliar.getSize(),auxiliar.getCop()});
         }
     } //fin de metodo llenar 
     
@@ -63,7 +63,7 @@ public class Tabla extends javax.swing.JFrame {
     
     public Tabla() {
         initComponents();
-        String[] titulo = new String[]{"CONLOC","ETQ","CODOP","OPR","ADDR","SIZE","POR CALCULAR","FORM","COP"};
+        String[] titulo = new String[]{"CONLOC","ETQ","CODOP","OPR","ADDR","SIZE","COP"};
         diseño.setColumnIdentifiers(titulo);
         TablaCod.setModel(diseño);
         Llenado();
