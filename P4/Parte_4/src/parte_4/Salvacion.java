@@ -321,6 +321,16 @@ public class Salvacion {
                     LinCod.setSize(AUX.byteTotal+" bytes");
                     encontrado=true;
                 }//Fin si es IMM
+                else if(Parte_4.validarEtiq(LinCod.getOperando().substring(1))){
+                
+                    if(Parte_4.ConvertirADecimal(Fase2.conlocEtq(AUX.Operando))<256){
+                        LinCod.setADDR("IMM");
+                        LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
+                        LinCod.setSize(AUX.byteTotal+" bytes");
+                        LinCod.setForm(AUX.SourceForm);
+                        encontrado=true;
+                    }  
+                }
             }
         }
         else if(LinCod.getOperando().startsWith("[D")){//Si comienza de esta forma el operando
