@@ -1,4 +1,5 @@
 TIPO            Si       Ti            
 ABSOLUTA       UNO       0030       
 ABSOLUTA       DOS       0505       
-ABSOLUTA       TRES       0120       
+RELATIVA       LBL1       0100       
+RELATIVA       ET1       0108       

@@ -1,10 +1,11 @@
 	ORG	$0100
 uno	equ	$30
 dos	equ	$505
-tres	equ	$120
+lbl1	dc.b	"ABC"
+	ldy 	#lbl1
 	ldx	uno
-	ADCA	dos
-	JSR	tres
+et1	ldaa	dos
+	ldab	lbl1
 	LDAA	$120
 	LDAA	$30
 	end

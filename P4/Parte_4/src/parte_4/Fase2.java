@@ -391,7 +391,7 @@ public class Fase2 {
                           asm.setCop("ERROR");
                           Parte_4.Errores.add("ERROR etiqueta del operando no existe en "+asm.getCodop()+" "+asm.getOperando());
                       }else{
-                           asm.setCop(FormDirExt("$".concat(direccion),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
+                           asm.setCop(FormIMM("$".concat(direccion),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
                       }
                   } 
                   else{
