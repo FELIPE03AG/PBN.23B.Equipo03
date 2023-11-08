@@ -383,21 +383,36 @@ public class Fase2 {
                 case "REL (9b)":
                     postbRel9(asm, Conloc.sumarHexadecimal(asm.getConloc(), 3));
                     break;
-            //CALCULO DEL POSTBYTE DE LOS IMM 
+            // CALCULO DEL POSTBYTE DE LOS IMM
                 case "IMM":
-                  if(Parte_4.validarEtiq(asm.getOperando())){
-                      direccion = conlocEtq(asm.getOperando());
-                      if(direccion.equals(" ")){
-                          asm.setCop("ERROR");
-                          Parte_4.Errores.add("ERROR etiqueta del operando no existe en "+asm.getCodop()+" "+asm.getOperando());
-                      }else{
-                           asm.setCop(FormIMM("$".concat(direccion),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
-                      }
-                  } 
-                  else{
-                    asm.setCop(FormIMM(asm.getOperando().substring(1),asm.getForm(),Integer.parseInt(asm.getSize().substring(0, 1)),Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
-                  }
+                if (Parte_4.validarEtiq(asm.getOperando())) {
+                    String operando=asm.getOperando();
+                    direccion = conlocEtq(asm.getOperando());
+                    if (direccion.equals(" ")) {
+                        asm.setCop("ERROR");
+                        Parte_4.Errores.add("ERROR etiqueta del operando no existe en " + asm.getCodop() + " " + asm.getOperando());
+                    } else {
+                        asm.setOperando("$".concat(direccion));
+                        Salvacion.BuscarCodop(asm);
+                        asm.setCop(FormIMM(asm.getOperando(),asm.getForm(),
+                            Integer.parseInt(asm.getSize().substring(0,1)),
+                            Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
+                        asm.setOperando(operando);
+                        if (asm.getADDR().equals("IMM")){
+                            int indiceObjetoActual = Parte_4.LineasASM.indexOf(asm);
+                            if (indiceObjetoActual != -1) {
+                                for (int i = indiceObjetoActual+1; i < Parte_4.LineasASM.size(); i++) {
+                                    Linea objeto = Parte_4.LineasASM.get(i);
+                                    objeto.setConloc(Parte_4.validarDireccion("$".concat(Conloc.sumarHexadecimal(objeto.getConloc(), 1))));
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        asm.setCop(FormIMM(asm.getOperando(), asm.getForm(), Integer.parseInt(asm.getSize().substring(0, 1)), Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
+                    }
                     break;
+
             //CALCULO DEL POSTBYTE DE LOS DIRECTOS
                 case "DIR":
                     if(Parte_4.validarEtiq(asm.getOperando())){
