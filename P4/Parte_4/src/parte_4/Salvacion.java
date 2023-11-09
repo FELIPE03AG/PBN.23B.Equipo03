@@ -321,12 +321,12 @@ public class Salvacion {
                     LinCod.setSize(AUX.byteTotal+" bytes");
                     encontrado=true;
                 }//Fin si es IMM
-                if(Parte_4.validarEtiq(LinCod.getOperando().substring(1))){
-                        LinCod.setADDR("IMM");
-                        LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
-                        LinCod.setSize(AUX.byteTotal+" bytes");
-                        LinCod.setForm(AUX.SourceForm);
-                        encontrado=true; 
+                else if(Parte_4.validarEtiq(LinCod.getOperando().substring(1))) {
+                    LinCod.setADDR("IMM");
+                    LinCod.setPorCalcular(AUX.byteCalcular + " bytes");
+                    LinCod.setSize(AUX.byteTotal + " bytes");
+                    LinCod.setForm(AUX.SourceForm);
+                    encontrado = true;
                 }
             }
         }
@@ -780,4 +780,3 @@ public class Salvacion {
     
     
 }//Fin clase
-
