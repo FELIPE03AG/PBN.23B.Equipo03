@@ -314,14 +314,15 @@ public class Salvacion {
         else if(LinCod.getOperando().startsWith("#")){//Si el operando parece de tipo IMM
             if(AUX.Operando.equals("#opr8i")||AUX.Operando.equals("#opr16i")){//Puede ser de cualquiera de estas dos estructuras para coincidir
                 if(Parte_4.IMM(LinCod.getOperando(),AUX.Operando)){//Evaluo si si es IMM
-                    
+                    //GUARDA LOS DATOS CORRESPONDIENTES
                     LinCod.setADDR("IMM"); 
                     LinCod.setPorCalcular(AUX.byteCalcular+ " bytes");
                     LinCod.setForm(AUX.SourceForm);
                     LinCod.setSize(AUX.byteTotal+" bytes");
                     encontrado=true;
                 }//Fin si es IMM
-                else if(Parte_4.validarEtiq(LinCod.getOperando().substring(1))) {
+                else if(Parte_4.validarEtiq(LinCod.getOperando().substring(1))) {//Si el operando es una etiqueta
+                    //Guarda los datos correspondientes, la validación del operando será después
                     LinCod.setADDR("IMM");
                     LinCod.setPorCalcular(AUX.byteCalcular + " bytes");
                     LinCod.setSize(AUX.byteTotal + " bytes");
@@ -421,8 +422,9 @@ public class Salvacion {
                }
             }//Fin es EXT
         }//Fin es DIR o EXT
-        else if(Parte_4.validarEtiq(LinCod.getOperando())){//EXT con etiqueta
-            if (AUX.Operando.equals("opr8a")) {
+        else if(Parte_4.validarEtiq(LinCod.getOperando())){//DIR O EXT con etiqueta
+            if (AUX.Operando.equals("opr8a")) {//Si se encontró coincidencia con un directo
+                //Se va a guardar como directo si tiene una etiqueta y despues se identifica si es DIR o EXT de manera correcta
                 LinCod.setADDR("DIR");
                 LinCod.setPorCalcular(AUX.byteCalcular + " bytes");
                 LinCod.setSize(AUX.byteTotal + " bytes");
@@ -482,8 +484,8 @@ public class Salvacion {
     static void IdentificacionDirectivas(Linea LinCod){ // Método para identificar las directivas
         String auxiliar = LinCod.getCodop();
         String tamPala = " ";
-        String postbyte=" ";
-        String postbyteAux = " ";
+        String postbyte=" ";//Variable que guarda el postbyte
+        String postbyteAux = " ";//Auxiliar para calcular el postbyte
         if(auxiliar.contains(".")){  // Verificamos si el CODOP contiene un punto (.)
             String[] campos = auxiliar.split("\\.");
             if(campos.length==2){
@@ -561,69 +563,71 @@ public class Salvacion {
                                         if(valores[i].contains("\"")){
                                             for(int j=1; j<valores[i].length()-1;j++){
                                                 int valorASCII = (int) valores[i].charAt(j);
-                                                postbyteAux= Integer.toHexString(valorASCII);
+                                                postbyteAux= Integer.toHexString(valorASCII);//Metodo para identificar el ascci
                                                 if(postbyteAux.length()==1){
-                                                    postbyteAux="0".concat(postbyteAux);
+                                                    postbyteAux="0".concat(postbyteAux);//Completar a byte
                                                 }
                                                 if(postbyte.equals(" ")){
-                                                    postbyte=postbyteAux;
+                                                    postbyte=postbyteAux;//Si es el primer byte 
                                                 }
                                                 else{
-                                                    postbyte=postbyte.concat(" ").concat(postbyteAux);
+                                                    postbyte=postbyte.concat(" ").concat(postbyteAux);//Si ya hay un byte antes
                                                 }
                                             }
                                         }//Fin es de codigo ascci
                                         else{
-                                            postbyteAux=Integer.toHexString(Parte_4.ConvertirADecimal(valores[i])).toUpperCase();
+                                            postbyteAux=Integer.toHexString(Parte_4.ConvertirADecimal(valores[i])).toUpperCase();//Calcular el valor hexadecimal del operando
                                             if(postbyteAux.length()==1){
-                                                    postbyteAux="0".concat(postbyteAux);
+                                                    postbyteAux="0".concat(postbyteAux);//Completar a byte
                                             }
                                             if (postbyte.equals(" ")) {
-                                                postbyte = postbyteAux;
+                                                postbyte = postbyteAux;//Si es el primer byte calculado
                                             } else {
-                                                postbyte = postbyte.concat(" ").concat(postbyteAux);
+                                                postbyte = postbyte.concat(" ").concat(postbyteAux);//Si ya hay un byte antes
                                             }
                                         }
-                                        LinCod.setCop(postbyte);
+                                        LinCod.setCop(postbyte);//Guarda el postbyte
                                     }
                                 }
                                 else {
                                     if (LinCod.getOperando().contains("\"")) {
                                         for (int j = 1; j < LinCod.getOperando().length() - 1; j++) {
-                                            int valorASCII = (int) LinCod.getOperando().charAt(j);
-                                            postbyteAux = Integer.toHexString(valorASCII);
+                                            int valorASCII = (int) LinCod.getOperando().charAt(j); //Guardo el valor en el ascii
+                                            postbyteAux = Integer.toHexString(valorASCII);//Calcula el valor hexadecimal del ascii
                                             if (postbyteAux.length() == 1) {
-                                                postbyteAux = "0".concat(postbyteAux);
+                                                postbyteAux = "0".concat(postbyteAux);//Completa a byte
                                             }
                                             if (postbyte.equals(" ")) {
-                                                postbyte = postbyteAux;
+                                                postbyte = postbyteAux;//Es el primer byte
                                             } else {
-                                                postbyte = postbyte.concat(" ").concat(postbyteAux);
+                                                postbyte = postbyte.concat(" ").concat(postbyteAux);//Ya se habia calculado un byte
                                             }
                                         }
-                                        LinCod.setCop(postbyte);
+                                        LinCod.setCop(postbyte);//Guardar el postbyte
                                     }
                                 }
                             }
                             else{
-                                LinCod.setADDR("ERROR");
+                                LinCod.setADDR("ERROR");//Si es incorrecto
                                 Parte_4.Errores.add("ERROR. OPR fuera de rango en: "+LinCod.getEtiqueta()+" "+LinCod.getCodop()+" "+LinCod.getOperando());
                             }
                         }//Fin, hay mas de un valor en el operando
                         else{
+                            //Si el operando es un valor
                             if (Parte_4.ConvertirADecimal(LinCod.getOperando()) != -1 && Parte_4.ConvertirADecimal(LinCod.getOperando()) < 255) {
                                 LinCod.setSize("1 bytes");
                                 LinCod.setADDR("DIRECT");
+                                //Calcular el valor hexadecimal del operando
                                 postbyteAux = Integer.toHexString(Parte_4.ConvertirADecimal(LinCod.getOperando())).toUpperCase();
                                 if (postbyteAux.length() == 1) {
-                                    postbyteAux = "0".concat(postbyteAux);
+                                    postbyteAux = "0".concat(postbyteAux);//Completar a byte
                                 }
                                 if (postbyte.equals(" ")) {
-                                    postbyte = postbyteAux;
+                                    postbyte = postbyteAux;//Es el primer byte
                                 } else {
-                                    postbyte = postbyte.concat(" ").concat(postbyteAux);
+                                    postbyte = postbyte.concat(" ").concat(postbyteAux);//Ya se habia calculado un byte
                                 }
-                                LinCod.setCop(postbyte);
+                                LinCod.setCop(postbyte);//Guardar el postbyte en el asm
                             }
                             else{
                                 LinCod.setADDR("ERROR");
@@ -669,7 +673,7 @@ public class Salvacion {
                                             postbyte = postbyte.concat(" ").concat(postbyteAux);
                                         }
                                     }
-                                    LinCod.setCop(postbyte);
+                                    LinCod.setCop(postbyte); //Guarda el postbyte en el objeto
                                 }
                             } else {
                                 if (LinCod.getOperando().contains("\"")) {

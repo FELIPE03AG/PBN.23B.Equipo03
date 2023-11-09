@@ -385,59 +385,70 @@ public class Fase2 {
                     break;
             //CALCULO DEL POSTBYTE DE LOS IMM 
                 case "IMM":
-                    if (Parte_4.validarEtiq(asm.getOperando().substring(1))) {
+                    if (Parte_4.validarEtiq(asm.getOperando().substring(1))) {//Si el operando es una etiqueta
+                        //Guarda la direccion calculando con base al operando sin #
                         direccion = conlocEtq(asm.getOperando().substring(1));
-                        String operando = asm.getOperando();
-                        if (direccion.equals(" ")) {
+                        String operando = asm.getOperando();//Guardo la etiqueta del operando
+                        if (direccion.equals(" ")) {//Si no existe la direccion
                             asm.setCop("ERROR");
                             Parte_4.Errores.add("ERROR etiqueta del operando no existe en " + asm.getCodop() + " " + asm.getOperando());
-                        } else {
-                            asm.setOperando("#$".concat(direccion));
-                            Salvacion.BuscarCodop(asm);
+                        } else {//Si la direccion si existe
+                            asm.setOperando("#$".concat(direccion));//Guardar como operando la direccion de manera correcta
+                            Salvacion.BuscarCodop(asm);//Vuelvo a calcular e identificar los datos de la linea del asm
+                            //Calculo del postbyte 
                             asm.setCop(FormIMM(asm.getOperando().substring(1),
                                     asm.getForm(), Integer.parseInt(asm.getSize().substring(0, 1)),
                                     Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
-                            asm.setOperando(operando);
+                            asm.setOperando(operando);//Guardo de nuevo la etiqueta en el operando de la linea
                         }
                     } else {
-                        asm.setCop(FormIMM(asm.getOperando().substring(1), 
+                        //Calculo del postbyte de los inmediatos
+                        asm.setCop(FormIMM(asm.getOperando().substring(1),
                                 asm.getForm(), Integer.parseInt(asm.getSize().substring(0, 1)),
                                 Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
                     }
                     break;
-            //CALCULO DEL POSTBYTE DE LOS DIRECTOS
+                //CALCULO DEL POSTBYTE DE LOS DIRECTOS
                 case "DIR":
-                    if(Parte_4.validarEtiq(asm.getOperando())){
-                        String operando=asm.getOperando();
-                        direccion=conlocEtq(asm.getOperando());
-                        if(direccion.equals(" ")){
+                    if (Parte_4.validarEtiq(asm.getOperando())) {
+                        String operando = asm.getOperando();//Guarda la etiqueta
+                        direccion = conlocEtq(asm.getOperando());//Calcula la direccion correspondiente a la etiqueta
+                        if (direccion.equals(" ")) {//Si la etiqueta no existe
                             asm.setCop("ERROR");
-                            Parte_4.Errores.add("ERROR etiqueta del operando no existe en "+asm.getCodop()+" "+asm.getOperando());
-                        }else{
-                            asm.setOperando("$".concat(direccion));
-                            Salvacion.BuscarCodop(asm);
-                            asm.setCop(FormDirExt(asm.getOperando(),asm.getForm(),
+                            Parte_4.Errores.add("ERROR etiqueta del operando no existe en " + asm.getCodop() + " " + asm.getOperando());
+                        } else {//Si la etiqueta es correcta
+                            asm.setOperando("$".concat(direccion));//Guardar la direccion en el operando
+                            Salvacion.BuscarCodop(asm);//Vuelve a comparar con el tabop con el valor correcto 
+                            //Calcula el postbyte con base a lo anterior 
+                            asm.setCop(FormDirExt(asm.getOperando(), asm.getForm(),
                                     Integer.parseInt(asm.getSize().substring(0, 1)),
                                     Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
-                            asm.setOperando(operando);
-                            if (asm.getADDR().equals("EXT")) {
+                            asm.setOperando(operando);//Guarda de nuevo la etiqueta en el operando de la linea 
+                            if (asm.getADDR().equals("EXT")) {//Si era extendido y no directo 
                                 int indiceObjetoActual = Parte_4.LineasASM.indexOf(asm);
                                 // Aumenta el 'conloc' de los objetos que siguen a 'asm' en la lista
                                 if (indiceObjetoActual != -1) {
-                                    for (int i = indiceObjetoActual+1; i < Parte_4.LineasASM.size(); i++) {
+                                    for (int i = indiceObjetoActual + 1; i < Parte_4.LineasASM.size(); i++) {
                                         Linea objeto = Parte_4.LineasASM.get(i);
+                                        // Aumenta el conloc 
                                         objeto.setConloc(Parte_4.validarDireccion("$".concat(Conloc.sumarHexadecimal(objeto.getConloc(), 1))));
                                     }
                                 }
                             }
                         }
                     } else {
-                        asm.setCop(FormDirExt(asm.getOperando(), asm.getForm(), Integer.parseInt(asm.getSize().substring(0, 1)), Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
+                        //calcula y guarda el postbyte 
+                        asm.setCop(FormDirExt(asm.getOperando(), asm.getForm(), 
+                                Integer.parseInt(asm.getSize().substring(0, 1)), 
+                                Integer.parseInt(asm.getPorCalcular().substring(0, 1)))); 
                     }
                     break;
                 //CALCULO DEL POSTBYTE DE LOS EXTENDIDOS
                 case "EXT":
-                    asm.setCop(FormDirExt(asm.getOperando(), asm.getForm(), Integer.parseInt(asm.getSize().substring(0, 1)), Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
+                    //Calcula y guarda el postbyte 
+                    asm.setCop(FormDirExt(asm.getOperando(), asm.getForm(), 
+                            Integer.parseInt(asm.getSize().substring(0, 1)), 
+                            Integer.parseInt(asm.getPorCalcular().substring(0, 1))));
                     break;
                 default:
                     break;
