@@ -434,6 +434,19 @@ public class Fase2 {
                                         objeto.setConloc(Parte_4.validarDireccion("$".concat(Conloc.sumarHexadecimal(objeto.getConloc(), 1))));
                                     }
                                 }
+                                //Reinicio de variables o archivos auxiliares
+                                if (Conloc.archivolst.exists()) {
+                                    Conloc.archivolst.delete();
+                                }//Fin eliminar list
+                                if (Conloc.archivotabsim.exists()) {
+                                    Conloc.archivotabsim.delete();
+                                }//Fin  eliminacion de tabsin
+                                Conloc.conloc = " ";
+                                //LLENAR TABSIN Y LIST DE NUEVO
+                                for(Linea aux:Parte_4.LineasASM){
+                                    Conloc.LlenarList(aux);
+                                    Conloc.LlenarTabsim(aux);
+                                }
                             }
                         }
                     } else {
