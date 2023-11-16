@@ -16,10 +16,12 @@ public class Proceso_S19 {
     static S19 AuxS19;
   
         public static void NombreASM(String nombreArchivo) {
+        System.out.print("data: ");
         for (int i = 0; i < nombreArchivo.length(); i++) {
             char caracter = nombreArchivo.charAt(i);
             int codigoASCII = (int) caracter;
-            System.out.print(codigoASCII + " ");
+            String hexa = Integer.toHexString(codigoASCII); //Perdon, hice esto en una copia y se me olvido copiarla a la original
+            System.out.print(hexa + " ");
         }
     }
 }
