@@ -16,7 +16,6 @@ public class Proceso_S19 {
     static S19 AuxS19;
   
         public static void NombreASM(String nombreArchivo) {
-        // Imprimir solo los códigos ASCII en línea recta
         for (int i = 0; i < nombreArchivo.length(); i++) {
             char caracter = nombreArchivo.charAt(i);
             int codigoASCII = (int) caracter;
