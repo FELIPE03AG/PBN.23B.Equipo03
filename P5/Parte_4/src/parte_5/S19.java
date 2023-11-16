@@ -74,9 +74,4 @@ public class S19 {
     public void setCk(String ck) {
         this.ck = ck;
     }
-    
-
-    
-    }
-
-
+}

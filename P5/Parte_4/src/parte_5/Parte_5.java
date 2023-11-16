@@ -566,10 +566,11 @@ public class Parte_5 {
     }//fin del metodo Idx2C
     
     public static void main(String[] args) {
-        Fase1(" ");//Llamo el metodo
+        Fase1(" ");
         if(LineasASM.size()!=0){
             Fase2.fase2();
             new Tabla().setVisible(true);
+            Proceso_S19.NombreASM("P1ASM.asm");
         }
     }   
 }
