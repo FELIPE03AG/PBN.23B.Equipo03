@@ -20,14 +20,20 @@ public class Proceso_S19 {
         for (int i = 0; i < nombreArchivo.length(); i++) {
             char caracter = nombreArchivo.charAt(i);
             int codigoASCII = (int) caracter;
-            String hexa = Integer.toHexString(codigoASCII); 
+            String hexa = Integer.toHexString(codigoASCII);
             System.out.print(hexa + " ");
         }
+        System.out.println();
     }
-        public static void cc(String nombreArchivo) {
-        int NumeroDeBytes = nombreArchivo.length();
+
+    public static void Data(String data) {
+        NombreASM(data);
+    }
+
+    public static String cc(String data) {
+        int NumeroDeBytes = data.length();
         int resultado = NumeroDeBytes + 3;
         String sumaDeBytes = Integer.toHexString(resultado);
-        System.out.println('\n' + "cc: " + sumaDeBytes);
+        return sumaDeBytes;
     }
 }

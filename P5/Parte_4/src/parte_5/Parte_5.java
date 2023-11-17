@@ -565,13 +565,15 @@ public class Parte_5 {
         return idx;                                 //retorna un booleano para verificar si es [IDX2] o no
     }//fin del metodo Idx2C
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Fase1(" ");
-        if(LineasASM.size()!=0){
+        if (LineasASM.size() != 0) {
             Fase2.fase2();
             new Tabla().setVisible(true);
-            Proceso_S19.NombreASM("P1ASM.asm");
-            Proceso_S19.cc("P1ASM.asm");
+            String nombreASM = "P1ASM.asm";
+            Proceso_S19.Data(nombreASM);
+            String resultadoCC = Proceso_S19.cc(nombreASM);
+            System.out.println("cc: " + resultadoCC);
         }
-    }   
+    }
 }
