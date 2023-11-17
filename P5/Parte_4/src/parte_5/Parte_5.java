@@ -571,6 +571,7 @@ public class Parte_5 {
             Fase2.fase2();
             new Tabla().setVisible(true);
             Proceso_S19.NombreASM("P1ASM.asm");
+            Proceso_S19.cc("P1ASM.asm");
         }
     }   
 }

@@ -20,8 +20,14 @@ public class Proceso_S19 {
         for (int i = 0; i < nombreArchivo.length(); i++) {
             char caracter = nombreArchivo.charAt(i);
             int codigoASCII = (int) caracter;
-            String hexa = Integer.toHexString(codigoASCII); //Perdon, hice esto en una copia y se me olvido copiarla a la original
+            String hexa = Integer.toHexString(codigoASCII); 
             System.out.print(hexa + " ");
         }
+    }
+        public static void cc(String nombreArchivo) {
+        int NumeroDeBytes = nombreArchivo.length();
+        int resultado = NumeroDeBytes + 3;
+        String sumaDeBytes = Integer.toHexString(resultado);
+        System.out.println('\n' + "cc: " + sumaDeBytes);
     }
 }
