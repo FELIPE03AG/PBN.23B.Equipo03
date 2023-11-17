@@ -20,7 +20,7 @@ public class Proceso_S19 {
         for (int i = 0; i < nombreArchivo.length(); i++) {
             char caracter = nombreArchivo.charAt(i);
             int codigoASCII = (int) caracter;
-            String hexa = Integer.toHexString(codigoASCII);
+            String hexa = Integer.toHexString(codigoASCII).toUpperCase();  // Convertir a mayúsculas
             System.out.print(hexa + " ");
         }
         System.out.println();
@@ -33,7 +33,8 @@ public class Proceso_S19 {
     public static String cc(String data) {
         int NumeroDeBytes = data.length();
         int resultado = NumeroDeBytes + 3;
-        String sumaDeBytes = Integer.toHexString(resultado);
+        // Asegurarse de que el resultado tenga siempre dos dígitos
+        String sumaDeBytes = String.format("%02X", resultado);
         return sumaDeBytes;
     }
 }
