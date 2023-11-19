@@ -18,16 +18,18 @@ public class Proceso_S19 {
         
         
     
-        public static void NombreASM(String nombreArchivo) {
-            System.out.print("Data: ");
-            
+        public static String NombreASM(String nombreArchivo) {
+            //System.out.print("Data: ");
+            String data = "";
             for (int i = 0; i < nombreArchivo.length(); i++) {
                 char caracter = nombreArchivo.charAt(i);
                 int codigoASCII = (int) caracter;
                 String hexa = Integer.toHexString(codigoASCII).toUpperCase();  // Convertir a mayúsculas
-                System.out.print(hexa + " ");           
+                data = data + hexa.concat(" ");
+                //System.out.print(hexa + " ");           
             }
-            System.out.println();
+            //System.out.println();
+            return data;
         }
 
     public static void Data(String data) {
@@ -42,9 +44,22 @@ public class Proceso_S19 {
         return sumaDeBytes;
     }
     
-    public static String ck(String x){
+    public static String ck(String cc, String addr, String data){
+        String suma = "";
+        int entero = 0;
+        String[] dta = data.split("\\s");
+        String[] addrSeparado = addr.split("\\s");
+        for(int i = 0; i <= dta.length - 1; i++){
+            suma = Conloc.sumarHexadecimal(dta[i], entero);
+            entero = Parte_5.ConvertirADecimal(suma);
+        }
+        for(int i = 0; i <= addrSeparado.length; i++){
+            suma = Conloc.sumarHexadecimal(addrSeparado[i], entero);
+            entero = Parte_5.ConvertirADecimal(suma);
+        }
+        suma = Conloc.sumarHexadecimal(cc, entero);
         
-        return x;
+        return suma;
     }
     
     public static void S0 (String nombreArch, String ccS0, String dtaS0, String ckS0){

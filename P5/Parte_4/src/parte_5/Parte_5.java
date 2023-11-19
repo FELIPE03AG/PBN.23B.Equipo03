@@ -15,11 +15,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Parte_5 {
     static Linea NewLinCod=null; //Para guardar en una lista las lineas del codigo
     static boolean Comentario = false;//Variable que indica si la linea es un comentario
     static ArrayList <Linea> LineasASM = new ArrayList<>();
+    static List <S19> Datos = new ArrayList<>();
+    static S19 AuxS19;
     static boolean org = false;
     static ArrayList <String> Errores = new ArrayList<>();
     
@@ -572,8 +575,13 @@ public class Parte_5 {
             new Tabla().setVisible(true);
             String nombreASM = "P1ASM.asm";
             Proceso_S19.Data(nombreASM);
+            String dataS0 = Proceso_S19.NombreASM(nombreASM);
             String resultadoCC = Proceso_S19.cc(nombreASM);
+            System.out.println("data: " + dataS0);
             System.out.println("cc: " + resultadoCC);
+            String ckS0 = Proceso_S19.ck(resultadoCC, "00 00", dataS0);
+            Proceso_S19.S0(nombreASM, resultadoCC, dataS0, ckS0);
+            //System.out.println(AuxS19.ck);
         }
     }
 }
