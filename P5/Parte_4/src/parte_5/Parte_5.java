@@ -21,7 +21,7 @@ public class Parte_5 {
     static Linea NewLinCod=null; //Para guardar en una lista las lineas del codigo
     static boolean Comentario = false;//Variable que indica si la linea es un comentario
     static ArrayList <Linea> LineasASM = new ArrayList<>();
-    static List <S19> Datos = new ArrayList<>();
+    static List <S19> Datos = new ArrayList<S19>();
     static S19 AuxS19;
     static boolean org = false;
     static ArrayList <String> Errores = new ArrayList<>();
@@ -579,9 +579,8 @@ public class Parte_5 {
             String resultadoCC = Proceso_S19.cc(nombreASM);
             System.out.println("data: " + dataS0);
             System.out.println("cc: " + resultadoCC);
-            String ckS0 = Proceso_S19.ck(resultadoCC, "00 00", dataS0);
-            Proceso_S19.S0(nombreASM, resultadoCC, dataS0, ckS0);
-            //System.out.println(AuxS19.ck);
+            String ckS0 = Proceso_S19.ck(resultadoCC, "00 01", dataS0);
+            System.out.println("ck: " + ckS0);
         }
     }
 }

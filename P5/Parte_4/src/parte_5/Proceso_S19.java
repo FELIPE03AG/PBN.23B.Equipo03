@@ -13,7 +13,7 @@ import java.util.List;
  * @author anaya
  */
 public class Proceso_S19 {
-    static List <S19> Datos = new ArrayList<>();
+    static List <S19> Datos = new ArrayList<S19>();
     static S19 AuxS19;
         
         
@@ -45,24 +45,41 @@ public class Proceso_S19 {
     }
     
     public static String ck(String cc, String addr, String data){
-        String suma = "";
+        String suma = "00";
+        String bitLessImpor = " ";
+        String AuxBin = "", C2 = "";
         int entero = 0;
-        String[] dta = data.split("\\s");
-        String[] addrSeparado = addr.split("\\s");
-        for(int i = 0; i <= dta.length - 1; i++){
-            suma = Conloc.sumarHexadecimal(dta[i], entero);
-            entero = Parte_5.ConvertirADecimal(suma);
+        String[] dta = data.split("\\s+");
+        String[] addrSeparado = addr.split("\\s+");
+        
+        for(int i = 0; i < dta.length; i++){
+            suma = Conloc.sumarHexadecimal(dta[0], entero);
+            entero = Integer.parseInt(suma, 16);
         }
-        for(int i = 0; i <= addrSeparado.length; i++){
+        for(int i = 0; i < addrSeparado.length; i++){
             suma = Conloc.sumarHexadecimal(addrSeparado[i], entero);
-            entero = Parte_5.ConvertirADecimal(suma);
+            entero = Integer.parseInt(suma, 16);
         }
+        
         suma = Conloc.sumarHexadecimal(cc, entero);
         
-        return suma;
+        bitLessImpor = suma.substring(suma.length() - 2);
+        
+        entero = Integer.parseInt(bitLessImpor, 16);             //Convierto a decimal
+        AuxBin = Integer.toBinaryString(entero);              //Convierto a binario
+        C2 = Salvacion.calcularComplementoDos(AuxBin);           //Saco complemeto 2
+        entero = Integer.parseInt(C2, 2);                        //Covierto el binario a decimal
+        bitLessImpor = Integer.toHexString(entero);              //Convierto el decimal a hexadecimal
+        
+        if(bitLessImpor.length() < 2){
+            bitLessImpor = "0".concat(bitLessImpor);
+        }
+        
+        return bitLessImpor;
     }
     
     public static void S0 (String nombreArch, String ccS0, String dtaS0, String ckS0){
         Datos.add(new S19(nombreArch, "S0", ccS0, "00 00", dtaS0, ckS0));
+        System.out.println("S0 agregado con exito");
     }
 }
