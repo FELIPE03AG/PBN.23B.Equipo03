@@ -144,7 +144,7 @@ public class Parte_5 {
                 File file = new File(rutaArchivo);
             }
             else{
-                rutaArchivo="P5ASM.asm";
+                rutaArchivo="a.asm";
             }
             Proceso_S19.archivoASM = rutaArchivo;
             RandomAccessFile auxArchivo = new RandomAccessFile(rutaArchivo,"r");//r es para solo leer el archivo
@@ -571,7 +571,7 @@ public class Parte_5 {
         if(LineasASM.size()!=0){
             Fase2.fase2();
             new Tabla().setVisible(true);
-            System.out.println(Proceso_S19.ck("03","40 12", "00"));
+            Proceso_S19.S0();
         }
     }   
 }

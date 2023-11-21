@@ -90,8 +90,13 @@ public class Proceso_S19 {
         return bitLessImpor.toUpperCase();
     }
 
-    public static void S0(String nombreArch, String ccS0, String dtaS0, String ckS0) {
-        Datos.add(new S19(nombreArch, "S0", ccS0, "00 00", dtaS0, ckS0));
-        System.out.println("S0 agregado con exito");
+    public static void S0() {
+        AuxS19 = new S19 ("S0"," ","00 00"," "," ");
+        AuxS19.setData(NombreASM());
+        AuxS19.setCc(cc(AuxS19.getData()));
+        AuxS19.setCk(ck(AuxS19.getCc(),AuxS19.getAddr(),AuxS19.getData()));
+        System.out.println(AuxS19.getSn().concat(" ")+AuxS19.getCc().concat(" ")+
+                AuxS19.getAddr().concat(" ")+AuxS19.getData().concat(" ")+AuxS19.getCk());
+        Datos.add(AuxS19);
     }
 }

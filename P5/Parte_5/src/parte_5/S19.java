@@ -10,7 +10,6 @@ package parte_5;
  * @author anaya
  */
 public class S19 {
-    String NombreAsm;
     String Sn;
     String cc;
     String addr;
@@ -18,21 +17,12 @@ public class S19 {
     String ck;
     
     
-    public S19(String NombreAsm, String Sn, String cc, String addr, String data, String ck) {
-        this.NombreAsm = NombreAsm;
+    public S19( String Sn, String cc, String addr, String data, String ck) {
         this.Sn = Sn;
         this.cc = cc;
         this.addr = addr;
         this.data = data;
         this.ck = ck;
-    }
-
-    public String getNombreAsm() {
-        return NombreAsm;
-    }
-
-    public void setNombreAsm(String NombreAsm) {
-        this.NombreAsm = NombreAsm;
     }
 
     public String getSn() {
