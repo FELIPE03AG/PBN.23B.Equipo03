@@ -218,7 +218,6 @@ public class Tabla extends javax.swing.JFrame {
             }
             this.dispose();
             new Tabla().setVisible(true);
-            System.out.println(Proceso_S19.NombreASM());
         }
     }//GEN-LAST:event_btnArchivoActionPerformed
 

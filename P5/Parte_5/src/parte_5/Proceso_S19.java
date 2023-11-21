@@ -36,7 +36,8 @@ public class Proceso_S19 {
     }
 
     public static String cc(String data) {
-        int NumeroDeBytes = data.length();
+        String bytes[] = data.split(" ");
+        int NumeroDeBytes = bytes.length;
         int resultado = NumeroDeBytes + 3;
         // Asegurarse de que el resultado tenga siempre dos dígitos
         String sumaDeBytes = String.format("%02X", resultado);
