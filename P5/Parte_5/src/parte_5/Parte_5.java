@@ -571,7 +571,7 @@ public class Parte_5 {
         if(LineasASM.size()!=0){
             Fase2.fase2();
             new Tabla().setVisible(true);
-            System.out.println(Proceso_S19.cc("2A 12 12 50 84 52 DD CC BB 23 53 67 98"));
+            System.out.println(Proceso_S19.ck("03","40 12", "00"));
         }
     }   
 }

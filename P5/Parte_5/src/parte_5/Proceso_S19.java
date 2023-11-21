@@ -43,39 +43,51 @@ public class Proceso_S19 {
         String sumaDeBytes = String.format("%02X", resultado);
         return sumaDeBytes;
     }
-
+    
+    public static String sumarHexadecimal(String hex1) {
+        // Separar los valores hexadecimales por espacios
+        String[] hexArray = hex1.split("\\s+");
+        int sumaDecimal = 0;//Variable que guarada la suma
+ 
+        for(int i=0; i<hexArray.length;i++){
+            sumaDecimal = sumaDecimal+Parte_5.ConvertirADecimal("$".concat(hexArray[i]));
+        }
+        // Convertir la suma a formato hexadecimal
+        String sumaHexadecimal = Integer.toHexString(sumaDecimal).toUpperCase();
+        // Devolver el resultado
+        return sumaHexadecimal;
+    }
+    
     public static String ck(String cc, String addr, String data) {
         String suma = "00";
         String bitLessImpor = " ";
-        String AuxBin = "", C2 = "";
         int entero = 0;
-        String[] dta = data.split("\\s+");
-        String[] addrSeparado = addr.split("\\s+");
+        suma=sumarHexadecimal(cc.concat(" ").concat(data).concat(" ").concat(addr));//Suma de bytes
 
-        for (int i = 0; i < dta.length; i++) {
-            suma = Conloc.sumarHexadecimal(dta[0], entero);
-            entero = Integer.parseInt(suma, 16);
+        if(suma.length() < 2){
+            bitLessImpor=suma;
+        }//Fin guardar valor en hexa de la suma
+        else{
+            bitLessImpor = suma.substring(suma.length()-2,suma.length());
+        }//Fin si es un byte identificar el menos importante
+        entero = Parte_5.ConvertirADecimal("$".concat(bitLessImpor)); //valor decimal de la suma
+        suma=Fase2.decimalABinario(entero);//Calcular valor en binario
+        //COMPLETAR A BYTE
+        suma = Fase2.completarBinarioAByte(suma, 8);
+        
+        // CALCULO DEL COMPLEMENTO A1
+        StringBuilder complementoUno = new StringBuilder();
+        for (int i = 0; i < suma.length(); i++) {
+            char bit = suma.charAt(i);
+            complementoUno.append((bit == '0') ? '1' : '0'); // Invertir cada bit del número binario
         }
-        for (int i = 0; i < addrSeparado.length; i++) {
-            suma = Conloc.sumarHexadecimal(addrSeparado[i], entero);
-            entero = Integer.parseInt(suma, 16);
-        }
-
-        suma = Conloc.sumarHexadecimal(cc, entero);
-
-        bitLessImpor = suma.substring(suma.length() - 2);
-
-        entero = Integer.parseInt(bitLessImpor, 16);             //Convierto a decimal
-        AuxBin = Integer.toBinaryString(entero);              //Convierto a binario
-        C2 = Salvacion.calcularComplementoDos(AuxBin);           //Saco complemeto 2
-        entero = Integer.parseInt(C2, 2);                        //Covierto el binario a decimal
-        bitLessImpor = Integer.toHexString(entero);              //Convierto el decimal a hexadecimal
-
+        
+        //Calcular hexadecimal del complemento uno
+        bitLessImpor = Integer.toHexString(Parte_5.ConvertirADecimal("%".concat(complementoUno.toString())));
         if (bitLessImpor.length() < 2) {
             bitLessImpor = "0".concat(bitLessImpor);
-        }
-
-        return bitLessImpor;
+        }//Completar a byte
+        return bitLessImpor.toUpperCase();
     }
 
     public static void S0(String nombreArch, String ccS0, String dtaS0, String ckS0) {
