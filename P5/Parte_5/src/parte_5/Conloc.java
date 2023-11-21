@@ -12,6 +12,7 @@ public class Conloc {
     static ArrayList <Tabsim> etiquetas = new ArrayList<>();
     static Tabsim etq;
     static String conloc = " "; //Variable en la que se guardara el valor del conloc de cada linea
+    static String conlocOrg;
     
     static void CrearArchivoList(){ 
         try {
@@ -62,6 +63,7 @@ public class Conloc {
                         auxArchivo.writeBytes("DIR_INIC,        "); // escribe esto en el txt list
                         conloc = Parte_5.validarDireccion(auxiliar.getOperando());//valor toma el valor de operando en 2bytes 
                         auxArchivo.writeBytes(conloc + ",       ");//escribe el valor en 2 bytes y sin $ en el .lst, el espacio es para organizar
+                        conlocOrg = conloc;
                     }//fin de segundo if
                     else {
                         Parte_5.Errores.add("NO SE PUEDE CALCULAR EL CONLOC PORQUE OPR DE ORG ES INCORRECTO");//manda error por fallas en estructura de org

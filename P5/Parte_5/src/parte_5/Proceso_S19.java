@@ -11,6 +11,7 @@ public class Proceso_S19 {
     static List<S19> Datos = new ArrayList<S19>();
     static S19 AuxS19;
     static String archivoASM;
+    int cantidadS1=0;
 
     public static String NombreASM() {
         String nombreArchivo = archivoASM;
@@ -23,7 +24,6 @@ public class Proceso_S19 {
             // Obtener el nombre del archivo
             nombreArchivo = path.getFileName().toString();
         }
-        System.out.println("Nombre del archivo = "+nombreArchivo);
         for (int i = 0; i < nombreArchivo.length(); i++) {
             char caracter = nombreArchivo.charAt(i);
             int codigoASCII = (int) caracter;
@@ -99,4 +99,36 @@ public class Proceso_S19 {
                 AuxS19.getAddr().concat(" ")+AuxS19.getData().concat(" ")+AuxS19.getCk());
         Datos.add(AuxS19);
     }
+    
+    public static String ObtenerPostbytes(){
+        String postbytes = " ";
+        for(Linea asm:Parte_5.LineasASM){
+            if(!(asm.getCop().equals(" "))){
+                if(postbytes.equals(" ")){
+                    postbytes = asm.getCop();
+                }
+                else{
+                    postbytes = postbytes.concat(" ").concat(asm.getCop());
+                }
+            }
+        }
+        return postbytes;
+    }
+    
+    public static void S1(){
+        String datas[] = ObtenerPostbytes().split(" ");
+        int bytes = datas.length;
+        int cantidadS1 = bytes/16;
+        String addr = Conloc.conlocOrg;
+        if(bytes % 16!=0){
+            cantidadS1++;
+        }
+        for(int i=0; i<cantidadS1;i++){
+            AuxS19 = new S19 ("S0"," "," "," "," ");
+            if(i==0){
+                AuxS19.setAddr(addr);
+            }
+        }
+    }
+    
 }
