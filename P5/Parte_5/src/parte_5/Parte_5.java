@@ -571,6 +571,7 @@ public class Parte_5 {
         if(LineasASM.size()!=0){
             Fase2.fase2();
             new Tabla().setVisible(true);
+            Proceso_S19.S1();
         }
     }   
 }

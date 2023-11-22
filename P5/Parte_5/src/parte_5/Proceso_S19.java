@@ -11,7 +11,7 @@ public class Proceso_S19 {
     static List<S19> Datos = new ArrayList<S19>();
     static S19 AuxS19;
     static String archivoASM;
-    int cantidadS1=0;
+    static int cantidadS1=0;
 
     public static String NombreASM() {
         String nombreArchivo = archivoASM;
@@ -91,44 +91,69 @@ public class Proceso_S19 {
     }
 
     public static void S0() {
-        AuxS19 = new S19 ("S0"," ","00 00"," "," ");
-        AuxS19.setData(NombreASM());
-        AuxS19.setCc(cc(AuxS19.getData()));
-        AuxS19.setCk(ck(AuxS19.getCc(),AuxS19.getAddr(),AuxS19.getData()));
+        AuxS19 = new S19 ("S0"," ","00 00"," "," ");//Instancio mi objeto
+        AuxS19.setData(NombreASM());//En data va el valos ascii del nombre, para eso uso ese metodo
+        AuxS19.setCc(cc(AuxS19.getData()));//Calculo cc con el metodo para contar los bytes
+        AuxS19.setCk(ck(AuxS19.getCc(),AuxS19.getAddr(),AuxS19.getData()));//calculo ck una vez que tengo todos los bytes
         System.out.println(AuxS19.getSn().concat(" ")+AuxS19.getCc().concat(" ")+
-                AuxS19.getAddr().concat(" ")+AuxS19.getData().concat(" ")+AuxS19.getCk());
+                AuxS19.getAddr().concat(" ")+AuxS19.getData().concat(" ")+AuxS19.getCk());//Imprimo para comprobar
         Datos.add(AuxS19);
     }
     
     public static String ObtenerPostbytes(){
         String postbytes = " ";
-        for(Linea asm:Parte_5.LineasASM){
-            if(!(asm.getCop().equals(" "))){
-                if(postbytes.equals(" ")){
+        for(Linea asm:Parte_5.LineasASM){//Recorro todas las lineas del acm
+            if(!(asm.getCop().equals(" "))){//Si tiene peso en memoria
+                if(postbytes.equals(" ")){//Si es el primero con valor
                     postbytes = asm.getCop();
-                }
+                }//Fin primero con valor
                 else{
                     postbytes = postbytes.concat(" ").concat(asm.getCop());
-                }
-            }
-        }
+                }//Si no es el primero con valor
+            }//Fin si tiene peso en memoria
+        }//Fin recorrer el asm
         return postbytes;
-    }
+    }//Fin Obterner bytes
     
     public static void S1(){
-        String datas[] = ObtenerPostbytes().split(" ");
-        int bytes = datas.length;
-        int cantidadS1 = bytes/16;
-        String addr = Conloc.conlocOrg;
+        String datas[] = ObtenerPostbytes().split(" ");//Obtengo solo los bytes del cop del asm
+        int bytes = datas.length;//Para saber cuantos bytes tengo
+        String addr = Conloc.conlocOrg;//Identificar la posicion de memoria donde empieza el s1
+        int aux1, aux2;//Variables auxiliares para recorrer datas
+        cantidadS1 = bytes/16;//Cada s1 es de 16, entonces esto se hace para saber cuantos S1 tendre
         if(bytes % 16!=0){
-            cantidadS1++;
-        }
-        for(int i=0; i<cantidadS1;i++){
-            AuxS19 = new S19 ("S0"," "," "," "," ");
-            if(i==0){
-                AuxS19.setAddr(addr);
-            }
-        }
-    }
+            cantidadS1++;//Si me sobra al dividir en 16 significa que hace falta otro s1
+        }//Fin sobra al dividir en 16
+        for(int i=0; i<cantidadS1;i++){//For para hacer lo mismo para cada S1
+            aux1=i*16;//cada S1 empieza en esta posicion de data
+            if(bytes-aux1<16){
+                aux2=bytes-aux1;
+                aux2=aux2+aux1;
+            }//Fin terminar en el fin de data
+            else{
+                aux2=aux1+16;
+            }//Fin terminar de guardar en ese S1 hasta uno antes de un multiplo de 16 en data
+            AuxS19 = new S19 ("S1"," "," "," "," ");//Instancio un objeto nuevo
+            //Guardo el addr por bytes
+            AuxS19.setAddr(addr.substring(0, 2).concat(" ").concat(addr.substring(2, 4)));
+            for(int j=aux1; j<aux2;j++){
+                if(bytes>j){
+                   if(j%16==0){
+                       AuxS19.setData(datas[j]);//Si es el primer postbyte de ese S1, no necesita espacio ni concatenar con lo anterior 
+                   }//Fin primer postbyte
+                   else{
+                       AuxS19.setData(AuxS19.getData().concat(" ").concat(datas[j]));//Concateno lo anterior con el siguiente byte
+                   }//Fin no es el primer postbyte
+                }//Fin si hay un siguiente byte
+            }//Fin for para recorrer data
+            AuxS19.setCc(cc(AuxS19.getData()));//Calculo cc
+            AuxS19.setCk(ck(AuxS19.getCc(), AuxS19.getAddr(), AuxS19.getData()));//calculo ck
+            System.out.println(AuxS19.getSn().concat(" ") + AuxS19.getCc().concat(" ")
+                    + AuxS19.getAddr().concat(" ") + AuxS19.getData().concat(" ") + AuxS19.getCk());
+            Datos.add(AuxS19);//De control
+            addr=Conloc.sumarHexadecimal(addr, 16);//El conloc avanza para el siguiente s1
+        }//Fin for para cada S1
+    }//Fin calculos de S1
+    
     
 }
