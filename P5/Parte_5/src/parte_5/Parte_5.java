@@ -572,6 +572,7 @@ public class Parte_5 {
             Fase2.fase2();
             new Tabla().setVisible(true);
             Proceso_S19.S1();
+            Proceso_S19.S5();
         }
     }   
 }

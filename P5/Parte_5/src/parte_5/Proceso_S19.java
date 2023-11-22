@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 
 public class Proceso_S19 {
 
-    static List<S19> Datos = new ArrayList<S19>();
+    static List<S19> DatosS19 = new ArrayList<S19>();
     static S19 AuxS19;
     static String archivoASM;
     static int cantidadS1=0;
@@ -97,7 +97,7 @@ public class Proceso_S19 {
         AuxS19.setCk(ck(AuxS19.getCc(),AuxS19.getAddr(),AuxS19.getData()));//calculo ck una vez que tengo todos los bytes
         System.out.println(AuxS19.getSn().concat(" ")+AuxS19.getCc().concat(" ")+
                 AuxS19.getAddr().concat(" ")+AuxS19.getData().concat(" ")+AuxS19.getCk());//Imprimo para comprobar
-        Datos.add(AuxS19);
+        DatosS19.add(AuxS19);
     }
     
     public static String ObtenerPostbytes(){
@@ -150,10 +150,36 @@ public class Proceso_S19 {
             AuxS19.setCk(ck(AuxS19.getCc(), AuxS19.getAddr(), AuxS19.getData()));//calculo ck
             System.out.println(AuxS19.getSn().concat(" ") + AuxS19.getCc().concat(" ")
                     + AuxS19.getAddr().concat(" ") + AuxS19.getData().concat(" ") + AuxS19.getCk());
-            Datos.add(AuxS19);//De control
+            DatosS19.add(AuxS19);//Para agragra el nuevo s1 al s19
             addr=Conloc.sumarHexadecimal(addr, 16);//El conloc avanza para el siguiente s1
         }//Fin for para cada S1
     }//Fin calculos de S1
     
+    public static void S5(){
+        String s1 = Integer.toHexString(cantidadS1);//Identifico la cantidad de s1
+        AuxS19 = new S19 ("S5"," "," "," "," ");//Instancio mi objeto
+        switch (s1.length()) {
+            case 1:
+                s1="00 0".concat(s1);
+                break;
+            case 2:
+                s1="00 ".concat(s1);
+                break;
+            case 3:
+                s1="0".concat(s1.substring(0)).concat(" ").concat(s1.substring(1, 3));
+                break;
+            case 4:
+                s1=s1.substring(0, 2).concat(" ").concat(s1.substring(2, 4));
+                break;
+            default:
+                break;
+        }//Switch para completar el addr de la manera corracta
+        AuxS19.setAddr(s1);//Guardo el addr, con base a la calidad de s1 en dos bytes
+        AuxS19.setCc("03");//cc es siempre este valor
+        AuxS19.setCk(ck(AuxS19.getCc(), AuxS19.getAddr(), "00"));//calculo ck,data no tiene bytes
+        System.out.println(AuxS19.getSn().concat(" ") + AuxS19.getCc().concat(" ")
+                + AuxS19.getAddr().concat(" ") + AuxS19.getCk());
+        DatosS19.add(AuxS19);//Para agregar el s5 al s19
+    }//Fin calculos para S5
     
-}
+}//FIN DE LA CLASE
