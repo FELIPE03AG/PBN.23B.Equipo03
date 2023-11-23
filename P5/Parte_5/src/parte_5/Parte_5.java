@@ -573,6 +573,7 @@ public class Parte_5 {
             new Tabla().setVisible(true);
             Proceso_S19.S1();
             Proceso_S19.S5();
+            Proceso_S19.S9Dificil();
         }
     }   
 }
