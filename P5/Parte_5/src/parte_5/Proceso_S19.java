@@ -197,6 +197,21 @@ public class Proceso_S19 {
         
     }//fin de metodo S9
     
-   
-   
+    
+    //metodo para obtener el conloc 
+    public static String ObtenerConloc(){
+        String conloc = " ";
+        for(Linea asm:Parte_5.LineasASM){//Recorro todas las lineas del acm
+            if(!(asm.getConloc().equals(" "))){//Si tiene peso en memoria
+                if(conloc.equals(" ")){//Si es el primero con valor
+                    conloc = asm.getConloc();
+                }//Fin primero con valor
+                else{
+                    conloc = conloc.concat(" ").concat(asm.getConloc());
+                }//Si no es el primero con valor
+            }//Fin si tiene peso en memoria
+        }//Fin recorrer el asm
+        return conloc;
+    }//Fin Obterner conloc
+
 }//FIN DE LA CLASE
