@@ -182,4 +182,21 @@ public class Proceso_S19 {
         DatosS19.add(AuxS19);//Para agregar el s5 al s19
     }//Fin calculos para S5
     
+    //calculo para el s9 sencillo
+    public static void S9Sencillo(){
+         AuxS19 = new S19 ("S9"," "," "," "," ");//Instancio mi objeto
+         AuxS19.setCc("03");//asigno valor predeterminado
+         AuxS19.setAddr("00 00");// Addr siempre es 00 00 aqui 
+         AuxS19.setData("------");// no lleva nada
+         AuxS19.setCk("FC");// Siempre es FC
+         System.out.println(AuxS19.getSn().concat(" ") + AuxS19.getCc().concat(" ")
+                + AuxS19.getAddr().concat(" ") + AuxS19.getCk());
+         
+         DatosS19.add(AuxS19);//Se agrega al arraylist
+         
+        
+    }//fin de metodo S9
+    
+   
+   
 }//FIN DE LA CLASE
