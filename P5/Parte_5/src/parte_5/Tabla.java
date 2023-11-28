@@ -21,34 +21,34 @@ public class Tabla extends javax.swing.JFrame {
     } //fin de metodo llenar 
     
     //metodo para elegir archivo
-   public static String chooseFile() {
-    JFileChooser fileChooser = new JFileChooser(); //variable para elegir
-    fileChooser.setDialogTitle("Elige el asm");
+    public static String chooseFile() {
+        JFileChooser fileChooser = new JFileChooser(); //variable para elegir
+        fileChooser.setDialogTitle("Elige el asm");
 
-    // Filtro para buscar solo ciertas extensiones, en este caso que sean .asm
-    FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto (*.asm)", "asm"); //busca solo asm
-    fileChooser.setFileFilter(filter); // Se aplica el filtro. si hay otra extencion la ignora
+        // Filtro para buscar solo ciertas extensiones, en este caso que sean .asm
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto (*.asm)", "asm"); //busca solo asm
+        fileChooser.setFileFilter(filter); // Se aplica el filtro. si hay otra extencion la ignora
 
-    int returnValue = fileChooser.showOpenDialog(null); // Abre el cuadro de diálogo para seleccionar
+        int returnValue = fileChooser.showOpenDialog(null); // Abre el cuadro de diálogo para seleccionar
 //pasa a hacer valida la eleccion...
-    if (returnValue == JFileChooser.APPROVE_OPTION) {//analiza si es un archivo asm
-        File selectedFile = fileChooser.getSelectedFile();//agarra la direccion
-        // Verificar si la extensión del archivo seleccionado es .asm
-        if (selectedFile.getName().toLowerCase().endsWith(".asm")) {//toma el nombre y lo pasa a minusculas
-            String selectedFilePath = selectedFile.getAbsolutePath(); // Guarda la dirección del archivo
-            return selectedFilePath; // Retorna la dirección del archivo
-        } else {//si no valida que es asm entonces...
-            JOptionPane.showMessageDialog(null, "Selecciona un archivo con la extensión .asm", "Error", JOptionPane.ERROR_MESSAGE);
-            //no lo toma y te manda notificacion en una notificacion emergente.
-            return null; // Si el archivo no tiene la extensión .asm, no se selecciona
+        if (returnValue == JFileChooser.APPROVE_OPTION) {//analiza si es un archivo asm
+            File selectedFile = fileChooser.getSelectedFile();//agarra la direccion
+            // Verificar si la extensión del archivo seleccionado es .asm
+            if (selectedFile.getName().toLowerCase().endsWith(".asm")) {//toma el nombre y lo pasa a minusculas
+                String selectedFilePath = selectedFile.getAbsolutePath(); // Guarda la dirección del archivo
+                return selectedFilePath; // Retorna la dirección del archivo
+            } else {//si no valida que es asm entonces...
+                JOptionPane.showMessageDialog(null, "Selecciona un archivo con la extensión .asm", "Error", JOptionPane.ERROR_MESSAGE);
+                //no lo toma y te manda notificacion en una notificacion emergente.
+                return null; // Si el archivo no tiene la extensión .asm, no se selecciona
+            }
+        } else if (returnValue == JFileChooser.CANCEL_OPTION) {//en caso de no seleccionar nada...
+            JOptionPane.showMessageDialog(null, "No has seleccionado ningún archivo", "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+            //manda la alerta de que no seleccionaste nada y se queda con el mismo archivo
+        } else {
+            return null; // Otros casos
         }
-    } else if (returnValue == JFileChooser.CANCEL_OPTION) {//en caso de no seleccionar nada...
-        JOptionPane.showMessageDialog(null, "No has seleccionado ningún archivo", "Error", JOptionPane.ERROR_MESSAGE);
-        return null;
-        //manda la alerta de que no seleccionaste nada y se queda con el mismo archivo
-    } else {
-        return null; // Otros casos
-    }
 
     }//Fin seleccionar el archivo
     
@@ -260,29 +260,28 @@ public class Tabla extends javax.swing.JFrame {
     }//GEN-LAST:event_RecargarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        Proceso_S19.S0();
+        Proceso_S19.S1();
+        Proceso_S19.S5();
         //JOptionPane.showMessageDialog(null,"Cual S9 eliges");
-      int respuesta = JOptionPane.showOptionDialog(
+        int respuesta = JOptionPane.showOptionDialog(
                 null,
                 "¿Cual S9 desea usar?",
                 "Pregunta",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
-                null,  // Icono predeterminado
-                new Object[]{"S9 sencillo", "S9 con END"},  // Opciones
-                "Sí"  // Opción predeterminada
+                null, // Icono predeterminado
+                new Object[]{"S9 sencillo", "S9 con END"}, // Opciones
+                "Sí" // Opción predeterminada
         );
-       if (respuesta == JOptionPane.YES_OPTION) {
+        if (respuesta == JOptionPane.YES_OPTION) {
             System.out.println("El usuario selecciono 'S9 sencillo'");
-          //proceso
-        new VistaS19().setVisible(true);
-            
+            Proceso_S19.S9Sencillo();
         } else {
             System.out.println("El usuario selecciono 'S9 con END'");
-            //proceso
-           new VistaS19END().setVisible(true);
+            Proceso_S19.S9Dificil();
         }
-    
+        new VistaS19().setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     

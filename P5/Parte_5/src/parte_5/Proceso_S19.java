@@ -187,7 +187,6 @@ public class Proceso_S19 {
          AuxS19 = new S19 ("S9"," "," "," "," ");//Instancio mi objeto
          AuxS19.setCc("03");//asigno valor predeterminado
          AuxS19.setAddr("00 00");// Addr siempre es 00 00 aqui 
-         AuxS19.setData("------");// no lleva nada
          AuxS19.setCk("FC");// Siempre es FC
          System.out.println(AuxS19.getSn().concat(" ") + AuxS19.getCc().concat(" ")
                 + AuxS19.getAddr().concat(" ") + AuxS19.getCk());
@@ -215,20 +214,17 @@ public class Proceso_S19 {
     }//Fin Obterner conloc
     
     //metodo S9 con el END
-    public static void S9Dificil(){
+    public static void S9Dificil() {
         String datas[] = ObtenerConloc().split(" ");
-         String ultimo = datas[datas.length - 1];
-        
-     
-        AuxS19 = new S19 ("S9"," "," "," "," ");//Instancio mi objeto
-         AuxS19.setCc("03");
-         AuxS19.setAddr(ultimo);
-         AuxS19.setData("------");
-         AuxS19.setCk(ck(AuxS19.getCc(), AuxS19.getAddr(), "00"));
-         System.out.println(AuxS19.getSn().concat(" ") + AuxS19.getCc().concat(" ")
+        String ultimo = datas[datas.length - 1];
+        AuxS19 = new S19("S9", " ", " ", " ", " ");//Instancio mi objeto
+        AuxS19.setCc("03");
+        AuxS19.setAddr(ultimo);
+        AuxS19.setCk(ck(AuxS19.getCc(), AuxS19.getAddr(), "00"));
+        System.out.println(AuxS19.getSn().concat(" ") + AuxS19.getCc().concat(" ")
                 + AuxS19.getAddr().concat(" ") + AuxS19.getCk());
-         DatosS19.add(AuxS19);
-        
+        DatosS19.add(AuxS19);
+
     }//fin de metodo para S9 con END
 
 
