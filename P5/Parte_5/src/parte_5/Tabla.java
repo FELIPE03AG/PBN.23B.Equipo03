@@ -2,6 +2,7 @@ package parte_5;
 
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -273,10 +274,13 @@ public class Tabla extends javax.swing.JFrame {
         );
        if (respuesta == JOptionPane.YES_OPTION) {
             System.out.println("El usuario selecciono 'S9 sencillo'");
-            //proceso
+          //proceso
+        new VistaS19().setVisible(true);
+            
         } else {
             System.out.println("El usuario selecciono 'S9 con END'");
             //proceso
+           new VistaS19END().setVisible(true);
         }
     
     }//GEN-LAST:event_jButton2ActionPerformed
