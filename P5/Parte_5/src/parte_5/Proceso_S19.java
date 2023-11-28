@@ -220,6 +220,7 @@ public class Proceso_S19 {
         AuxS19 = new S19("S9", " ", " ", " ", " ");//Instancio mi objeto
         AuxS19.setCc("03");
         AuxS19.setAddr(ultimo);
+        AuxS19.setAddr(AuxS19.getAddr().substring(0, 2).concat(" ").concat(AuxS19.getAddr().substring(2, 4)));
         AuxS19.setCk(ck(AuxS19.getCc(), AuxS19.getAddr(), "00"));
         System.out.println(AuxS19.getSn().concat(" ") + AuxS19.getCc().concat(" ")
                 + AuxS19.getAddr().concat(" ") + AuxS19.getCk());
