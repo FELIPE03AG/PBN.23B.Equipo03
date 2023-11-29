@@ -28,8 +28,12 @@ public class Proceso_S19 {
             char caracter = nombreArchivo.charAt(i);
             int codigoASCII = (int) caracter;
             String hexa = Integer.toHexString(codigoASCII).toUpperCase();  // Convertir a mayúsculas
-            data = data + hexa.concat(" ");
-            //System.out.print(hexa + " ");           
+            if(i!=nombreArchivo.length()-1){
+                data = data + hexa.concat(" ");
+            }
+            else{
+                data = data + hexa;
+            }
         }
         //System.out.println();
         return data;

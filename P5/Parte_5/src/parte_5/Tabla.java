@@ -1,8 +1,9 @@
 package parte_5;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -12,6 +13,8 @@ import javax.swing.table.DefaultTableModel;
 public class Tabla extends javax.swing.JFrame {
     DefaultTableModel diseño=new DefaultTableModel();
     static String rutaArchivo = " ";
+    static File archivoS19 = new File("Archivo.S19");
+    static VistaS19 frame2 = new VistaS19();
     //METODO PARA LLENAR LA TABLA
     void Llenado(){
         for (Linea auxiliar : Parte_5.LineasASM) {
@@ -61,6 +64,34 @@ public class Tabla extends javax.swing.JFrame {
             Errores.append(elemento + "\n"); // Agregamos un salto de línea después de cada elemento
         }
     }
+    
+     static void ArchivoS19(){ //Crear y llenar archivo
+        try {
+            //Borra si ya existe
+            if (archivoS19.exists()) {
+                archivoS19.delete();
+            }//Fin eliminar list
+            archivoS19.createNewFile();
+
+            RandomAccessFile auxArchivo = new RandomAccessFile("Archivo.S19", "rw");
+            auxArchivo.seek(auxArchivo.length());
+            for (S19 auxiliar : Proceso_S19.DatosS19) {
+                // Escribir en el documento
+                auxArchivo.writeBytes(auxiliar.getSn().concat(" "));
+                auxArchivo.writeBytes(auxiliar.getCc().concat(" "));
+                auxArchivo.writeBytes(auxiliar.getAddr().concat(" "));
+                if(!(auxiliar.getData().equals(" "))){
+                    auxArchivo.writeBytes(auxiliar.getData().concat(" "));
+                }
+                auxArchivo.writeBytes(auxiliar.getCk());
+                auxArchivo.writeBytes("\n");
+            }
+            auxArchivo.close();// Cerrar el archivo después de escribir
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            System.out.println("No se ha creado el archivo");
+        }
+    }//fin crear
     
     public Tabla() {
         initComponents();
@@ -256,10 +287,12 @@ public class Tabla extends javax.swing.JFrame {
             Fase2.fase2();
         }
         this.dispose();
+        frame2.dispose();
         new Tabla().setVisible(true);
     }//GEN-LAST:event_RecargarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Proceso_S19.DatosS19.clear();
         Proceso_S19.S0();
         Proceso_S19.S1();
         Proceso_S19.S5();
@@ -281,7 +314,9 @@ public class Tabla extends javax.swing.JFrame {
             System.out.println("El usuario selecciono 'S9 con END'");
             Proceso_S19.S9Dificil();
         }
-        new VistaS19().setVisible(true);
+        ArchivoS19();
+        frame2.inicializacion();
+        frame2.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     
