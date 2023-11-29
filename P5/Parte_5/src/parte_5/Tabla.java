@@ -20,7 +20,7 @@ public class Tabla extends javax.swing.JFrame {
         for (Linea auxiliar : Parte_5.LineasASM) {
             diseño.addRow(new Object[]{auxiliar.getConloc(),auxiliar.getEtiqueta(),auxiliar.getCodop(),auxiliar.getOperando(),auxiliar.getADDR(),
                                         auxiliar.getSize(),auxiliar.getCop()});
-        }
+        }//Pongo cada linea del asm con sus datos en la tabla
     } //fin de metodo llenar 
     
     //metodo para elegir archivo
@@ -76,13 +76,13 @@ public class Tabla extends javax.swing.JFrame {
             RandomAccessFile auxArchivo = new RandomAccessFile("Archivo.S19", "rw");
             auxArchivo.seek(auxArchivo.length());
             for (S19 auxiliar : Proceso_S19.DatosS19) {
-                // Escribir en el documento
+                // Escribir datos en el documento
                 auxArchivo.writeBytes(auxiliar.getSn().concat(" "));
                 auxArchivo.writeBytes(auxiliar.getCc().concat(" "));
                 auxArchivo.writeBytes(auxiliar.getAddr().concat(" "));
                 if(!(auxiliar.getData().equals(" "))){
                     auxArchivo.writeBytes(auxiliar.getData().concat(" "));
-                }
+                }//Para s5 y s9 no hay data
                 auxArchivo.writeBytes(auxiliar.getCk());
                 auxArchivo.writeBytes("\n");
             }
@@ -93,12 +93,12 @@ public class Tabla extends javax.swing.JFrame {
         }
     }//fin crear
     
-    public Tabla() {
+    public Tabla() {//Metodo pricipal
         initComponents();
         String[] titulo = new String[]{"CONLOC","ETQ","CODOP","OPR","ADDR","SIZE","COP"};
         diseño.setColumnIdentifiers(titulo);
         TablaCod.setModel(diseño);
-        Llenado();
+        Llenado();//LLenado de la tabla
         Errores.setEditable(false);
         mostrarEnJTextArea();
         // Centrar todas las celdas de la tabla
@@ -106,8 +106,8 @@ public class Tabla extends javax.swing.JFrame {
         centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
         for (int i = 0; i < TablaCod.getColumnCount(); i++) {
             TablaCod.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
-    }
+        }//Para centrar cada columna
+    }//Fin metodo principal
     
 
     @SuppressWarnings("unchecked")
@@ -286,13 +286,14 @@ public class Tabla extends javax.swing.JFrame {
         if (Parte_5.LineasASM.size() != 0) {
             Fase2.fase2();
         }
-        this.dispose();
-        frame2.dispose();
+        this.dispose();//Cerrar esta tabla para recargar
+        frame2.dispose();//Cerrar tabla del s19
         new Tabla().setVisible(true);
     }//GEN-LAST:event_RecargarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Proceso_S19.DatosS19.clear();
+        Proceso_S19.DatosS19.clear(); //Limpia los valores anteriores
+        //Hace el calculo de cada s
         Proceso_S19.S0();
         Proceso_S19.S1();
         Proceso_S19.S5();
@@ -307,16 +308,14 @@ public class Tabla extends javax.swing.JFrame {
                 new Object[]{"S9 sencillo", "S9 con END"}, // Opciones
                 "Sí" // Opción predeterminada
         );
-        if (respuesta == JOptionPane.YES_OPTION) {
-            System.out.println("El usuario selecciono 'S9 sencillo'");
+        if (respuesta == JOptionPane.YES_OPTION) {//Eligio s19 sencillo
             Proceso_S19.S9Sencillo();
-        } else {
-            System.out.println("El usuario selecciono 'S9 con END'");
+        } else {//Eligio s19 considerando el end
             Proceso_S19.S9Dificil();
-        }
-        ArchivoS19();
-        frame2.inicializacion();
-        frame2.setVisible(true);
+        }//Fin else
+        ArchivoS19();//Guarda los datos obtenidos en el txt
+        frame2.inicializacion();//Carga los datos en tabla s19
+        frame2.setVisible(true);//Muestra la tabla del s19
     }//GEN-LAST:event_jButton2ActionPerformed
 
     

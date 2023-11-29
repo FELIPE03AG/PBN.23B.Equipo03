@@ -66,7 +66,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="TablaCod">
+        <Component class="javax.swing.JTable" name="TablaS19">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="cc" type="rgb"/>
@@ -95,7 +95,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="TablaCod = new javax.swing.JTable(){&#xa;     public boolean isCellEditable(int row, int column) {&#xa;        // Devuelve false para hacer que todas las celdas sean de solo lectura&#xa;        return false;&#xa;}&#xa;};"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="TablaS19 = new javax.swing.JTable(){&#xa;     public boolean isCellEditable(int row, int column) {&#xa;        // Devuelve false para hacer que todas las celdas sean de solo lectura&#xa;        return false;&#xa;}&#xa;};"/>
             <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="Tabla_TablaCod"/>
           </AuxValues>
         </Component>

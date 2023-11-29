@@ -1,22 +1,10 @@
 package parte_5;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author anaya
- */
 public class S19 {
-    String Sn;
-    String cc;
-    String addr;
-    String data;
-    String ck;
+    //Atributos
+    private String Sn, cc, addr, data, ck;
     
-    
+    //Constructor
     public S19( String Sn, String cc, String addr, String data, String ck) {
         this.Sn = Sn;
         this.cc = cc;
@@ -25,6 +13,7 @@ public class S19 {
         this.ck = ck;
     }
 
+    //Metodos getters y setters
     public String getSn() {
         return Sn;
     }

@@ -8,33 +8,33 @@ import java.nio.file.Paths;
 
 public class Proceso_S19 {
 
-    static List<S19> DatosS19 = new ArrayList<S19>();
-    static S19 AuxS19;
-    static String archivoASM;
-    static int cantidadS1=0;
+    static List<S19> DatosS19 = new ArrayList<S19>();//Variable para guardar los datos del S19
+    static S19 AuxS19; //Objeto con las columnas del s19
+    static String archivoASM; //Archivo donde se guarda
+    static int cantidadS1=0; //Auxiliar para calcular el S5
 
     public static String NombreASM() {
-        String nombreArchivo = archivoASM;
-        String data = "";
+        String nombreArchivo = archivoASM; //Obtengo el nombre del archivo
+        String data = ""; //Variable para guardar el hexadecimal
         if(archivoASM.equals("P5ASM.asm")) {
 
-        } else {
+        } else {//Si es una dirección en la computadora
             // Obtener un objeto Path
             Path path = Paths.get(archivoASM);
             // Obtener el nombre del archivo
             nombreArchivo = path.getFileName().toString();
-        }
+        }//Fin else
         for (int i = 0; i < nombreArchivo.length(); i++) {
-            char caracter = nombreArchivo.charAt(i);
-            int codigoASCII = (int) caracter;
-            String hexa = Integer.toHexString(codigoASCII).toUpperCase();  // Convertir a mayúsculas
+            char caracter = nombreArchivo.charAt(i);//Obtener caracter
+            int codigoASCII = (int) caracter;//obtengo el valor en ascii
+            String hexa = Integer.toHexString(codigoASCII).toUpperCase();  // Convertir a hexadecimal en mayusculas
             if(i!=nombreArchivo.length()-1){
-                data = data + hexa.concat(" ");
-            }
+                data = data + hexa.concat(" ");//separa por espacios
+            }//Fin if
             else{
-                data = data + hexa;
-            }
-        }
+                data = data + hexa;//Lo pone junto
+            }//fin else
+        }//Fin for
         //System.out.println();
         return data;
     }
@@ -46,7 +46,7 @@ public class Proceso_S19 {
         // Asegurarse de que el resultado tenga siempre dos dígitos
         String sumaDeBytes = String.format("%02X", resultado);
         return sumaDeBytes;
-    }
+    }//Fin calcular cc (cantidad de bytes)
     
     public static String sumarHexadecimal(String hex1) {
         // Separar los valores hexadecimales por espacios
@@ -60,7 +60,7 @@ public class Proceso_S19 {
         String sumaHexadecimal = Integer.toHexString(sumaDecimal).toUpperCase();
         // Devolver el resultado
         return sumaHexadecimal;
-    }
+    }//Fin sumar en hexadecimal
     
     public static String ck(String cc, String addr, String data) {
         String suma = "00";
@@ -84,7 +84,7 @@ public class Proceso_S19 {
         for (int i = 0; i < suma.length(); i++) {
             char bit = suma.charAt(i);
             complementoUno.append((bit == '0') ? '1' : '0'); // Invertir cada bit del número binario
-        }
+        }//Fin sacar complemento a1 
         
         //Calcular hexadecimal del complemento uno
         bitLessImpor = Integer.toHexString(Parte_5.ConvertirADecimal("%".concat(complementoUno.toString())));
@@ -92,17 +92,15 @@ public class Proceso_S19 {
             bitLessImpor = "0".concat(bitLessImpor);
         }//Completar a byte
         return bitLessImpor.toUpperCase();
-    }
+    }//Fin calculo de ck
 
     public static void S0() {
         AuxS19 = new S19 ("S0"," ","00 00"," "," ");//Instancio mi objeto
         AuxS19.setData(NombreASM());//En data va el valos ascii del nombre, para eso uso ese metodo
         AuxS19.setCc(cc(AuxS19.getData()));//Calculo cc con el metodo para contar los bytes
         AuxS19.setCk(ck(AuxS19.getCc(),AuxS19.getAddr(),AuxS19.getData()));//calculo ck una vez que tengo todos los bytes
-        System.out.println(AuxS19.getSn().concat(" ")+AuxS19.getCc().concat(" ")+
-                AuxS19.getAddr().concat(" ")+AuxS19.getData().concat(" ")+AuxS19.getCk());//Imprimo para comprobar
         DatosS19.add(AuxS19);
-    }
+    }//Fin obtener s0
     
     public static String ObtenerPostbytes(){
         String postbytes = " ";
@@ -152,8 +150,6 @@ public class Proceso_S19 {
             }//Fin for para recorrer data
             AuxS19.setCc(cc(AuxS19.getData()));//Calculo cc
             AuxS19.setCk(ck(AuxS19.getCc(), AuxS19.getAddr(), AuxS19.getData()));//calculo ck
-            System.out.println(AuxS19.getSn().concat(" ") + AuxS19.getCc().concat(" ")
-                    + AuxS19.getAddr().concat(" ") + AuxS19.getData().concat(" ") + AuxS19.getCk());
             DatosS19.add(AuxS19);//Para agragra el nuevo s1 al s19
             addr=Conloc.sumarHexadecimal(addr, 16);//El conloc avanza para el siguiente s1
         }//Fin for para cada S1
@@ -162,7 +158,7 @@ public class Proceso_S19 {
     public static void S5(){
         String s1 = Integer.toHexString(cantidadS1);//Identifico la cantidad de s1
         AuxS19 = new S19 ("S5"," "," "," "," ");//Instancio mi objeto
-        switch (s1.length()) {
+        switch (s1.length()) {//Para completar a dos bytes
             case 1:
                 s1="00 0".concat(s1);
                 break;
@@ -181,8 +177,6 @@ public class Proceso_S19 {
         AuxS19.setAddr(s1);//Guardo el addr, con base a la calidad de s1 en dos bytes
         AuxS19.setCc("03");//cc es siempre este valor
         AuxS19.setCk(ck(AuxS19.getCc(), AuxS19.getAddr(), "00"));//calculo ck,data no tiene bytes
-        System.out.println(AuxS19.getSn().concat(" ") + AuxS19.getCc().concat(" ")
-                + AuxS19.getAddr().concat(" ") + AuxS19.getCk());
         DatosS19.add(AuxS19);//Para agregar el s5 al s19
     }//Fin calculos para S5
     
@@ -192,12 +186,7 @@ public class Proceso_S19 {
          AuxS19.setCc("03");//asigno valor predeterminado
          AuxS19.setAddr("00 00");// Addr siempre es 00 00 aqui 
          AuxS19.setCk("FC");// Siempre es FC
-         System.out.println(AuxS19.getSn().concat(" ") + AuxS19.getCc().concat(" ")
-                + AuxS19.getAddr().concat(" ") + AuxS19.getCk());
-         
-         DatosS19.add(AuxS19);//Se agrega al arraylist
-         
-        
+         DatosS19.add(AuxS19);//Se agrega al arraylist  
     }//fin de metodo S9
     
     
@@ -226,11 +215,7 @@ public class Proceso_S19 {
         AuxS19.setAddr(ultimo);
         AuxS19.setAddr(AuxS19.getAddr().substring(0, 2).concat(" ").concat(AuxS19.getAddr().substring(2, 4)));
         AuxS19.setCk(ck(AuxS19.getCc(), AuxS19.getAddr(), "00"));
-        System.out.println(AuxS19.getSn().concat(" ") + AuxS19.getCc().concat(" ")
-                + AuxS19.getAddr().concat(" ") + AuxS19.getCk());
         DatosS19.add(AuxS19);
-
     }//fin de metodo para S9 con END
-
-
+    
 }//FIN DE LA CLASE
