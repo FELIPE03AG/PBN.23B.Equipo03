@@ -273,6 +273,7 @@ public class Tabla extends javax.swing.JFrame {
                 Fase2.fase2();
             }
             this.dispose();
+            frame2.dispose();//Cerrar tabla del s19
             new Tabla().setVisible(true);
         }
     }//GEN-LAST:event_btnArchivoActionPerformed
