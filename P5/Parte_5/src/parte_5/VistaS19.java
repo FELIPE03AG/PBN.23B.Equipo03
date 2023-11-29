@@ -12,6 +12,10 @@ public class VistaS19 extends javax.swing.JFrame {
         }//Fin del for
     } //fin de metodo llenar
     
+    private void CerrarVentana() {//Metodo para cerrar solo esta ventana
+    this.dispose();
+    }
+
     void Vaciado (){//Borra todas las filas de la tabla
         for (int i=diseño.getRowCount()- 1; i >= 0; i--) {//For para recorrer las filas de la tabla
             diseño.removeRow(i);//Elimina la fila
@@ -34,7 +38,14 @@ public class VistaS19 extends javax.swing.JFrame {
     
     public VistaS19() {//Metodo principal
         initComponents();//Carga de todo el frame
-    }//Fin VistaS19
+    this.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);//Establece el comportamiento al cerrar la ventana
+    this.addWindowListener(new java.awt.event.WindowAdapter() {
+        @Override
+        public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+            CerrarVentana();//Llama el metodo para cerrar la ventana
+        }
+    });
+}//Fin VistaS19
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
