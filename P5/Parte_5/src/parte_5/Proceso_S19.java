@@ -121,6 +121,7 @@ public class Proceso_S19 {
         String datas[] = ObtenerPostbytes().split(" ");//Obtengo solo los bytes del cop del asm
         int bytes = datas.length;//Para saber cuantos bytes tengo
         String addr = Conloc.conlocOrg;//Identificar la posicion de memoria donde empieza el s1
+        System.out.println("Inicial "+addr);
         int aux1, aux2;//Variables auxiliares para recorrer datas
         cantidadS1 = bytes/16;//Cada s1 es de 16, entonces esto se hace para saber cuantos S1 tendre
         if(bytes % 16!=0){
@@ -152,6 +153,11 @@ public class Proceso_S19 {
             AuxS19.setCk(ck(AuxS19.getCc(), AuxS19.getAddr(), AuxS19.getData()));//calculo ck
             DatosS19.add(AuxS19);//Para agragra el nuevo s1 al s19
             addr=Conloc.sumarHexadecimal(addr, 16);//El conloc avanza para el siguiente s1
+            System.out.println("largo " + addr.length());
+            for(int x=addr.length();x<4;x++){
+                addr="0".concat(addr);
+            }
+            System.out.println(addr);
         }//Fin for para cada S1
     }//Fin calculos de S1
     
