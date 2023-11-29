@@ -161,74 +161,77 @@ public class Parte_5 {
                 if(!(lecturaLinea.equals(""))){//El if hace que se ignore cuando hay un linea de codigo vacia
                     Comentario(lecturaLinea);
                 }
-                if(!(Comentario)){ //Si no es un comentario, debe ser una linea de codigo
+                if (!(Comentario)) { //Si no es un comentario, debe ser una linea de codigo
                     String[] campos = lecturaLinea.split("\\s+");//Separa por bloques segun cada espacios o tabulación
-                    NewLinCod = new Linea(" ", " "," "," "," "); //Inicializo valores
-                    if(campos.length<=3 && campos.length>1){//If para validacion de solo 4 bloques no mas
-                        if(!(campos[0].equals(""))){
-                            if(campos[0].endsWith(":")){
-                                campos[0]=campos[0].substring(0, campos[0].length()-1);//quitar los ultimos dos puntos del final
+                    NewLinCod = new Linea(" ", " ", " ", " ", " "); //Inicializo valores
+                    if (campos.length <= 3 && campos.length > 1) {//If para validacion de solo 4 bloques no mas
+                        if (!(campos[0].equals(""))) {
+                            if (campos[0].endsWith(":")) {
+                                campos[0] = campos[0].substring(0, campos[0].length() - 1);//quitar los ultimos dos puntos del final
                             }//Fin la etiqueta tiene dos puntos al final
-                            if(validarEtiq(campos[0])){
-                                etqRepetida=false;//inicializo la variable en false
-                                for(String Etiqueta : Etiquetas){//Recorro todo el array que guarda todas las etiquetas
-                                    if(Etiqueta.equals(campos[0].toUpperCase())){
-                                        etqRepetida=true;//Se vuelve true si hay una coincidencia con el arreglo y la etiqueta actual
+                            if (validarEtiq(campos[0])) {
+                                etqRepetida = false;//inicializo la variable en false
+                                for (String Etiqueta : Etiquetas) {//Recorro todo el array que guarda todas las etiquetas
+                                    if (Etiqueta.equals(campos[0].toUpperCase())) {
+                                        etqRepetida = true;//Se vuelve true si hay una coincidencia con el arreglo y la etiqueta actual
                                     }//Fin si son iguales
                                 }//Fin for revisar etiquetas
-                                if(!etqRepetida){//Si no se habia puesto ya esa etiqueta se puede arreglar
+                                if (!etqRepetida) {//Si no se habia puesto ya esa etiqueta se puede arreglar
                                     NewLinCod.setEtiqueta(campos[0].toUpperCase());//Guardar etiqueta en una nueva linea de la lista
                                     Etiquetas.add(campos[0].toUpperCase());
                                 }//Fin no esta repetida la etiqueta
                             }//fin el bloque es una etiqueta
-                            else{
+                            else {
                                 NewLinCod.setEtiqueta("ERROR");//Guardar el error de la etiqueta 
-                                Errores.add("ERROR Formato Etiqueta en: " +campos[0]);
+                                Errores.add("ERROR Formato Etiqueta en: " + campos[0]);
                             }//Fin no esta bien el formato de la etiqueta
                         }//Busco una etiqueta
-                        if(validarCodop(campos[1])){
-                            NewLinCod.setCodop(campos[1].toUpperCase());
-                            if(campos.length==3){//Si hay siguiente bloque debe ser el operando
-                                if(NewLinCod.getCodop().contains("DC.")){//Si la directiva es DC.
-                                    NewLinCod.setOperando(operandoDC(campos[2]));//no todo el opernado se debe hacer mayusculas
-                                }//fin if es DC.
-                                else{//El operando se debe pasar a mayusculas
-                                    NewLinCod.setOperando(campos[2].toUpperCase()); 
-                                }//fin no es DC.
-                                if(NewLinCod.getCodop().equals("ORG")){
-                                    if(NewLinCod.getEtiqueta().equals(" ") && !org){
-                                        if(ConvertirADecimal(NewLinCod.getOperando())!=-1){
-                                            NewLinCod.setOperando(String.valueOf(ConvertirADecimal(NewLinCod.getOperando())));
-                                            NewLinCod.setOperando(Integer.toHexString(Integer.parseInt(NewLinCod.getOperando())).toUpperCase());
-                                            NewLinCod.setOperando("$".concat(NewLinCod.getOperando()));
-                                            org=true;
-                                        }
-                                        else{
-                                            Errores.add("ERROR CON EL OPERANDO DEL ORG, se ignorara esa linea");
-                                            NewLinCod=null;
+                        if (validarCodop(campos[1])) {
+                            if ((org || campos[1].equalsIgnoreCase("equ")
+                                    || campos[1].equalsIgnoreCase("org"))) {
+                                NewLinCod.setCodop(campos[1].toUpperCase());
+                                if (campos.length == 3) {//Si hay siguiente bloque debe ser el operando
+                                    if (NewLinCod.getCodop().contains("DC.")) {//Si la directiva es DC.
+                                        NewLinCod.setOperando(operandoDC(campos[2]));//no todo el opernado se debe hacer mayusculas
+                                    }//fin if es DC.
+                                    else {//El operando se debe pasar a mayusculas
+                                        NewLinCod.setOperando(campos[2].toUpperCase());
+                                    }//fin no es DC.
+
+                                    if (NewLinCod.getCodop().equals("ORG")) {
+                                        if (NewLinCod.getEtiqueta().equals(" ") && !org) {
+                                            if (ConvertirADecimal(NewLinCod.getOperando()) != -1) {
+                                                NewLinCod.setOperando(String.valueOf(ConvertirADecimal(NewLinCod.getOperando())));
+                                                NewLinCod.setOperando(Integer.toHexString(Integer.parseInt(NewLinCod.getOperando())).toUpperCase());
+                                                NewLinCod.setOperando("$".concat(NewLinCod.getOperando()));
+                                                org = true;
+                                            } else {
+                                                Errores.add("ERROR CON EL OPERANDO DEL ORG, se ignorara esa linea");
+                                                NewLinCod = null;
+                                            }
+                                        } else {
+                                            Errores.add("ERROR CON EL ORG, ya existe o tiene etiqueta, se ignora esa linea");
+                                            NewLinCod = null;
                                         }
                                     }
-                                    else{
-                                        Errores.add("ERROR CON EL ORG, ya existe o tiene etiqueta, se ignora esa linea");
-                                        NewLinCod=null;
+                                } else if (NewLinCod.getCodop().equals("END")) {
+                                    if (NewLinCod.getOperando().equals(" ")) {//Validacion del end
+                                        cursorActual = auxArchivo.length();//Para salir del archivo
+                                    } else {
+                                        Errores.add("EL END NO DEBE DE LLEVAR OPERANDO, el operando no se tomara en cuenta");
+                                        NewLinCod.setOperando(" ");
                                     }
                                 }
-                            }
-                            else if(NewLinCod.getCodop().equals("END")){
-                                if(NewLinCod.getOperando().equals(" ")){//Validacion del end
-                                    cursorActual=auxArchivo.length();//Para salir del archivo
+                                if (NewLinCod != null) {
+                                    LineasASM.add(NewLinCod);
+                                    Salvacion.BuscarCodop(NewLinCod);
+                                    Conloc.LlenarList(NewLinCod);
+                                    Conloc.LlenarTabsim(NewLinCod);
                                 }
-                                else{
-                                    Errores.add("EL END NO DEBE DE LLEVAR OPERANDO, el operando no se tomara en cuenta");
-                                    NewLinCod.setOperando(" ");
-                                }
+                            }//Fin instrucciones dentro del org
+                            else {
+                                Errores.add("ERROR instrucción " + campos[1] + " fuera del org");
                             }
-                            if(NewLinCod!=null){
-                                LineasASM.add(NewLinCod);
-                                Salvacion.BuscarCodop(NewLinCod);
-                                Conloc.LlenarList(NewLinCod);
-                                Conloc.LlenarTabsim(NewLinCod);
-                            } 
                         }//Fin CODOP correcto
                         else{
                             Errores.add("ERROR "+campos[1]+" no es un CODOP");

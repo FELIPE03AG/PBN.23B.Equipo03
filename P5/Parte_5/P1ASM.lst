@@ -1,4 +1,5 @@
 TIPO,        VALOR,       ETQ,         CODOP,       OPER 
+VALOR,          0010,       HOLA,       EQU,       $10,       
 DIR_INIC,        4000,       NULL,       ORG,       $4000,       
 CONTLOC,       4000,       NULL,       LDAA,       #$15,       
 CONTLOC,       4002,       INI,       LDAA,       15,       
