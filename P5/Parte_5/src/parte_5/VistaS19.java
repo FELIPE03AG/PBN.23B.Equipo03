@@ -1,8 +1,12 @@
 
 package parte_5;
+import java.awt.Component;
+import javax.swing.JTable;
 import static javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 
 public class VistaS19 extends javax.swing.JFrame {
     DefaultTableModel diseño=new DefaultTableModel();
@@ -23,6 +27,42 @@ public class VistaS19 extends javax.swing.JFrame {
         }//Fin for
     }//Fin vaciado
     
+    /**
+     * Metodo que ajusta el ancho de la columna de una tabla
+     * @param table 
+     */
+    private void re_acomodarAncho(JTable table){
+        //Se obtiene el modelo de la columna
+        TableColumnModel columnmodel = table.getColumnModel();
+        //Se obtiene el total de las columnas
+        for(int col = 0; col < table.getColumnCount(); col++){
+            //Establecemos un valor minimo para el ancho de la columna
+            int ancho = 150;
+            //Obtenemos el numero de filas de la tabla
+            for(int link = 0; link < table.getRowCount(); link++){
+                //Obtenemos el renderizador de la tabla
+                TableCellRenderer renderer = table.getCellRenderer(link, col);
+                //Creamos un objeto para preparar el renderer
+                Component com = table.prepareRenderer(renderer, link, col);
+                //Establecemos el width segun el valor maximo del ancho de la columna
+                ancho = Math.max(com.getPreferredSize().width + 1, ancho);
+            }
+            
+            //Se establece una condicion para no pasar el ancho
+            if(ancho > 330){
+                ancho = 330;
+            }
+            
+            //Se establece el ancho de la columna
+            columnmodel.getColumn(col).setPreferredWidth(ancho);
+            
+        }
+        
+    } //Un agradecimiento especial par Ferny Cortez que pregunto como realizar este metodo en stackoverflow
+      //Y uno mas grande porque como nadie le contesto fue a buscarlo por su cuente y se auto-respondio para que
+      //nadie mas se quedara con la misma duda que el. <3
+    
+    
     void inicializacion(){//Metodo para personalizar y cargar la tabla
         String[] titulo = new String[]{"Sn","CC","ADDR","DATA","CK"};//titulos de las columnas
         diseño.setColumnIdentifiers(titulo);//Agrega los titulos
@@ -35,6 +75,8 @@ public class VistaS19 extends javax.swing.JFrame {
         for (int i = 0; i < TablaS19.getColumnCount(); i++) {
             TablaS19.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }//Para centrar cada columna
+        re_acomodarAncho(TablaS19);
+        TablaS19.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         
     }//Fin inicialización
     
@@ -42,6 +84,7 @@ public class VistaS19 extends javax.swing.JFrame {
         initComponents();//Carga de todo el frame
         this.setLocationRelativeTo(null);
         TablaS19.setAutoResizeMode(AUTO_RESIZE_ALL_COLUMNS);
+        TablaS19.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     this.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);//Establece el comportamiento al cerrar la ventana
     this.addWindowListener(new java.awt.event.WindowAdapter() {
         @Override
@@ -63,7 +106,6 @@ public class VistaS19 extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(739, 250));
 
         TablaS19 = new javax.swing.JTable(){
             public boolean isCellEditable(int row, int column) {
@@ -103,7 +145,7 @@ public class VistaS19 extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 727, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         layout.setVerticalGroup(
@@ -114,9 +156,9 @@ public class VistaS19 extends javax.swing.JFrame {
                 .addContainerGap(144, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(45, 45, 45)
+                    .addContainerGap(45, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addContainerGap()))
         );
 
         pack();
