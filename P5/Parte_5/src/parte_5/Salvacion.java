@@ -559,7 +559,7 @@ public class Salvacion {
                                 LinCod.setADDR("DIRECT");
                                 if(LinCod.getOperando().contains(",")){
                                     String [] valores = LinCod.getOperando().split(",");//Separar por valores
-                                    for(int i=0;i<tam;i++){
+                                    for(int i=0;i<valores.length;i++){
                                         if(valores[i].contains("\"")){
                                             for(int j=1; j<valores[i].length()-1;j++){
                                                 int valorASCII = (int) valores[i].charAt(j);

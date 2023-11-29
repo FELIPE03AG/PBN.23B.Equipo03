@@ -1,5 +1,3 @@
-hola	EQU	$10
-	LDAA	hola
 	ORG	$4000
 	LDAA	#$15
 INI	LDAA	15
