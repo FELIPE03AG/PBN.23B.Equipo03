@@ -1,5 +1,6 @@
 
 package parte_5;
+import static javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -34,16 +35,21 @@ public class VistaS19 extends javax.swing.JFrame {
         for (int i = 0; i < TablaS19.getColumnCount(); i++) {
             TablaS19.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }//Para centrar cada columna
+        
     }//Fin inicialización
     
     public VistaS19() {//Metodo principal
         initComponents();//Carga de todo el frame
+        this.setLocationRelativeTo(null);
+        TablaS19.setAutoResizeMode(AUTO_RESIZE_ALL_COLUMNS);
     this.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);//Establece el comportamiento al cerrar la ventana
     this.addWindowListener(new java.awt.event.WindowAdapter() {
         @Override
         public void windowClosing(java.awt.event.WindowEvent windowEvent) {
             CerrarVentana();//Llama el metodo para cerrar la ventana
+            
         }
+        
     });
 }//Fin VistaS19
 
@@ -57,6 +63,7 @@ public class VistaS19 extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(739, 250));
 
         TablaS19 = new javax.swing.JTable(){
             public boolean isCellEditable(int row, int column) {
@@ -121,4 +128,6 @@ public class VistaS19 extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
+
+
 }
