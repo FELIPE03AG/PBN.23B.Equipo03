@@ -227,7 +227,7 @@ public class Salvacion {
         String operando[] = opr.split(",");
         xb=calculoRR(operando[1]).concat("0");                           //realiza el calculo de xb con la funcion calculoRR
         valor=Integer.parseInt(operando[0]);                             //Convierte el valor a entero
-        if(valor==16){                                                   //Verifica si el valo es igual a 16
+        if(valor==-16){                                                   //Verifica si el valo es igual a 16
             xb=xb.concat("10000");                                       //si es asi concatena eso
         }
         else if(valor<0){                                        //Si el valor es menor a 0 se le resta para la forma calculada

@@ -431,7 +431,9 @@ public class Fase2 {
                                     for (int i = indiceObjetoActual + 1; i < Parte_5.LineasASM.size(); i++) {
                                         Linea objeto = Parte_5.LineasASM.get(i);
                                         // Aumenta el conloc 
-                                        objeto.setConloc(Parte_5.validarDireccion("$".concat(Conloc.sumarHexadecimal(objeto.getConloc(), 1))));
+                                        if(!(objeto.getConloc().equals(" "))){
+                                            objeto.setConloc(Parte_5.validarDireccion("$".concat(Conloc.sumarHexadecimal(objeto.getConloc(), 1))));
+                                        }
                                     }
                                 }
                                 //Reinicio de variables o archivos auxiliares

@@ -152,7 +152,6 @@ public class Proceso_S19 {
             AuxS19.setCk(ck(AuxS19.getCc(), AuxS19.getAddr(), AuxS19.getData()));//calculo ck
             DatosS19.add(AuxS19);//Para agragra el nuevo s1 al s19
             addr=Conloc.sumarHexadecimal(addr, 16);//El conloc avanza para el siguiente s1
-            System.out.println("largo " + addr.length());
             for(int x=addr.length();x<4;x++){
                 addr="0".concat(addr);
             }
