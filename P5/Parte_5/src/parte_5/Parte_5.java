@@ -348,47 +348,47 @@ public class Parte_5 {
         
     }//Fin metodo para evaluar binario..
     
-    //METODO PARA PASAR DE CUALQUIER BASE A DECIMAL
-    static int ConvertirADecimal(String Operando){
-        int Decimal=0;//variable para retornar el valor
-        switch(Operando.charAt(0)){
-            case '$':// para caso hexadecimal
-                if(ValidarHexadecimal(Operando.substring(1))){
-                    Decimal = Integer.parseInt(Operando.substring(1), 16);
-                    //pasa el valor de hexadecimal a decimal
-                }
-                else{
-                    Decimal = -1; //si no cumple manda estado de error
-                }
-            break; //corte de instruccion
-            case '@'://caso octal
-                if(ValidarOctal(Operando.substring(1))){
-                    Decimal = octalADecimal(Integer.parseInt(Operando.substring(1)));
-                    //pasa de octal a decimal
-                }
-                else{
-                    Decimal = -1;//si no cumple manda estado de error
-                }
-            break;//crte de instruccion
-            case '%': //caso binario
-                if(ValidarBinario(Operando.substring(1))){
-                    Decimal = binarioADecimal(Operando.substring(1));
-                    //cambia de binario a decimal
-                }
-                else{
-                    Decimal=-1;//si no cumple manda estado de error
-                }
-            break;//corte de instruccion
-            default: //caso default (ya no ocupa hacerle conversion)
-                if(Operando.matches("[0-9]+")&&Integer.parseInt(Operando)<65535){
-                    Decimal = Integer.parseInt(Operando);
-                    //lee decimal y lo pasa de String a Int
-                }
-                else{
-                    Decimal=-1;//si no cumple manda estado de error
-                }
-            break;//corte de instruccion
-        }//fin del switch
+//METODO PARA PASAR DE CUALQUIER BASE A DECIMAL
+    static int ConvertirADecimal(String Operando) {
+        int Decimal = 0;//variable para retornar el valor
+        if (Operando.length() != 0) {
+            switch (Operando.charAt(0)) {
+                case '$':// para caso hexadecimal
+                    if (ValidarHexadecimal(Operando.substring(1))) {
+                        Decimal = Integer.parseInt(Operando.substring(1), 16);
+                        //pasa el valor de hexadecimal a decimal
+                    } else {
+                        Decimal = -1; //si no cumple manda estado de error
+                    }
+                    break; //corte de instruccion
+                case '@'://caso octal
+                    if (ValidarOctal(Operando.substring(1))) {
+                        Decimal = octalADecimal(Integer.parseInt(Operando.substring(1)));
+                        //pasa de octal a decimal
+                    } else {
+                        Decimal = -1;//si no cumple manda estado de error
+                    }
+                    break;//crte de instruccion
+                case '%': //caso binario
+                    if (ValidarBinario(Operando.substring(1))) {
+                        Decimal = binarioADecimal(Operando.substring(1));
+                        //cambia de binario a decimal
+                    } else {
+                        Decimal = -1;//si no cumple manda estado de error
+                    }
+                    break;//corte de instruccion
+                default: //caso default (ya no ocupa hacerle conversion)
+                    if (Operando.matches("[0-9]+") && Integer.parseInt(Operando) < 65535) {
+                        Decimal = Integer.parseInt(Operando);
+                        //lee decimal y lo pasa de String a Int
+                    } else {
+                        Decimal = -1;//si no cumple manda estado de error
+                    }
+                    break;//corte de instruccion
+            }//fin del switch
+        } else {
+            Decimal = -1;//si no cumple manda estado de error
+        }
         return Decimal;
     }//Fin metodo convertir a decimal
     

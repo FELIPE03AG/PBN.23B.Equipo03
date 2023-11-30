@@ -293,30 +293,34 @@ public class Tabla extends javax.swing.JFrame {
     }//GEN-LAST:event_RecargarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Proceso_S19.DatosS19.clear(); //Limpia los valores anteriores
-        //Hace el calculo de cada s
-        Proceso_S19.S0();
-        Proceso_S19.S1();
-        Proceso_S19.S5();
-        //JOptionPane.showMessageDialog(null,"Cual S9 eliges");
-        int respuesta = JOptionPane.showOptionDialog(
-                null,
-                "¿Cual S9 desea usar?",
-                "Pregunta",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null, // Icono predeterminado
-                new Object[]{"S9 sencillo", "S9 con END"}, // Opciones
-                "Sí" // Opción predeterminada
-        );
-        if (respuesta == JOptionPane.YES_OPTION) {//Eligio s19 sencillo
-            Proceso_S19.S9Sencillo();
-        } else {//Eligio s19 considerando el end
-            Proceso_S19.S9Dificil();
-        }//Fin else
-        ArchivoS19();//Guarda los datos obtenidos en el txt
-        frame2.inicializacion();//Carga los datos en tabla s19
-        frame2.setVisible(true);//Muestra la tabla del s19
+        if (Parte_5.LineasASM.size() != 0) {
+            Proceso_S19.DatosS19.clear(); //Limpia los valores anteriores
+            //Hace el calculo de cada s
+            Proceso_S19.S0();
+            Proceso_S19.S1();
+            Proceso_S19.S5();
+            //JOptionPane.showMessageDialog(null,"Cual S9 eliges");
+            int respuesta = JOptionPane.showOptionDialog(
+                    null,
+                    "¿Cual S9 desea usar?",
+                    "Pregunta",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null, // Icono predeterminado
+                    new Object[]{"S9 sencillo", "S9 con END"}, // Opciones
+                    "Sí" // Opción predeterminada
+            );
+            if (respuesta == JOptionPane.YES_OPTION) {//Eligio s19 sencillo
+                Proceso_S19.S9Sencillo();
+            } else {//Eligio s19 considerando el end
+                Proceso_S19.S9Dificil();
+            }//Fin else
+            ArchivoS19();//Guarda los datos obtenidos en el txt
+            frame2.inicializacion();//Carga los datos en tabla s19
+            frame2.setVisible(true);//Muestra la tabla del s19
+        } else {
+            JOptionPane.showMessageDialog(null, "ASM vacio", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     
