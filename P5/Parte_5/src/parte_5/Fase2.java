@@ -71,18 +71,18 @@ public class Fase2 {
        
         destino=conlocEtq(relativo.getOperando());//Se guarda la direccion de destino
         if (absoluta){//Si es absoluta revisa que si exista una instruccion en esa posicion
-            for(Linea existe:Parte_5.LineasASM){
-                if(existe.getConloc().equals(destino)){
-                    destinoExist=true;//enciende la bandera
+            for(Linea existe : Parte_5.LineasASM) {
+                if (existe.getConloc().equals(destino)) {
+                    destinoExist = true;//enciende la bandera
                 }//fin si existe esa direccion con una instruccion
             }//fin for, buscar la direccion
-            if(!destinoExist){
-                destino=" ";//limpia el destino
+            if (!destinoExist) {
+                destino = " ";//limpia el destino
             }//Fin no existe
-            absoluta=false;//reinicia la bandera
+            absoluta = false;//reinicia la bandera
         }//fin es absoluta
-        
-        String frmbase [] = relativo.getForm().split(",");//separa el frmbase en calculado y por calcular
+
+        String frmbase[] = relativo.getForm().split(",");//separa el frmbase en calculado y por calcular
         if (!(destino.equals(" "))) {//si existe una direccion de memoria
             postbyte = frmbase[0];//guarda la parte que ya esta calculada
             ori = Parte_5.ConvertirADecimal("$".concat(origen));//guarda el valor decimal del origen
@@ -91,15 +91,14 @@ public class Fase2 {
                 resta = ori - dest;//restar el destino al origen
                 if (resta < 129) {//validacion del rango del salto negativo
                     rr = decimalABinario(resta);//Paso de decimal a binario el resultado de la resta
-                    rr = completarBinarioAByte(rr,8);//lo completa a byte
+                    rr = completarBinarioAByte(rr, 8);//lo completa a byte
                     rr = Salvacion.calcularComplementoDos(rr);//calcula el complemento a 2
                     rr = Integer.toHexString(Parte_5.ConvertirADecimal("%".concat(rr))).toUpperCase();//guarda el resultado en hexadecimal
                 }//fin rango valido
                 else {
                     rr = null;
                 }
-            } 
-            else if (dest > ori) {//o si el destino es mayor al origen
+            } else if (dest > ori) {//o si el destino es mayor al origen
                 resta = dest - ori;//Hace la resta correspondiente 
                 if (resta < 128) {//valida el rango del salto positivo
                     rr = Integer.toHexString(resta).toUpperCase();//guarda el resultado en hexadecimal
@@ -108,10 +107,10 @@ public class Fase2 {
                     rr = null;
                 }
             }//fin destino mayor al origen
-            else if(dest == ori){
-                rr="00";
+            else if (dest == ori) {
+                rr = "00";
             }
-            
+
             if (rr != null) {
                 if (rr.length() == 1) {//si no es menos de un byte
                     rr = "0".concat(rr);//completa a expresion en byte
@@ -120,9 +119,24 @@ public class Fase2 {
                 relativo.setCop(postbyte);//guardo el postbyte completo en los datos de la instruccion
             }
         }//fin direccion valida
-        if(destino.equals(" ")||rr==null){
+        if (destino.equals(" ") || rr == null) {
             relativo.setCop("ERROR");
-            Parte_5.Errores.add("ERROR rango del salto de rel "+relativo.getCodop()+" "+relativo.getOperando());
+            Parte_5.Errores.add("ERROR rango del salto de rel " + relativo.getCodop() + " " + relativo.getOperando());
+            //Reinicio de variables o archivos auxiliares
+            if (Conloc.archivolst.exists()) {
+                Conloc.archivolst.delete();
+            }//Fin eliminar list
+            if (Conloc.archivotabsim.exists()) {
+                Conloc.archivotabsim.delete();
+            }//Fin  eliminacion de tabsin
+            relativo.setSize(" ");
+            relativo.setConloc(" ");
+            Conloc.conloc = " ";
+            //LLENAR TABSIN Y LIST DE NUEVO
+            for (Linea aux : Parte_5.LineasASM) {
+                Conloc.LlenarList(aux);
+                Conloc.LlenarTabsim(aux);
+            }
         }
     }//Fin postbyte de lo rel 8
     

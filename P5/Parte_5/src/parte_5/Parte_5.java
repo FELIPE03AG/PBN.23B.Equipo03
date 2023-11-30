@@ -223,10 +223,17 @@ public class Parte_5 {
                                     }
                                 }
                                 if (NewLinCod != null) {
-                                    LineasASM.add(NewLinCod);
                                     Salvacion.BuscarCodop(NewLinCod);
                                     Conloc.LlenarList(NewLinCod);
                                     Conloc.LlenarTabsim(NewLinCod);
+                                    if(ConvertirADecimal("$".concat(NewLinCod.getConloc()))==-1 && 
+                                            !(NewLinCod.getConloc().equals(" "))){
+                                        Errores.add("DESBORDE EN EL CONLOC, todo lo que sigue se ignorara");
+                                        cursorActual=auxArchivo.length();
+                                    }
+                                    else{
+                                        LineasASM.add(NewLinCod);
+                                    }
                                 }
                             }//Fin instrucciones dentro del org
                             else {
